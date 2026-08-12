@@ -1,0 +1,32 @@
+import {
+  MapPinned,
+  HandCoins,
+  ShieldCheck,
+  HardHat,
+  Compass,
+  Building2,
+  Home,
+  Umbrella,
+  Hammer,
+  ClipboardCheck,
+  MessagesSquare,
+  PencilRuler,
+  KeyRound,
+  type LucideIcon,
+} from "lucide-react";
+
+export const iconMap: Record<string, LucideIcon> = {
+  MapPinned,
+  HandCoins,
+  ShieldCheck,
+  HardHat,
+  Compass,
+  Building2,
+  Home,
+  Umbrella,
+  Hammer,
+  ClipboardCheck,
+  MessagesSquare,
+  PencilRuler,
+  KeyRound,
+};
