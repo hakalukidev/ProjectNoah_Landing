@@ -1,123 +1,69 @@
-"use client";
+import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
 
-import { MapPin } from "lucide-react";
-import { BlurFade } from "@/components/ui/blur-fade";
-import { DotPattern } from "@/components/ui/dot-pattern";
-import { projects, siteConfig } from "@/lib/site-config";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { PROJECTS } from "@/lib/site-config";
 
-const pinColor: Record<(typeof projects)[number]["category"], string> = {
-  Residential: "bg-brand",
-  Commercial: "bg-ink",
-  Roofing: "bg-brand-dark",
-};
+export function ProjectsPreview() {
+  const featured = PROJECTS.slice(0, 3);
 
-export function Projects() {
   return (
-    <section id="projects" className="section-py bg-white">
-      <div className="container-px">
-        <BlurFade
-          inView
-          inViewMargin="-100px"
-          className="mx-auto max-w-2xl text-center"
-        >
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-            Our Work
-          </span>
-          <h2 className="mt-3 text-balance text-3xl font-semibold text-ink sm:text-4xl">
-            A Portfolio Built on Trust
-          </h2>
-          <p className="mt-4 text-balance text-base leading-relaxed text-muted-foreground">
-            A selection of the residential, commercial and roofing projects
-            we&rsquo;ve completed across Singapore.
-          </p>
-        </BlurFade>
-
-        <BlurFade inView inViewMargin="-80px" delay={0.1} className="mt-14">
-          <div className="relative aspect-16/10 w-full overflow-hidden rounded-3xl border border-border bg-surface-muted sm:aspect-21/9">
-            <DotPattern
-              width={22}
-              height={22}
-              cr={1.4}
-              className="text-ink/10"
-            />
-            <svg
-              aria-hidden
-              className="absolute inset-0 h-full w-full opacity-[0.15]"
-              preserveAspectRatio="none"
-              viewBox="0 0 100 100"
+    <section id="projects" className="scroll-mt-30 bg-muted/40 py-20 sm:py-28">
+      <div className="mx-auto w-full max-w-7xl px-10 lg:px-16">
+        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+          <div>
+            <Badge
+              variant="outline"
+              className="rounded-none border-primary/30 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary"
             >
-              <path
-                d="M0 30 Q 30 10, 50 30 T 100 25"
-                stroke="var(--ink)"
-                strokeWidth="0.4"
-                fill="none"
-              />
-              <path
-                d="M0 70 Q 40 55, 55 72 T 100 65"
-                stroke="var(--ink)"
-                strokeWidth="0.4"
-                fill="none"
-              />
-              <path
-                d="M20 0 Q 25 50, 15 100"
-                stroke="var(--ink)"
-                strokeWidth="0.4"
-                fill="none"
-              />
-              <path
-                d="M75 0 Q 65 50, 80 100"
-                stroke="var(--ink)"
-                strokeWidth="0.4"
-                fill="none"
-              />
-            </svg>
+              Our Projects
+            </Badge>
+            <h2 className="mt-5 max-w-xl text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              A Track Record Across Singapore
+            </h2>
+          </div>
+          <Button
+            render={<Link href="/projects" />}
+            nativeButton={false}
+            variant="outline"
+            size="lg"
+            className="rounded-none border-foreground/15 px-6 hover:bg-muted"
+          >
+            View All Projects
+            <ArrowRight className="ml-1 size-4" />
+          </Button>
+        </div>
 
-            {/* HQ marker */}
-            <div
-              className="group absolute z-10 -translate-x-1/2 -translate-y-full"
-              style={{ left: "48%", top: "48%" }}
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((project) => (
+            <Card
+              key={project.slug}
+              className="group/project rounded-none border border-border bg-card p-0 ring-0 transition-shadow hover:shadow-lg"
             >
-              <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-brand/40" />
-              <span className="flex size-11 items-center justify-center rounded-full border-2 border-white bg-ink text-brand shadow-lg">
-                <MapPin className="size-5" />
-              </span>
-              <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 w-max max-w-48 -translate-x-1/2 rounded-lg bg-ink px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                Noah HQ — {siteConfig.address.line1}
-              </span>
-            </div>
-
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                className="group absolute -translate-x-1/2 -translate-y-full"
-                style={{ left: `${project.map.x}%`, top: `${project.map.y}%` }}
-              >
-                <span
-                  className={`flex size-8 items-center justify-center rounded-full border-2 border-white text-white shadow-md transition-transform group-hover:scale-110 ${pinColor[project.category]}`}
-                >
-                  <MapPin className="size-4" />
+              <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-foreground">
+                <span className="absolute top-4 left-4 rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+                  {project.category}
                 </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 w-max max-w-44 -translate-x-1/2 rounded-lg bg-ink px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                  {project.title}
-                  <span className="block text-white/60">
-                    {project.category}
-                  </span>
+                <span className="px-8 text-center text-2xl font-extrabold tracking-tight text-background/10 transition-colors group-hover/project:text-background/20">
+                  {project.year}
                 </span>
               </div>
-            ))}
-          </div>
-        </BlurFade>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-          <span className="flex items-center gap-2">
-            <span className="size-2.5 rounded-full bg-brand" /> Residential
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="size-2.5 rounded-full bg-ink" /> Commercial
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="size-2.5 rounded-full bg-brand-dark" /> Roofing
-          </span>
+              <CardContent className="flex flex-col gap-2 px-6 pt-5 pb-6">
+                <h3 className="text-lg font-bold text-foreground">
+                  {project.title}
+                </h3>
+                <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <MapPin className="size-3.5" />
+                  {project.location}
+                </span>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

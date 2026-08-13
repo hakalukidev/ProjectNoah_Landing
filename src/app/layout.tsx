@@ -1,112 +1,62 @@
-import type { Metadata, Viewport } from "next";
-import { Inter, Oswald } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
-import { siteConfig } from "@/lib/site-config";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-sans",
+import { WhatsappButton } from "@/components/site/whatsapp-button";
+import { company } from "@/lib/site-config";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
 });
 
-const oswald = Oswald({
-  variable: "--font-heading",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
 });
+
+const SITE_URL = "https://www.projectnoah.com.sg";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${siteConfig.name} | ${siteConfig.tagline}`,
-    template: `%s | ${siteConfig.name}`,
+    default: `${company.brandName} Pte Ltd | Singapore Construction & Project Management`,
+    template: `%s | ${company.brandName} Pte Ltd`,
   },
-  description: siteConfig.description,
+  description: `${company.legalName} (UEN ${company.uen}) delivers end-to-end construction and project management solutions engineered for speed, safety, and precision. Singapore-registered since ${company.incorporationDateLabel}.`,
   keywords: [
-    "construction company Singapore",
-    "design and build contractor",
-    "commercial construction",
-    "residential construction Singapore",
-    "roofing and canopy contractor",
-    "BCA registered contractor",
-    "renovation contractor Singapore",
-    "Noah Construction",
+    "Project Noah",
+    "Project Noah Pte Ltd",
+    "Singapore construction company",
+    "building construction Singapore",
+    "design and build Singapore",
+    "A&A works Singapore",
   ],
-  authors: [{ name: siteConfig.name }],
-  creator: siteConfig.name,
-  applicationName: siteConfig.name,
-  alternates: {
-    canonical: "/",
-  },
+  authors: [{ name: company.legalName }],
   openGraph: {
     type: "website",
     locale: "en_SG",
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    title: `${siteConfig.name} | ${siteConfig.tagline}`,
-    description: siteConfig.description,
+    url: SITE_URL,
+    siteName: `${company.brandName} Pte Ltd`,
+    title: `${company.brandName} Pte Ltd | Singapore Construction & Project Management`,
+    description: `Singapore-registered construction and project management (UEN ${company.uen}), delivering since ${company.incorporationDateLabel}.`,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} | ${siteConfig.tagline}`,
-    description: siteConfig.description,
+    title: `${company.brandName} Pte Ltd | Singapore Construction & Project Management`,
+    description: `Singapore-registered construction and project management (UEN ${company.uen}), delivering since ${company.incorporationDateLabel}.`,
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  icons: {
-    icon: "/favicon.svg",
-  },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#0e1420",
-  width: "device-width",
-  initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "GeneralContractor",
-  name: siteConfig.name,
-  description: siteConfig.description,
-  url: siteConfig.url,
-  telephone: siteConfig.phone,
-  email: siteConfig.email,
-  foundingDate: String(siteConfig.founded),
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: siteConfig.address.line1,
-    addressLocality: "Singapore",
-    addressCountry: "SG",
-  },
-  sameAs: Object.values(siteConfig.social),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${oswald.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
-        <Toaster richColors position="bottom-right" />
+        <WhatsappButton />
       </body>
     </html>
   );

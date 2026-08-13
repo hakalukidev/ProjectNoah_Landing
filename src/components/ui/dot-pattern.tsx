@@ -1,7 +1,6 @@
 "use client"
 
-import React, { useEffect, useId, useRef, useState } from "react"
-import { motion } from "motion/react"
+import React, { useEffect, useId, useMemo, useRef, useState } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -55,9 +54,11 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
  *
  * @notes
  * - The component is client-side only ("use client")
- * - Automatically responds to container size changes
- * - When glow is enabled, dots will animate with random delays and durations
- * - Uses Motion for animations
+ * - Automatically responds to container size changes via ResizeObserver
+ * - When glow is enabled, dots animate with random delays/durations using a
+ *   plain CSS keyframe animation (compositor-driven), not per-dot JS —
+ *   mounting one Framer Motion instance per dot is what made this component
+ *   janky on large, full-bleed sections.
  * - Dots color can be controlled via the text color utility classes
  */
 
@@ -78,38 +79,51 @@ export function DotPattern({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect()
-        setDimensions({ width, height })
-      }
-    }
+    const element = containerRef.current
+    if (!element) return
 
-    updateDimensions()
-    window.addEventListener("resize", updateDimensions)
-    return () => window.removeEventListener("resize", updateDimensions)
+    let frame = 0
+    const observer = new ResizeObserver(([entry]) => {
+      // Coalesce rapid resize notifications into a single update per frame.
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const { width, height } = entry.contentRect
+        setDimensions((prev) =>
+          prev.width === width && prev.height === height
+            ? prev
+            : { width, height }
+        )
+      })
+    })
+    observer.observe(element)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
   }, [])
 
-  const dots = Array.from(
-    {
-      length:
-        Math.ceil(dimensions.width / width) *
-        Math.ceil(dimensions.height / height),
-    },
-    (_, i) => {
-      const col = i % Math.ceil(dimensions.width / width)
-      const row = Math.floor(i / Math.ceil(dimensions.width / width))
-      // Deterministic pseudo-random (pure) so renders stay idempotent.
-      const seed = Math.sin(i * 12.9898) * 43758.5453
-      const pseudoRandom = seed - Math.floor(seed)
+  const dots = useMemo(() => {
+    const cols = Math.ceil(dimensions.width / width)
+    const rows = Math.ceil(dimensions.height / height)
+
+    return Array.from({ length: cols * rows }, (_, i) => {
+      const col = i % cols
+      const row = Math.floor(i / cols)
+      // Deterministic pseudo-random values (seeded by index) instead of
+      // Math.random(), which is an impure call during render.
+      const seeded = (n: number) => {
+        const s = Math.sin(n) * 10000
+        return s - Math.floor(s)
+      }
       return {
         x: col * width + cx + x,
         y: row * height + cy + y,
-        delay: pseudoRandom * 5,
-        duration: pseudoRandom * 3 + 2,
+        delay: seeded(i) * 5,
+        duration: seeded(i + 0.5) * 3 + 2,
       }
-    }
-  )
+    })
+  }, [dimensions.width, dimensions.height, width, height, cx, cy, x, y])
 
   return (
     <svg
@@ -128,31 +142,20 @@ export function DotPattern({
         </radialGradient>
       </defs>
       {dots.map((dot) => (
-        <motion.circle
+        <circle
           key={`${dot.x}-${dot.y}`}
           cx={dot.x}
           cy={dot.y}
           r={cr}
           fill={glow ? `url(#${id}-gradient)` : "currentColor"}
-          initial={glow ? { opacity: 0.4, scale: 1 } : {}}
-          animate={
+          className={glow ? "animate-dot-glow origin-center" : undefined}
+          style={
             glow
               ? {
-                  opacity: [0.4, 1, 0.4],
-                  scale: [1, 1.5, 1],
+                  animationDelay: `${dot.delay}s`,
+                  animationDuration: `${dot.duration}s`,
                 }
-              : {}
-          }
-          transition={
-            glow
-              ? {
-                  duration: dot.duration,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: dot.delay,
-                  ease: "easeInOut",
-                }
-              : {}
+              : undefined
           }
         />
       ))}

@@ -1,197 +1,279 @@
-export const siteConfig = {
-  name: "Noah Construction",
-  shortName: "Noah",
-  tagline: "Building Tomorrow, Today",
-  description:
-    "Noah Construction is a full-service design-and-build contractor delivering commercial, residential and roofing projects across Singapore — on time, on budget, built to last.",
-  url: "https://www.noahconstruction.sg",
-  ogImage: "/og-image.jpg",
-  founded: 2013,
-  yearsOfExcellence: new Date().getFullYear() - 2013,
-  phone: "+65 6123 4567",
-  phoneHref: "tel:+6561234567",
-  whatsapp: "+65 8123 4567",
-  whatsappHref: "https://wa.me/6581234567",
-  email: "info@noahconstruction.sg",
+import {
+  FileSignature,
+  HardHat,
+  KeyRound,
+  Leaf,
+  MessageSquare,
+  ShieldCheck,
+  Timer,
+} from "lucide-react";
+
+/**
+ * Company facts sourced from ACRA / Singapore's public business registry
+ * (sgpbusiness.com company profile for PROJECT NOAH PTE. LTD.).
+ */
+export const company = {
+  legalName: "PROJECT NOAH PTE. LTD.",
+  brandName: "Project Noah",
+  uen: "200807961Z",
+  entityType: "Exempt Private Company Limited by Shares",
+  status: "Live",
+  incorporationDate: "2008-04-23",
+  incorporationDateLabel: "23 April 2008",
+  countryOfIncorporation: "Singapore",
   address: {
-    line1: "21 Tuas Avenue 8, #04-15",
-    line2: "Singapore 639231",
-    full: "21 Tuas Avenue 8, #04-15, Singapore 639231",
+    line1: "1 Soon Lee Street",
+    line2: "#05-61 Pioneer Centre",
+    postalCode: "Singapore 627605",
+    full: "1 Soon Lee Street, #05-61 Pioneer Centre, Singapore 627605",
   },
-  hours: "Mon – Sat: 9:00 AM – 6:00 PM",
-  social: {
-    facebook: "https://facebook.com/noahconstruction",
-    instagram: "https://instagram.com/noahconstruction",
-    linkedin: "https://linkedin.com/company/noahconstruction",
-    youtube: "https://youtube.com/@noahconstruction",
-  },
+  primaryActivity: "Building Construction (n.e.c.)",
+  secondaryActivity: "Job Training & Vocational Rehabilitation Services",
+  phone: "+65 9645 8471",
+  whatsapp: "6596458471",
+  email: "enquiries@projectnoah.com.sg",
+  yearsInOperation: new Date().getFullYear() - 2008,
 } as const;
 
-export const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Certifications", href: "#certifications" },
-  { label: "Coverage", href: "#coverage" },
-  { label: "Contact", href: "#contact" },
+export const SOCIAL_LINKS = {
+  youtube: "https://www.youtube.com/@ProjectNoahPTE",
+  facebook:
+    "https://www.facebook.com/profile.php?id=61591652714784&sk=followers",
+  instagram: "https://www.instagram.com/noah200807961z/",
+  whatsapp: `https://wa.me/${company.whatsapp}`,
+};
+
+export const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Process", href: "/#process" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
+];
+
+export const SERVICES = [
+  {
+    image: "/services/roofing-systems.png",
+    title: "Roofing Systems",
+    description:
+      "Design, supply and installation of roofing systems for industrial, commercial and residential buildings, built for Singapore's climate.",
+  },
+  {
+    image: "/services/canopy-shelter.png",
+    title: "Canopy & Shelter Installation",
+    description:
+      "Walkway canopies, carpark shelters and loading-bay covers engineered and installed for durability and weatherproofing.",
+  },
+  {
+    image: "/services/awning-solutions.png",
+    title: "Awning Solutions",
+    description:
+      "Custom awnings for shopfronts, windows and outdoor areas, fabricated to spec and installed with minimal disruption.",
+  },
+  {
+    image: "/services/steel-metal-fabrication.png",
+    title: "Steel & Metal Fabrication",
+    description:
+      "In-house fabrication of steel and metal components, from brackets and frames to full structural assemblies.",
+  },
+  {
+    image: "/services/structural-steel-works.png",
+    title: "Structural Steel Works",
+    description:
+      "Structural steel erection and reinforcement for new builds and additions, engineered to code and site-supervised.",
+  },
+  {
+    image: "/services/glass-aluminium-works.png",
+    title: "Glass & Aluminium Works",
+    description:
+      "Glass panelling, aluminium framing and curtain wall works for facades, windows and partitions.",
+  },
+  {
+    image: "/services/acp-cladding.png",
+    title: "ACP Cladding",
+    description:
+      "Aluminium Composite Panel (ACP) cladding installation for building facades, giving a durable, modern finish.",
+  },
+  {
+    image: "/services/waterproofing-roof-repairs.png",
+    title: "Waterproofing & Roof Repairs",
+    description:
+      "Leak detection, membrane waterproofing and roof repair works that protect the building envelope long-term.",
+  },
+  {
+    image: "/services/gutter-drainage-systems.png",
+    title: "Gutter & Drainage Systems",
+    description:
+      "Gutter, downpipe and drainage installation and repair to keep rainwater managed and structures protected.",
+  },
+  {
+    image: "/services/custom-fabrication.png",
+    title: "Custom Fabrication & Installation",
+    description:
+      "One-off fabrication and installation work scoped to a client's specific structural or architectural requirement.",
+  },
+  {
+    image: "/services/renovation-maintenance.png",
+    title: "Renovation & Maintenance Services",
+    description:
+      "Ongoing renovation, repair and maintenance services so buildings and installed works stay in top condition.",
+  },
+];
+
+export const BENEFITS = [
+  {
+    icon: Timer,
+    title: "Save Time",
+    description:
+      "A single accountable contractor from tender to handover means fewer handoffs, faster approvals and no lost time chasing subcontractors.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Top Quality & Reliability",
+    description:
+      "Every phase is signed off against BCA and workplace safety standards before the next trade moves in. Quality checked, not assumed.",
+  },
+  {
+    icon: Leaf,
+    title: "Sustainable Building",
+    description:
+      "Materials and methods chosen to reduce embodied carbon and long-term operating costs, in line with Singapore's Green Mark direction.",
+  },
+  {
+    icon: HardHat,
+    title: "Risk Reduction",
+    description:
+      "18+ years operating as a Singapore-registered entity (UEN 200807961Z), with trained crews and documented safety procedures on every site.",
+  },
+];
+
+export const PROCESS_STEPS = [
+  {
+    step: "01",
+    title: "Consultation",
+    description:
+      "We meet on site or virtually to understand scope, budget and timeline before a single drawing is made.",
+    icon: MessageSquare,
+  },
+  {
+    step: "02",
+    title: "Proposal & Contract",
+    description:
+      "A itemised quotation and construction programme are issued for sign-off, with scope locked before mobilisation.",
+    icon: FileSignature,
+  },
+  {
+    step: "03",
+    title: "Construction",
+    description:
+      "Our site team executes against the programme with weekly progress reporting and safety walk-throughs.",
+    icon: HardHat,
+  },
+  {
+    step: "04",
+    title: "Handover",
+    description:
+      "Final inspection, as-built documentation and defect rectification close out the contract, on schedule.",
+    icon: KeyRound,
+  },
+];
+
+export const PROJECT_CATEGORIES = [
+  "All",
+  "Industrial",
+  "Commercial",
+  "Institutional",
+  "A&A Works",
 ] as const;
 
-export const heroHighlights = [
-  { title: "Free Site Visit", icon: "MapPinned" },
-  { title: "Budget Friendly", icon: "HandCoins" },
-  { title: "Premium Materials", icon: "ShieldCheck" },
-  { title: "Expert Installation", icon: "HardHat" },
-] as const;
-
-export const services = [
+export const PROJECTS = [
   {
-    id: "design-build",
-    number: "01",
-    title: "Design & Build",
-    icon: "Compass",
+    slug: "pioneer-industrial-facility",
+    title: "Pioneer Industrial Facility",
+    category: "Industrial",
+    location: "Pioneer Sector, Singapore",
+    year: "2024",
     description:
-      "End-to-end design and construction under one roof — from concept sketches and permits to a finished, move-in-ready structure.",
-    image:
-      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80&auto=format&fit=crop",
+      "Ground-up construction of a multi-storey industrial facility with integrated loading bays and workshop floors.",
   },
   {
-    id: "commercial",
-    number: "02",
-    title: "Commercial Development",
-    icon: "Building2",
-    description:
-      "Offices, retail units and industrial facilities engineered for durability, efficiency and a strong first impression.",
-    image:
-      "https://images.unsplash.com/photo-1462206092226-f46025ffe607?w=1200&q=80&auto=format&fit=crop",
-  },
-  {
-    id: "residential",
-    number: "03",
-    title: "Residential Development",
-    icon: "Home",
-    description:
-      "Landed homes, condominiums and interior renovations built around how you actually live, with meticulous attention to finishing.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop",
-  },
-  {
-    id: "roofing",
-    number: "04",
-    title: "Roofing & Canopy Solutions",
-    icon: "Umbrella",
-    description:
-      "Custom metal roofing, canopies and car-porch shelters that stand up to Singapore's weather while looking sharp doing it.",
-    image:
-      "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=1200&q=80&auto=format&fit=crop",
-  },
-  {
-    id: "renovation",
-    number: "05",
-    title: "Renovation & Fit-Out",
-    icon: "Hammer",
-    description:
-      "Full-scale reinstatement, A&A works and interior fit-outs delivered with minimal disruption to your operations or household.",
-    image:
-      "https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=1200&q=80&auto=format&fit=crop",
-  },
-  {
-    id: "project-management",
-    number: "06",
-    title: "Project Management",
-    icon: "ClipboardCheck",
-    description:
-      "Dedicated project managers coordinating consultants, subcontractors and timelines so your build stays on schedule and on budget.",
-    image:
-      "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=80&auto=format&fit=crop",
-  },
-] as const;
-
-export const projects = [
-  {
-    id: "hillview-residence",
-    title: "Hillview Residence",
-    category: "Residential",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 24, y: 32 },
-  },
-  {
-    id: "tanjong-business-hub",
-    title: "Tanjong Business Hub",
+    slug: "tanjong-pagar-office-fitout",
+    title: "Commercial Office Fit-Out",
     category: "Commercial",
-    image:
-      "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 70, y: 24 },
-  },
-  {
-    id: "serangoon-car-porch",
-    title: "Serangoon Car Porch",
-    category: "Roofing",
-    image:
-      "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 80, y: 58 },
-  },
-  {
-    id: "yishun-industrial-facility",
-    title: "Yishun Industrial Facility",
-    category: "Commercial",
-    image:
-      "https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 38, y: 14 },
-  },
-  {
-    id: "clementi-landed-home",
-    title: "Clementi Landed Home",
-    category: "Residential",
-    image:
-      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 14, y: 68 },
-  },
-  {
-    id: "punggol-canopy-walk",
-    title: "Punggol Canopy Walkway",
-    category: "Roofing",
-    image:
-      "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=1200&q=80&auto=format&fit=crop",
-    map: { x: 62, y: 78 },
-  },
-] as const;
-
-export const coverageAreas = [
-  {
-    id: "residential",
-    title: "Residential Coverage",
+    location: "Tanjong Pagar, Singapore",
+    year: "2023",
     description:
-      "Landed homes, condominiums and interior renovations island-wide — from Woodlands to Pasir Ris.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop",
+      "Full interior fit-out and M&E coordination for a Grade A office floor, delivered in a live building.",
   },
   {
-    id: "commercial",
-    title: "Commercial & Industrial Coverage",
+    slug: "woodlands-training-centre",
+    title: "Vocational Training Centre",
+    category: "Institutional",
+    location: "Woodlands, Singapore",
+    year: "2023",
     description:
-      "Offices, retail fit-outs and industrial facilities across every planning region in Singapore.",
-    image:
-      "https://images.unsplash.com/photo-1462206092226-f46025ffe607?w=1200&q=80&auto=format&fit=crop",
+      "Purpose-built training centre supporting workforce upskilling programmes, from structure to specialised workshop bays.",
   },
-] as const;
+  {
+    slug: "jurong-warehouse-extension",
+    title: "Warehouse Extension & Reinforcement",
+    category: "A&A Works",
+    location: "Jurong, Singapore",
+    year: "2022",
+    description:
+      "Structural reinforcement and floor-area extension to an operating warehouse, sequenced around client operations.",
+  },
+  {
+    slug: "pioneer-centre-upgrading",
+    title: "Facility Upgrading Works",
+    category: "A&A Works",
+    location: "Pioneer, Singapore",
+    year: "2022",
+    description:
+      "Mechanical, electrical and structural upgrading of an existing industrial building to extend its operating life.",
+  },
+  {
+    slug: "punggol-institutional-block",
+    title: "Institutional Building Block",
+    category: "Institutional",
+    location: "Punggol, Singapore",
+    year: "2021",
+    description:
+      "Design & build delivery of a low-rise institutional block, coordinated with authority submissions throughout.",
+  },
+];
 
-export const certifications = [
-  { name: "ISO 9001:2015", description: "Quality Management" },
-  { name: "BCA Registered", description: "Contractor Grade A2" },
-  { name: "bizSAFE Level 3", description: "Workplace Safety" },
-  { name: "NEA Licensed", description: "Environmental Compliance" },
-  { name: "ISO 45001", description: "Occupational Health & Safety" },
-] as const;
-
-export const clients = [
-  "Skyline Holdings",
-  "Meridian Property Group",
-  "Harborview Developers",
-  "Northgate Industries",
-  "Crestwood Estates",
-  "Silverline Retail",
-  "Anchorpoint Logistics",
-  "Bayfront Ventures",
-] as const;
+export const FAQS = [
+  {
+    question: "Is Project Noah Pte Ltd a registered company in Singapore?",
+    answer:
+      "Yes. Project Noah Pte Ltd (UEN 200807961Z) is an Exempt Private Company Limited by Shares, incorporated in Singapore on 23 April 2008 and registered with ACRA.",
+  },
+  {
+    question: "What is your registered business activity?",
+    answer:
+      "Our principal activity on record is Building Construction (n.e.c.), with Job Training & Vocational Rehabilitation Services registered as a secondary activity.",
+  },
+  {
+    question: "Do you handle both new builds and renovation works?",
+    answer:
+      "Yes, we take on ground-up construction as well as addition & alteration (A&A), retrofitting and fit-out works for existing buildings.",
+  },
+  {
+    question: "What trades do you specialise in?",
+    answer:
+      "Roofing, canopy & shelter installation, awnings, steel & metal fabrication, structural steel works, glass & aluminium works, ACP cladding, waterproofing, and gutter & drainage systems, plus custom fabrication and ongoing renovation & maintenance.",
+  },
+  {
+    question: "How is a project typically scoped and priced?",
+    answer:
+      "After an initial site consultation we issue an itemised quotation and construction programme, so scope and cost are agreed before mobilisation begins.",
+  },
+  {
+    question: "Where is Project Noah based?",
+    answer:
+      "Our registered office is at 1 Soon Lee Street, #05-61 Pioneer Centre, Singapore 627605, and we deliver projects island-wide.",
+  },
+];
