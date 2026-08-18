@@ -18,15 +18,15 @@ const STATS = [
 
 export function Stats() {
   return (
-    <section className="border-y border-border bg-background py-8">
+    <section className="border-y border-border bg-white py-8">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-10 lg:grid-cols-4 lg:gap-4 lg:px-16">
         {STATS.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center text-center">
-            <div className="flex items-baseline text-4xl font-extrabold text-primary sm:text-5xl">
+            <div className="flex items-baseline text-4xl font-extrabold text-[#e01f22] sm:text-5xl">
               <NumberTicker
                 value={stat.value}
                 startValue={Math.max(0, stat.value - Math.ceil(stat.value * 0.6))}
-                className="text-primary tabular-nums dark:text-primary"
+                className="text-[#e01f22] tabular-nums dark:text-[#e01f22]"
               />
               <span>{stat.suffix}</span>
             </div>

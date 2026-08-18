@@ -1,4 +1,5 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -8,35 +9,24 @@ import { company } from "@/lib/site-config";
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 pb-20 pt-10 sm:pb-24 sm:pt-12 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pb-28 lg:pt-14">
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-          <span className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Since 2008
+      <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center gap-4 px-6 pt-6 text-center sm:pt-8">
+        <h1 className="max-w-3xl text-3xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          Built to{" "}
+          <span className="rounded bg-[#e01f22] px-1.5 text-white">
+            Protect
           </span>
+          , Built to{" "}
+          <span className="underline decoration-[#e01f22] decoration-[3px] underline-offset-4">
+            Last
+          </span>
+        </h1>
 
-          <h1 className="mt-6 max-w-xl text-4xl font-extrabold leading-[1.2] tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem]">
-            Built to{" "}
-            <span className="rounded bg-primary px-1.5 text-primary-foreground">
-              Protect
-            </span>
-            , Built to{" "}
-            <span className="underline decoration-primary decoration-[3px] underline-offset-4">
-              Last
-            </span>
-          </h1>
-
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {company.legalName} delivers end-to-end construction and project
-            management solutions engineered for speed, safety, and precision,
-            from groundbreaking to handover.
-          </p>
-
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <Button
               render={<Link href="/#contact" />}
               nativeButton={false}
-              size="lg"
-              className="h-13 rounded-none bg-primary px-8 text-base text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
+              className="h-11 rounded-none bg-[#e01f22] px-6 text-sm text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
             >
               Get a Free Quote
               <ArrowRight className="ml-1 size-4" />
@@ -45,29 +35,41 @@ export function Hero() {
               render={<Link href="/projects" />}
               nativeButton={false}
               variant="outline"
-              size="lg"
-              className="h-13 rounded-none border-foreground/15 px-8 text-base hover:bg-muted"
+              className="h-11 rounded-none border-foreground/15 px-6 text-sm hover:bg-muted"
             >
               View Our Projects
             </Button>
           </div>
 
-          <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            UEN {company.uen} &middot; {company.entityType}
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {company.legalName} &middot; UEN {company.uen}
           </p>
         </div>
+      </div>
 
-        <div className="relative mx-auto w-full max-w-xs lg:max-w-sm">
-          <div className="absolute inset-0 -z-10 translate-x-6 translate-y-10 rounded-[2rem] bg-primary/10 [clip-path:polygon(0_35%,100%_0,100%_65%,0%_100%)]" />
-          <Image
-            src="/banner.png"
-            alt="A glimpse of blue sky and a building under Project Noah's construction canopy"
-            width={1086}
-            height={1448}
-            priority
-            className="relative w-full"
-          />
-        </div>
+      {/* Full-bleed autoplaying video, embedded via <iframe src="/video-embed.html">
+          (see public/video-embed.html) rather than a direct <video> tag - the
+          actual <video>/<source> tags live in that same-origin document, which
+          is a deterrent against casual "save video as" downloading (not real
+          protection, since the file is still fetchable via dev tools). Swap
+          the file at public/hero-video.mp4 to replace the video itself
+          (currently 3840x2160, 16:9).
+          `aspect-video` (16:9) matches the source file's own ratio exactly,
+          so object-fit: contain in the embed always fills this box edge to
+          edge at full width, on any screen size - no cropping and no black
+          letterbox/pillarbox bars, unlike a fixed-height box whose ratio
+          would rarely match the video's. If the replacement file ever has a
+          different native ratio, swap this class for that ratio too, or
+          bars will reappear. No on-video controls - it's muted, looping
+          decoration with no audio to toggle. */}
+      <div className="relative mt-6 aspect-video w-full sm:mt-8">
+        <iframe
+          src="/video-embed.html"
+          title="Hero background video"
+          className="size-full border-0"
+          allow="autoplay"
+          loading="eager"
+        />
       </div>
     </section>
   );

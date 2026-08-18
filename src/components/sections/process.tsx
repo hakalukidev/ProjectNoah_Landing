@@ -7,7 +7,7 @@ import { PROCESS_STEPS } from "@/lib/site-config";
 
 export function Process() {
   return (
-    <section id="process" className="scroll-mt-30 bg-background py-20 sm:py-28">
+    <section id="process" className="scroll-mt-30 bg-white py-20 sm:py-28">
       <div className="mx-auto w-full max-w-7xl px-10 lg:px-16">
         <div className="mx-auto max-w-2xl text-center">
           <Badge

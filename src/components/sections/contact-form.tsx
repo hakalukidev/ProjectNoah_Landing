@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { company } from "@/lib/site-config";
 
-export function ContactForm() {
+export function ContactForm({ recipientEmail }: { recipientEmail: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,7 +23,7 @@ export function ContactForm() {
       .filter((line) => line !== null)
       .join("\n");
 
-    const mailto = `mailto:${company.email}?subject=${encodeURIComponent(
+    const mailto = `mailto:${recipientEmail}?subject=${encodeURIComponent(
       `Quote request from ${name || "website"}`
     )}&body=${encodeURIComponent(body)}`;
 

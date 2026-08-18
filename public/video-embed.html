@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero video</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+  }
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* contain so the full video frame is always visible, letterboxed on
+       black like a YouTube embed, instead of cropping whatever overflows
+       the container. */
+    object-fit: contain;
+  }
+</style>
+</head>
+<body>
+  <!-- Standalone page embedded via <iframe> in the hero section (see
+       src/components/sections/hero.tsx). Keeping the video on its own
+       same-origin document, rather than a direct <video> tag on the main
+       page, is a deterrent against casual "save video as" / view-source
+       downloading - not real protection, since the file is still fetchable
+       via dev tools or the network tab. Swap the file at
+       public/hero-video.mp4 to replace the video itself. -->
+  <video
+    id="hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    controlslist="nodownload noremoteplayback noplaybackrate"
+    disablepictureinpicture
+    oncontextmenu="return false"
+  >
+    <source src="/hero-video.mp4" type="video/mp4" />
+  </video>
+</body>
+</html>

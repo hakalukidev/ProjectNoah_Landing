@@ -9,11 +9,14 @@ import { ProjectsPreview } from "@/components/sections/projects";
 import { Faq } from "@/components/sections/faq";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
+import { getContactInfo } from "@/lib/server/contact";
 
-export default function Home() {
+export default async function Home() {
+  const contact = await getContactInfo();
+
   return (
     <div className="flex min-h-full flex-1 flex-col bg-background">
-      <Header />
+      <Header contact={contact} />
       <main className="flex flex-1 flex-col">
         <Hero />
         <Statement />
@@ -23,9 +26,9 @@ export default function Home() {
         <Process />
         <ProjectsPreview />
         <Faq />
-        <Contact />
+        <Contact contact={contact} />
       </main>
-      <Footer />
+      <Footer contact={contact} />
     </div>
   );
 }

@@ -6,22 +6,33 @@ import { Header } from "@/components/site/header";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { ProjectsGrid } from "@/components/sections/projects-grid";
+import { PhotoGallery } from "@/components/sections/photo-gallery";
 import { company, PROJECTS, PROJECT_CATEGORIES } from "@/lib/site-config";
+import { getContactInfo } from "@/lib/server/contact";
+import { getCategories } from "@/lib/server/categories";
+import { getImages } from "@/lib/server/gallery";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: `A look at the project types ${company.legalName} delivers across Singapore: industrial, commercial, institutional and A&A works.`,
+  description: `A look at the project types ${company.legalName} delivers across Singapore: roofing & shelter, steel & fabrication, and facade & renovation works.`,
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const [contact, categories, images] = await Promise.all([
+    getContactInfo(),
+    getCategories(),
+    getImages(),
+  ]);
+  const availableImageIds = new Set(images.map((image) => image.id));
+
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-foreground">
-      <Header />
+    <div className="flex min-h-full flex-1 flex-col bg-white">
+      <Header contact={contact} />
 
       <main className="flex flex-1 flex-col">
-        <section className="relative overflow-hidden bg-foreground py-24 text-background sm:py-32">
+        <section className="relative overflow-hidden bg-white py-24 text-foreground sm:py-32">
           <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Our Portfolio
             </span>
 
@@ -29,13 +40,13 @@ export default function ProjectsPage() {
               Projects Built Across Singapore
             </h1>
 
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-background/60 sm:text-lg">
-              Representative work spanning industrial, commercial and
-              institutional construction, plus addition &amp; alteration
-              works, delivered by {company.legalName} (UEN {company.uen}).
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Representative work spanning roofing &amp; shelter, steel &amp;
+              fabrication, and facade &amp; renovation projects, delivered by{" "}
+              {company.legalName} (UEN {company.uen}).
             </p>
 
-            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-background/10 pt-8 sm:grid-cols-4">
+            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-8 sm:grid-cols-4">
               {[
                 { value: PROJECTS.length, suffix: "+", label: "Projects Shown" },
                 {
@@ -51,7 +62,7 @@ export default function ProjectsPage() {
                     <span>{stat.value}</span>
                     <span>{stat.suffix}</span>
                   </div>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-background/50">
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     {stat.label}
                   </p>
                 </div>
@@ -60,18 +71,43 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        <section className="bg-foreground pb-24">
+        <section className="bg-white pb-24">
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <ProjectsGrid />
+            <ProjectsGrid availableImageIds={availableImageIds} />
           </div>
         </section>
 
-        <section className="border-t border-background/10 bg-foreground py-20">
+        {images.length > 0 && (
+          <section className="border-t border-border bg-white py-20">
+            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                Site Photos
+              </span>
+              <h2 className="mt-6 max-w-xl text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                Photos From Our Sites
+              </h2>
+              <div className="mt-12">
+                <PhotoGallery
+                  categories={categories}
+                  photos={images.map((image) => ({
+                    id: image.id,
+                    categoryId: image.categoryId,
+                    caption: image.caption,
+                    width: image.width,
+                    height: image.height,
+                  }))}
+                />
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="border-t border-border bg-white py-20">
           <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 px-6 text-center lg:px-8">
-            <h2 className="max-w-xl text-2xl font-extrabold tracking-tight text-background sm:text-3xl">
+            <h2 className="max-w-xl text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
               Have a site that needs a contractor like this?
             </h2>
-            <p className="max-w-lg text-sm leading-relaxed text-background/60 sm:text-base">
+            <p className="max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
               Tell us the scope and timeline, and we&apos;ll respond with next
               steps within one business day.
             </p>
@@ -88,7 +124,7 @@ export default function ProjectsPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer contact={contact} />
     </div>
   );
 }

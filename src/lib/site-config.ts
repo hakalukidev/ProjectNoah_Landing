@@ -53,68 +53,96 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/#contact" },
 ];
 
+export const SERVICE_CATEGORIES = [
+  { slug: "roofing-shelter", label: "Roofing & Shelter" },
+  { slug: "steel-fabrication", label: "Steel & Fabrication" },
+  { slug: "facade-renovation", label: "Facade & Renovation" },
+] as const;
+
 export const SERVICES = [
   {
+    slug: "roofing-systems",
+    category: "roofing-shelter",
     image: "/services/roofing-systems.png",
     title: "Roofing Systems",
     description:
       "Design, supply and installation of roofing systems for industrial, commercial and residential buildings, built for Singapore's climate.",
   },
   {
+    slug: "canopy-shelter",
+    category: "roofing-shelter",
     image: "/services/canopy-shelter.png",
     title: "Canopy & Shelter Installation",
     description:
       "Walkway canopies, carpark shelters and loading-bay covers engineered and installed for durability and weatherproofing.",
   },
   {
+    slug: "awning-solutions",
+    category: "roofing-shelter",
     image: "/services/awning-solutions.png",
     title: "Awning Solutions",
     description:
       "Custom awnings for shopfronts, windows and outdoor areas, fabricated to spec and installed with minimal disruption.",
   },
   {
+    slug: "steel-metal-fabrication",
+    category: "steel-fabrication",
     image: "/services/steel-metal-fabrication.png",
     title: "Steel & Metal Fabrication",
     description:
       "In-house fabrication of steel and metal components, from brackets and frames to full structural assemblies.",
   },
   {
+    slug: "structural-steel-works",
+    category: "steel-fabrication",
     image: "/services/structural-steel-works.png",
     title: "Structural Steel Works",
     description:
       "Structural steel erection and reinforcement for new builds and additions, engineered to code and site-supervised.",
   },
   {
+    slug: "glass-aluminium-works",
+    category: "facade-renovation",
     image: "/services/glass-aluminium-works.png",
     title: "Glass & Aluminium Works",
     description:
       "Glass panelling, aluminium framing and curtain wall works for facades, windows and partitions.",
   },
   {
+    slug: "acp-cladding",
+    category: "facade-renovation",
     image: "/services/acp-cladding.png",
     title: "ACP Cladding",
     description:
       "Aluminium Composite Panel (ACP) cladding installation for building facades, giving a durable, modern finish.",
   },
   {
+    slug: "waterproofing-roof-repairs",
+    category: "roofing-shelter",
     image: "/services/waterproofing-roof-repairs.png",
     title: "Waterproofing & Roof Repairs",
     description:
       "Leak detection, membrane waterproofing and roof repair works that protect the building envelope long-term.",
   },
   {
+    slug: "gutter-drainage-systems",
+    category: "roofing-shelter",
     image: "/services/gutter-drainage-systems.png",
     title: "Gutter & Drainage Systems",
     description:
       "Gutter, downpipe and drainage installation and repair to keep rainwater managed and structures protected.",
   },
   {
+    slug: "custom-fabrication",
+    category: "steel-fabrication",
     image: "/services/custom-fabrication.png",
     title: "Custom Fabrication & Installation",
     description:
       "One-off fabrication and installation work scoped to a client's specific structural or architectural requirement.",
   },
   {
+    slug: "renovation-maintenance",
+    category: "facade-renovation",
     image: "/services/renovation-maintenance.png",
     title: "Renovation & Maintenance Services",
     description:
@@ -180,68 +208,77 @@ export const PROCESS_STEPS = [
   },
 ];
 
+/**
+ * Category labels intentionally mirror SERVICE_CATEGORIES (and the default
+ * gallery categories in categories.ts) so Services, Projects and the Photos
+ * gallery all use the same taxonomy across the site.
+ */
 export const PROJECT_CATEGORIES = [
   "All",
-  "Industrial",
-  "Commercial",
-  "Institutional",
-  "A&A Works",
+  ...SERVICE_CATEGORIES.map((category) => category.label),
 ] as const;
 
 export const PROJECTS = [
   {
-    slug: "pioneer-industrial-facility",
-    title: "Pioneer Industrial Facility",
-    category: "Industrial",
+    slug: "frameless-glass-roof",
+    title: "Frameless Glass Roof Installation",
+    category: "Roofing & Shelter",
     location: "Pioneer Sector, Singapore",
     year: "2024",
+    /** Matches an id in data/images.json; cards fall back to a placeholder if it's ever removed via the admin gallery. */
+    imageId: "X1v6oZNGDvQq",
     description:
-      "Ground-up construction of a multi-storey industrial facility with integrated loading bays and workshop floors.",
+      "Design and installation of a frameless faceted glass roof for a private residence, engineered for clean sightlines and full weather sealing.",
   },
   {
-    slug: "tanjong-pagar-office-fitout",
-    title: "Commercial Office Fit-Out",
-    category: "Commercial",
+    slug: "commercial-walkway-canopy",
+    title: "Commercial Walkway Canopy",
+    category: "Steel & Fabrication",
     location: "Tanjong Pagar, Singapore",
     year: "2023",
+    imageId: "mrS5oKPQj1LO",
     description:
-      "Full interior fit-out and M&E coordination for a Grade A office floor, delivered in a live building.",
+      "Fabrication and installation of a large steel-and-glass walkway canopy connecting blocks at commercial scale.",
   },
   {
-    slug: "woodlands-training-centre",
-    title: "Vocational Training Centre",
-    category: "Institutional",
+    slug: "landed-home-facade-canopy",
+    title: "Landed Home Facade & Canopy",
+    category: "Facade & Renovation",
     location: "Woodlands, Singapore",
     year: "2023",
+    imageId: "VRW1vXpAaQlM",
     description:
-      "Purpose-built training centre supporting workforce upskilling programmes, from structure to specialised workshop bays.",
+      "Pergola and rooftop glass canopy integrated into a landed home's facade as part of a full renovation.",
   },
   {
-    slug: "jurong-warehouse-extension",
-    title: "Warehouse Extension & Reinforcement",
-    category: "A&A Works",
+    slug: "outdoor-pergola-deck",
+    title: "Outdoor Pergola & Deck Shelter",
+    category: "Roofing & Shelter",
     location: "Jurong, Singapore",
     year: "2022",
+    imageId: "TQZZvBaXeXmk",
     description:
-      "Structural reinforcement and floor-area extension to an operating warehouse, sequenced around client operations.",
+      "Louvred pergola roof and deck built over an outdoor terrace, giving year-round shelter for outdoor entertaining.",
   },
   {
-    slug: "pioneer-centre-upgrading",
-    title: "Facility Upgrading Works",
-    category: "A&A Works",
+    slug: "inter-block-canopy-walkway",
+    title: "Inter-Block Canopy Walkway",
+    category: "Steel & Fabrication",
     location: "Pioneer, Singapore",
     year: "2022",
+    imageId: "USkaBQdmldNH",
     description:
-      "Mechanical, electrical and structural upgrading of an existing industrial building to extend its operating life.",
+      "Steel-framed glass canopy walkway fabricated and installed between blocks, weatherproofing the connecting path.",
   },
   {
-    slug: "punggol-institutional-block",
-    title: "Institutional Building Block",
-    category: "Institutional",
+    slug: "high-rise-balcony-enclosure",
+    title: "High-Rise Balcony Enclosure",
+    category: "Facade & Renovation",
     location: "Punggol, Singapore",
     year: "2021",
+    imageId: "z92ZdKGLndtw",
     description:
-      "Design & build delivery of a low-rise institutional block, coordinated with authority submissions throughout.",
+      "Balcony enclosure works for a high-rise residential unit, adding usable space with a clear skyline view.",
   },
 ];
 
