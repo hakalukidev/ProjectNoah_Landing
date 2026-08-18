@@ -4,7 +4,6 @@ import { Statement } from "@/components/sections/statement";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
 import { Stats } from "@/components/sections/stats";
-import { Process } from "@/components/sections/process";
 import { ProjectsPreview } from "@/components/sections/projects";
 import { Faq } from "@/components/sections/faq";
 import { Contact } from "@/components/sections/contact";
@@ -23,7 +22,6 @@ export default async function Home() {
         <Stats />
         <About />
         <Services />
-        <Process />
         <ProjectsPreview />
         <Faq />
         <Contact contact={contact} />

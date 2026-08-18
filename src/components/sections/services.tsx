@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { AnimatedList } from "@/components/ui/animated-list";
 import { Badge } from "@/components/ui/badge";
 import { SERVICE_CATEGORIES, SERVICES } from "@/lib/site-config";
 
@@ -35,34 +36,34 @@ export function Services() {
                 id={`services-${category.slug}`}
                 className="scroll-mt-30 target:-mx-4 target:rounded-lg target:px-4 target:ring-2 target:ring-primary"
               >
-                <h3 className="text-xl font-bold tracking-tight text-foreground">
+                <h3 className="inline-block rounded-none bg-primary px-4 py-1.5 text-xl font-bold tracking-tight text-primary-foreground">
                   {category.label}
                 </h3>
 
-                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {services.map((service, index) => (
+                <AnimatedList className="mt-6 items-stretch gap-5" delay={250}>
+                  {services.map((service) => (
                     <div
                       key={service.slug}
-                      className="group/service flex flex-col overflow-hidden border border-border bg-background transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                      className="group/service flex items-stretch gap-4"
                     >
-                      <div className="relative aspect-2/1 w-full">
+                      <div className="relative h-full w-32 shrink-0 sm:w-36">
                         <Image
                           src={service.image}
                           alt={service.title}
                           fill
-                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                          className="object-contain p-4 transition-transform duration-300 group-hover/service:scale-105"
+                          sizes="(min-width: 640px) 144px, 128px"
+                          className="object-contain transition-transform duration-300 group-hover/service:scale-105"
                         />
                       </div>
 
-                      <div className="flex flex-1 flex-col gap-1.5 p-5">
-                        <div className="flex items-start justify-between gap-3">
+                      <div className="flex flex-1 flex-col gap-1.5">
+                        <div className="flex items-start gap-3">
+                          <span className="shrink-0 font-heading text-3xl font-extrabold text-primary/30">
+                            {String(services.indexOf(service) + 1).padStart(2, "0")}
+                          </span>
                           <h4 className="text-lg font-bold text-foreground">
                             {service.title}
                           </h4>
-                          <span className="shrink-0 font-heading text-3xl font-extrabold text-primary/30">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
                         </div>
                         <p className="text-justify text-sm leading-relaxed text-muted-foreground">
                           {service.description}
@@ -70,7 +71,7 @@ export function Services() {
                       </div>
                     </div>
                   ))}
-                </div>
+                </AnimatedList>
               </div>
             );
           })}

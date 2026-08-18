@@ -10,9 +10,9 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const CATEGORIES_FILE = path.join(DATA_DIR, "categories.json");
 
 const DEFAULT_CATEGORIES: Category[] = [
-  { id: "roofing-shelter", name: "Roofing & Shelter" },
-  { id: "steel-fabrication", name: "Steel & Fabrication" },
-  { id: "facade-renovation", name: "Facade & Renovation" },
+  { id: "roofing-shelter", name: "Roofing" },
+  { id: "steel-fabrication", name: "Steel" },
+  { id: "facade-renovation", name: "Glass" },
 ];
 
 async function readAll(): Promise<Category[]> {

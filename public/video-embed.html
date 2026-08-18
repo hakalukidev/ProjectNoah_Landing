@@ -17,10 +17,14 @@
     display: block;
     width: 100%;
     height: 100%;
-    /* contain so the full video frame is always visible, letterboxed on
-       black like a YouTube embed, instead of cropping whatever overflows
-       the container. */
-    object-fit: contain;
+    /* cover, not contain: the hero box (see hero.tsx) spans the full
+       viewport width and the goal is an edge-to-edge, full-bleed video with
+       no pillarbox bars - explicit tradeoff, confirmed with the user over
+       contain's letterboxing. cover always fills the box completely, which
+       crops whatever doesn't fit the box's aspect ratio (top/bottom or
+       left/right, depending on how the box ratio compares to the video's
+       native 16:9). That's expected here, not a bug. */
+    object-fit: cover;
   }
 </style>
 </head>

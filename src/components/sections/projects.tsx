@@ -55,6 +55,14 @@ export async function ProjectsPreview() {
                 key={project.slug}
                 className="group/project rounded-none border border-border bg-card p-0 ring-0 transition-shadow hover:shadow-lg"
               >
+                <div className="flex items-center justify-between px-4 pt-4 pb-3">
+                  <span className="rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+                    {project.category}
+                  </span>
+                  <span className="rounded-none border border-border px-2 py-1 text-xs font-bold text-muted-foreground">
+                    {project.year}
+                  </span>
+                </div>
                 <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-foreground to-foreground/80">
                   {hasPhoto ? (
                     <Image
@@ -80,12 +88,6 @@ export async function ProjectsPreview() {
                       />
                     </>
                   )}
-                  <span className="absolute top-4 left-4 rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
-                    {project.category}
-                  </span>
-                  <span className="absolute bottom-4 right-4 rounded-none border border-background/25 px-2 py-1 text-xs font-bold text-background/80">
-                    {project.year}
-                  </span>
                 </div>
                 <CardContent className="flex flex-col gap-2 px-6 pt-5 pb-6">
                   <h3 className="text-lg font-bold text-foreground">

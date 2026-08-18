@@ -89,10 +89,10 @@ export function Header({ contact }: { contact: ContactInfo }) {
   return (
     <div className="sticky top-0 z-50 w-full">
       <TopBar contact={contact} />
-      <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <header className="w-full border-b border-border bg-white">
         <div className="mx-auto grid h-20 w-full max-w-[1920px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6 xl:gap-6 xl:px-10">
-          <div className="col-start-1 justify-self-start">
-            <Logo />
+          <div className="col-start-1 -ml-4 flex h-20 items-center justify-self-start bg-gradient-to-r from-neutral-300 via-neutral-100 to-white pr-6 pl-4 sm:-ml-6 sm:pl-6 xl:-ml-10 xl:pr-8 xl:pl-10">
+            <Logo variant="light" />
           </div>
 
           {/* col-start-2 pinned explicitly: a `hidden` (display:none) grid
@@ -127,7 +127,9 @@ export function Header({ contact }: { contact: ContactInfo }) {
               >
                 Get a Free Quote
               </Button>
-              <Logo />
+              <div className="-mr-4 flex h-20 items-center bg-gradient-to-l from-neutral-300 via-neutral-100 to-white pr-4 pl-6 sm:-mr-6 sm:pr-6 xl:-mr-10 xl:pr-10 xl:pl-8">
+                <Logo variant="light" />
+              </div>
             </div>
 
             <button

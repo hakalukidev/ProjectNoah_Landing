@@ -45,18 +45,17 @@ export const SOCIAL_LINKS = {
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/#about" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/#services" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Process", href: "/#process" },
+  { label: "Projects", href: "/projects" },
   { label: "FAQ", href: "/#faq" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const SERVICE_CATEGORIES = [
-  { slug: "roofing-shelter", label: "Roofing & Shelter" },
-  { slug: "steel-fabrication", label: "Steel & Fabrication" },
-  { slug: "facade-renovation", label: "Facade & Renovation" },
+  { slug: "roofing-shelter", label: "Roofing Services" },
+  { slug: "steel-fabrication", label: "Steel Services" },
+  { slug: "facade-renovation", label: "Glass Services" },
 ] as const;
 
 export const SERVICES = [
@@ -72,7 +71,7 @@ export const SERVICES = [
     slug: "canopy-shelter",
     category: "roofing-shelter",
     image: "/services/canopy-shelter.png",
-    title: "Canopy & Shelter Installation",
+    title: "Roofing Canopy & Shelter",
     description:
       "Walkway canopies, carpark shelters and loading-bay covers engineered and installed for durability and weatherproofing.",
   },
@@ -80,7 +79,7 @@ export const SERVICES = [
     slug: "awning-solutions",
     category: "roofing-shelter",
     image: "/services/awning-solutions.png",
-    title: "Awning Solutions",
+    title: "Roofing Awnings",
     description:
       "Custom awnings for shopfronts, windows and outdoor areas, fabricated to spec and installed with minimal disruption.",
   },
@@ -88,7 +87,7 @@ export const SERVICES = [
     slug: "steel-metal-fabrication",
     category: "steel-fabrication",
     image: "/services/steel-metal-fabrication.png",
-    title: "Steel & Metal Fabrication",
+    title: "Steel Fabrication",
     description:
       "In-house fabrication of steel and metal components, from brackets and frames to full structural assemblies.",
   },
@@ -96,7 +95,7 @@ export const SERVICES = [
     slug: "structural-steel-works",
     category: "steel-fabrication",
     image: "/services/structural-steel-works.png",
-    title: "Structural Steel Works",
+    title: "Steel Structural Works",
     description:
       "Structural steel erection and reinforcement for new builds and additions, engineered to code and site-supervised.",
   },
@@ -104,7 +103,7 @@ export const SERVICES = [
     slug: "glass-aluminium-works",
     category: "facade-renovation",
     image: "/services/glass-aluminium-works.png",
-    title: "Glass & Aluminium Works",
+    title: "Glass & Aluminium",
     description:
       "Glass panelling, aluminium framing and curtain wall works for facades, windows and partitions.",
   },
@@ -112,7 +111,7 @@ export const SERVICES = [
     slug: "acp-cladding",
     category: "facade-renovation",
     image: "/services/acp-cladding.png",
-    title: "ACP Cladding",
+    title: "Glass ACP Cladding",
     description:
       "Aluminium Composite Panel (ACP) cladding installation for building facades, giving a durable, modern finish.",
   },
@@ -120,7 +119,7 @@ export const SERVICES = [
     slug: "waterproofing-roof-repairs",
     category: "roofing-shelter",
     image: "/services/waterproofing-roof-repairs.png",
-    title: "Waterproofing & Roof Repairs",
+    title: "Roofing Waterproofing & Repairs",
     description:
       "Leak detection, membrane waterproofing and roof repair works that protect the building envelope long-term.",
   },
@@ -128,7 +127,7 @@ export const SERVICES = [
     slug: "gutter-drainage-systems",
     category: "roofing-shelter",
     image: "/services/gutter-drainage-systems.png",
-    title: "Gutter & Drainage Systems",
+    title: "Roofing Gutter & Drainage",
     description:
       "Gutter, downpipe and drainage installation and repair to keep rainwater managed and structures protected.",
   },
@@ -136,7 +135,7 @@ export const SERVICES = [
     slug: "custom-fabrication",
     category: "steel-fabrication",
     image: "/services/custom-fabrication.png",
-    title: "Custom Fabrication & Installation",
+    title: "Steel Custom Fabrication",
     description:
       "One-off fabrication and installation work scoped to a client's specific structural or architectural requirement.",
   },
@@ -144,7 +143,7 @@ export const SERVICES = [
     slug: "renovation-maintenance",
     category: "facade-renovation",
     image: "/services/renovation-maintenance.png",
-    title: "Renovation & Maintenance Services",
+    title: "Glass Renovation & Maintenance",
     description:
       "Ongoing renovation, repair and maintenance services so buildings and installed works stay in top condition.",
   },
@@ -222,7 +221,7 @@ export const PROJECTS = [
   {
     slug: "frameless-glass-roof",
     title: "Frameless Glass Roof Installation",
-    category: "Roofing & Shelter",
+    category: "Roofing",
     location: "Pioneer Sector, Singapore",
     year: "2024",
     /** Matches an id in data/images.json; cards fall back to a placeholder if it's ever removed via the admin gallery. */
@@ -233,7 +232,7 @@ export const PROJECTS = [
   {
     slug: "commercial-walkway-canopy",
     title: "Commercial Walkway Canopy",
-    category: "Steel & Fabrication",
+    category: "Steel",
     location: "Tanjong Pagar, Singapore",
     year: "2023",
     imageId: "mrS5oKPQj1LO",
@@ -243,7 +242,7 @@ export const PROJECTS = [
   {
     slug: "landed-home-facade-canopy",
     title: "Landed Home Facade & Canopy",
-    category: "Facade & Renovation",
+    category: "Glass",
     location: "Woodlands, Singapore",
     year: "2023",
     imageId: "VRW1vXpAaQlM",
@@ -253,7 +252,7 @@ export const PROJECTS = [
   {
     slug: "outdoor-pergola-deck",
     title: "Outdoor Pergola & Deck Shelter",
-    category: "Roofing & Shelter",
+    category: "Roofing",
     location: "Jurong, Singapore",
     year: "2022",
     imageId: "TQZZvBaXeXmk",
@@ -263,7 +262,7 @@ export const PROJECTS = [
   {
     slug: "inter-block-canopy-walkway",
     title: "Inter-Block Canopy Walkway",
-    category: "Steel & Fabrication",
+    category: "Steel",
     location: "Pioneer, Singapore",
     year: "2022",
     imageId: "USkaBQdmldNH",
@@ -273,7 +272,7 @@ export const PROJECTS = [
   {
     slug: "high-rise-balcony-enclosure",
     title: "High-Rise Balcony Enclosure",
-    category: "Facade & Renovation",
+    category: "Glass",
     location: "Punggol, Singapore",
     year: "2021",
     imageId: "z92ZdKGLndtw",

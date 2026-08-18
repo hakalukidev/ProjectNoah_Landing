@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -24,29 +25,60 @@ export default async function ProjectsPage() {
     getImages(),
   ]);
   const availableImageIds = new Set(images.map((image) => image.id));
+  // Wide skyline shot reads best as a short banner - prefer it, falling
+  // back to the first project with a live photo if it's ever removed.
+  const coverProject =
+    PROJECTS.find(
+      (project) =>
+        project.slug === "commercial-walkway-canopy" &&
+        availableImageIds.has(project.imageId)
+    ) ?? PROJECTS.find((project) => availableImageIds.has(project.imageId));
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white">
       <Header contact={contact} />
 
       <main className="flex flex-1 flex-col">
-        <section className="relative overflow-hidden bg-white py-24 text-foreground sm:py-32">
+        {/* Fixed min-height (matched with the About page cover) rather than
+            content-driven padding, since this page's cover carries an extra
+            stats row that About's doesn't - min-height + flex centering
+            keeps both banners the same height regardless of copy amount. */}
+        <section className="relative flex min-h-[420px] items-center overflow-hidden bg-neutral-950 py-10 text-white sm:min-h-[480px] sm:py-14 lg:min-h-[520px]">
+          {coverProject && (
+            <>
+              {/* object-top (not center) keeps the crop away from the
+                  watermark the upload pipeline burns into the vertical
+                  middle of every gallery photo (see watermark.ts) - this
+                  short banner only ever shows the top slice of the image. */}
+              <Image
+                src={`/api/images/${coverProject.imageId}`}
+                alt=""
+                fill
+                unoptimized
+                priority
+                sizes="100vw"
+                className="object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
+            </>
+          )}
+
           <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Our Portfolio
             </span>
 
-            <h1 className="mt-6 max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
               Projects Built Across Singapore
             </h1>
 
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
               Representative work spanning roofing &amp; shelter, steel &amp;
               fabrication, and facade &amp; renovation projects, delivered by{" "}
               {company.legalName} (UEN {company.uen}).
             </p>
 
-            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-8 sm:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-8 border-t border-white/20 pt-5 sm:grid-cols-4">
               {[
                 { value: PROJECTS.length, suffix: "+", label: "Projects Shown" },
                 {
@@ -62,7 +94,7 @@ export default async function ProjectsPage() {
                     <span>{stat.value}</span>
                     <span>{stat.suffix}</span>
                   </div>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-white/70">
                     {stat.label}
                   </p>
                 </div>
@@ -71,7 +103,7 @@ export default async function ProjectsPage() {
           </div>
         </section>
 
-        <section className="bg-white pb-24">
+        <section className="bg-white pt-12 pb-24">
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
             <ProjectsGrid availableImageIds={availableImageIds} />
           </div>
