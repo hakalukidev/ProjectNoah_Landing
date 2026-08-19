@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { AnimatedList } from "@/components/ui/animated-list";
 import { Badge } from "@/components/ui/badge";
 import { SERVICE_CATEGORIES, SERVICES } from "@/lib/site-config";
@@ -7,7 +5,7 @@ import { SERVICE_CATEGORIES, SERVICES } from "@/lib/site-config";
 export function Services() {
   return (
     <section id="services" className="scroll-mt-30 bg-white py-20 sm:py-28">
-      <div className="mx-auto w-full max-w-7xl px-10 lg:px-16">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-2xl text-center">
           <Badge
             variant="outline"
@@ -44,31 +42,19 @@ export function Services() {
                   {services.map((service) => (
                     <div
                       key={service.slug}
-                      className="group/service flex items-stretch gap-4"
+                      className="group/service flex flex-col gap-1.5"
                     >
-                      <div className="relative h-full w-32 shrink-0 sm:w-36">
-                        <Image
-                          src={service.image}
-                          alt={service.title}
-                          fill
-                          sizes="(min-width: 640px) 144px, 128px"
-                          className="object-contain transition-transform duration-300 group-hover/service:scale-105"
-                        />
+                      <div className="flex items-start gap-3">
+                        <span className="shrink-0 font-heading text-3xl font-extrabold text-primary/30">
+                          {String(services.indexOf(service) + 1).padStart(2, "0")}
+                        </span>
+                        <h4 className="text-lg font-bold text-foreground">
+                          {service.title}
+                        </h4>
                       </div>
-
-                      <div className="flex flex-1 flex-col gap-1.5">
-                        <div className="flex items-start gap-3">
-                          <span className="shrink-0 font-heading text-3xl font-extrabold text-primary/30">
-                            {String(services.indexOf(service) + 1).padStart(2, "0")}
-                          </span>
-                          <h4 className="text-lg font-bold text-foreground">
-                            {service.title}
-                          </h4>
-                        </div>
-                        <p className="text-justify text-sm leading-relaxed text-muted-foreground">
-                          {service.description}
-                        </p>
-                      </div>
+                      <p className="text-justify text-sm leading-relaxed text-muted-foreground">
+                        {service.description}
+                      </p>
                     </div>
                   ))}
                 </AnimatedList>

@@ -17,7 +17,7 @@ export default async function Home() {
     <div className="flex min-h-full flex-1 flex-col bg-background">
       <Header contact={contact} />
       <main className="flex flex-1 flex-col">
-        <Hero />
+        <Hero email={contact.email} />
         <Statement />
         <Stats />
         <About />

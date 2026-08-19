@@ -19,9 +19,9 @@ export function About() {
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[#e01f22]/5" />
           <Image
             src="/about_us.png"
-            alt="Line drawing of a Project Noah construction site with a tower crane"
-            width={1329}
-            height={1200}
+            alt="Line drawing of a building under construction with a tower crane and mobile crane on site"
+            width={1536}
+            height={1024}
             className="relative mx-auto w-full max-w-md"
           />
         </div>

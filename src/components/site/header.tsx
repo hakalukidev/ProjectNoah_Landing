@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 import { Logo } from "@/components/site/logo";
+import { QuoteDialog } from "@/components/site/quote-dialog";
 import { TopBar } from "@/components/site/top-bar";
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS, SERVICE_CATEGORIES } from "@/lib/site-config";
@@ -162,13 +163,14 @@ export function Header({ contact }: { contact: ContactInfo }) {
 
           <div className="col-start-3 flex items-center justify-self-end gap-3 xl:gap-4">
             <div className="hidden items-center gap-6 xl:flex 2xl:gap-8">
-              <Button
-                render={<Link href="/contact#contact-form" />}
-                nativeButton={false}
-                className="rounded-none bg-[#e01f22] px-4 text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c] 2xl:px-6"
+              <QuoteDialog
+                email={contact.email}
+                render={
+                  <Button className="rounded-none bg-[#e01f22] px-4 text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c] 2xl:px-6" />
+                }
               >
                 Get a Free Quote
-              </Button>
+              </QuoteDialog>
               <div className="-mr-4 flex h-20 items-center bg-gradient-to-l from-neutral-300 via-neutral-100 to-white pr-4 pl-6 sm:-mr-6 sm:pr-6 xl:-mr-10 xl:pr-10 xl:pl-8">
                 <Logo variant="light" />
               </div>
@@ -249,15 +251,17 @@ export function Header({ contact }: { contact: ContactInfo }) {
                 </Link>
               )
             )}
-            <Button
+            <QuoteDialog
+              email={contact.email}
               render={
-                <Link href="/contact#contact-form" onClick={() => setOpen(false)} />
+                <Button
+                  onClick={() => setOpen(false)}
+                  className="mt-2 w-full rounded-none bg-[#e01f22] text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
+                />
               }
-              nativeButton={false}
-              className="mt-2 w-full rounded-none bg-[#e01f22] text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
             >
               Get a Free Quote
-            </Button>
+            </QuoteDialog>
           </nav>
         </div>
       </header>

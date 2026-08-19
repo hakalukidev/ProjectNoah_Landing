@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Header } from "@/components/site/header";
+import { QuoteDialog } from "@/components/site/quote-dialog";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { NumberTicker } from "@/components/ui/number-ticker";
@@ -128,15 +128,18 @@ export default async function ProjectsPage() {
               Tell us the scope and timeline, and we&apos;ll respond with next
               steps within one business day.
             </p>
-            <Button
-              render={<Link href="/contact#contact-form" />}
-              nativeButton={false}
-              size="lg"
-              className="h-13 rounded-none bg-primary px-8 text-base text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
+            <QuoteDialog
+              email={contact.email}
+              render={
+                <Button
+                  size="lg"
+                  className="h-13 rounded-none bg-primary px-8 text-base text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
+                />
+              }
             >
               Get a Free Quote
               <ArrowRight className="ml-1 size-4" />
-            </Button>
+            </QuoteDialog>
           </div>
         </section>
       </main>

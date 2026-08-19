@@ -5,9 +5,10 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
+import { QuoteDialog } from "@/components/site/quote-dialog";
 import { company } from "@/lib/site-config";
 
-export function Hero() {
+export function Hero({ email }: { email: string }) {
   return (
     <section className="relative overflow-hidden bg-background">
       {/* Autoplaying video, embedded via <iframe src="/video-embed.html">
@@ -62,14 +63,15 @@ export function Hero() {
 
             <div className="flex flex-col items-center gap-3">
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  render={<Link href="/contact#contact-form" />}
-                  nativeButton={false}
-                  className="h-11 rounded-none bg-[#e01f22] px-6 text-sm text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
+                <QuoteDialog
+                  email={email}
+                  render={
+                    <Button className="h-11 rounded-none bg-[#e01f22] px-6 text-sm text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]" />
+                  }
                 >
                   Get a Free Quote
                   <ArrowRight className="ml-1 size-4" />
-                </Button>
+                </QuoteDialog>
                 <Button
                   render={<Link href="/projects" />}
                   nativeButton={false}

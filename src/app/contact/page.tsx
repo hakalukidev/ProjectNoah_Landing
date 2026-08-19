@@ -71,27 +71,6 @@ export default async function ContactPage() {
     },
   ];
 
-  const QUICK_ACTIONS = [
-    {
-      icon: Phone,
-      label: "Call Us",
-      value: contact.phone,
-      href: `tel:${contact.phone.replace(/\s+/g, "")}`,
-    },
-    {
-      icon: WhatsappIcon,
-      label: "WhatsApp Us",
-      value: "Chat with our team",
-      href: contactWhatsappLink(contact.whatsapp),
-    },
-    {
-      icon: Mail,
-      label: "Email Us",
-      value: contact.email,
-      href: `mailto:${contact.email}`,
-    },
-  ];
-
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white">
       <Header contact={contact} />
@@ -124,30 +103,34 @@ export default async function ContactPage() {
           </div>
         </section>
 
-        {/* Quick actions */}
-        <section className="border-b border-border bg-white py-14 sm:py-16">
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 px-6 sm:grid-cols-3 lg:px-8">
-            {QUICK_ACTIONS.map(({ icon: Icon, label, value, href }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
-                className="group flex items-center gap-4 border border-border bg-card p-6 shadow-sm transition-colors duration-200 hover:border-primary hover:shadow-md"
-              >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-none border border-border text-primary transition-colors duration-200 group-hover:border-primary group-hover:bg-primary/5">
-                  <Icon className="size-5" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                    {label}
-                  </p>
-                  <p className="mt-0.5 truncate text-sm font-semibold text-foreground">
-                    {value}
-                  </p>
-                </div>
-              </a>
-            ))}
+        {/* Get in touch - social links, right under the hero so they're the
+            first thing visitors see before the form. */}
+        <section className="border-b border-border bg-white py-10 sm:py-12">
+          <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 px-6 sm:flex-row sm:justify-between lg:px-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                Get in Touch
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Follow {company.legalName} for updates and site progress.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {SOCIALS.map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={label}
+                  title={label}
+                  className="group/social flex size-12 shrink-0 items-center justify-center border border-primary/20 bg-primary/5 text-primary shadow-sm transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
+                >
+                  <Icon className="size-5.5 transition-transform duration-200 group-hover/social:scale-110" />
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -159,13 +142,7 @@ export default async function ContactPage() {
           <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
             <div className="flex flex-col gap-10">
               <div>
-                <Badge
-                  variant="outline"
-                  className="rounded-none border-primary/30 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary"
-                >
-                  Get in Touch
-                </Badge>
-                <h2 className="mt-5 max-w-lg text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+                <h2 className="max-w-lg text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
                   Visit Us or Send a Message
                 </h2>
                 <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
@@ -221,26 +198,6 @@ export default async function ContactPage() {
                     </div>
                   ))}
                 </dl>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  Follow Us
-                </p>
-                <div className="mt-3 flex gap-3">
-                  {SOCIALS.map(({ icon: Icon, label, href }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={label}
-                      className="flex size-11 items-center justify-center rounded-none border border-border bg-white text-foreground/80 shadow-sm transition-colors duration-200 hover:border-primary hover:text-primary"
-                    >
-                      <Icon className="size-5.5" />
-                    </a>
-                  ))}
-                </div>
               </div>
             </div>
 
