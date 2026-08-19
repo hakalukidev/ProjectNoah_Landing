@@ -35,7 +35,7 @@ export const TextReveal: FC<TextRevealProps> = ({ children, className }) => {
   return (
     <div ref={targetRef} className={cn("relative z-0 h-[120vh]", className)}>
       <div className="sticky top-0 mx-auto flex h-[60vh] max-w-5xl items-center bg-transparent px-6 py-6 lg:px-8">
-        <p className="flex flex-wrap text-3xl font-bold leading-snug text-foreground/15 sm:text-4xl md:text-5xl lg:text-6xl">
+        <p className="flex flex-wrap font-[family-name:var(--font-miranda)] text-3xl font-bold leading-snug text-foreground/15 sm:text-4xl md:text-5xl lg:text-6xl">
           {words.map((word, i) => {
             const start = i / words.length;
             const end = start + 1 / words.length;

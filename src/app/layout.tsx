@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 import { WhatsappButton } from "@/components/site/whatsapp-button";
@@ -14,6 +15,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const mirandaSans = localFont({
+  src: "./fonts/miranda-sans-variable.woff2",
+  variable: "--font-miranda-sans",
+  weight: "400 700",
+  display: "swap",
 });
 
 const SITE_URL = "https://www.projectnoah.com.sg";
@@ -55,7 +63,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${mirandaSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}

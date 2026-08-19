@@ -23,7 +23,7 @@ export function Statement() {
 
   const words: ReactNode[] = [
     "Since",
-    <TickerWord key="year" value={incorporationYear} suffix="," />,
+    `${incorporationYear},`,
     "we",
     "plan",
     "with",
