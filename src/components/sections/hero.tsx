@@ -63,7 +63,7 @@ export function Hero() {
             <div className="flex flex-col items-center gap-3">
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button
-                  render={<Link href="/#contact" />}
+                  render={<Link href="/contact#contact-form" />}
                   nativeButton={false}
                   className="h-11 rounded-none bg-[#e01f22] px-6 text-sm text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
                 >
@@ -74,7 +74,7 @@ export function Hero() {
                   render={<Link href="/projects" />}
                   nativeButton={false}
                   variant="outline"
-                  className="h-11 rounded-none border-white/50 bg-black/30 px-6 text-sm text-white backdrop-blur-sm hover:bg-black/45"
+                  className="h-11 rounded-none border-white/50 bg-black/30 px-6 text-sm text-white backdrop-blur-sm hover:bg-black/45 hover:text-white"
                 >
                   View Our Projects
                 </Button>

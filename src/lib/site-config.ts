@@ -208,14 +208,11 @@ export const PROCESS_STEPS = [
 ];
 
 /**
- * Category labels intentionally mirror SERVICE_CATEGORIES (and the default
- * gallery categories in categories.ts) so Services, Projects and the Photos
- * gallery all use the same taxonomy across the site.
+ * Short-form category labels used for the Projects page tabs and each
+ * project's `category` field below - must match exactly, or a tab will
+ * always render "No projects in this category yet."
  */
-export const PROJECT_CATEGORIES = [
-  "All",
-  ...SERVICE_CATEGORIES.map((category) => category.label),
-] as const;
+export const PROJECT_CATEGORIES = ["All", "Roofing", "Steel", "Glass"] as const;
 
 export const PROJECTS = [
   {

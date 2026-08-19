@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 import { Logo } from "@/components/site/logo";
@@ -16,7 +17,26 @@ import type { ContactInfo } from "@/lib/server/contact";
 // "Services" trigger down into the popup can cross outside both elements
 // and fire a mouseleave that closes the menu before the click on a category
 // link ever registers. A plain click-toggled dropdown can't have that race.
-function ServicesDropdown({ onNavigate }: { onNavigate?: () => void }) {
+
+// A NAV_LINKS href is either a real route ("/about") or an in-page anchor on
+// the home page ("/#services"). A link counts as active when the current
+// pathname matches its route part, and - for anchor links - the current URL
+// hash also matches (so "Home" doesn't stay marked once you've clicked down
+// to the "Services" or "FAQ" section on the same page).
+function isNavLinkActive(href: string, pathname: string, hash: string) {
+  const [path, anchor] = href.split("#");
+  const routePath = path || "/";
+  if (routePath !== pathname) return false;
+  return anchor ? hash === `#${anchor}` : hash === "";
+}
+
+function ServicesDropdown({
+  active,
+  onNavigate,
+}: {
+  active?: boolean;
+  onNavigate?: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +66,10 @@ function ServicesDropdown({ onNavigate }: { onNavigate?: () => void }) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-1 text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary"
+        className={cn(
+          "flex items-center gap-1 border-b-2 border-transparent text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary",
+          active && "border-primary text-primary"
+        )}
       >
         Services
         <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
@@ -75,6 +98,18 @@ function ServicesDropdown({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Header({ contact }: { contact: ContactInfo }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname() ?? "/";
+
+  // usePathname() doesn't include the hash, and the anchor links (Services,
+  // FAQ) only exist as "/#section" - so the hash is tracked separately to
+  // know which in-page section is currently active.
+  const [hash, setHash] = useState("");
+  useEffect(() => {
+    setHash(window.location.hash);
+    const handleHashChange = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [pathname]);
 
   const handleNavClick = (
     href: string,
@@ -89,7 +124,7 @@ export function Header({ contact }: { contact: ContactInfo }) {
   return (
     <div className="sticky top-0 z-50 w-full">
       <TopBar contact={contact} />
-      <header className="w-full border-b border-border bg-white">
+      <header className="relative w-full border-b border-border bg-white">
         <div className="mx-auto grid h-20 w-full max-w-[1920px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6 xl:gap-6 xl:px-10">
           <div className="col-start-1 -ml-4 flex h-20 items-center justify-self-start bg-gradient-to-r from-neutral-300 via-neutral-100 to-white pr-6 pl-4 sm:-ml-6 sm:pl-6 xl:-ml-10 xl:pr-8 xl:pl-10">
             <Logo variant="light" />
@@ -104,13 +139,20 @@ export function Header({ contact }: { contact: ContactInfo }) {
           <nav className="col-start-2 hidden items-center gap-4 justify-self-center xl:flex 2xl:gap-6">
             {NAV_LINKS.map((link) =>
               link.label === "Services" ? (
-                <ServicesDropdown key="services" />
+                <ServicesDropdown
+                  key="services"
+                  active={isNavLinkActive(link.href, pathname, hash)}
+                />
               ) : (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={(event) => handleNavClick(link.href, event)}
-                  className="text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary"
+                  className={cn(
+                    "border-b-2 border-transparent text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary",
+                    isNavLinkActive(link.href, pathname, hash) &&
+                      "border-primary text-primary"
+                  )}
                 >
                   {link.label}
                 </Link>
@@ -143,9 +185,19 @@ export function Header({ contact }: { contact: ContactInfo }) {
           </div>
         </div>
 
+        {/* Positioned absolute (rather than in normal flow) so opening/
+            closing it never changes the height of anything above the page
+            content below the header. In flow, its max-height transition was
+            reflowing the whole page underneath it while a tapped nav link's
+            anchor-scroll was landing - the page would jump to the target
+            section, then get shoved back up as the menu finished collapsing,
+            leaving the viewport short of the target (e.g. a tap on "FAQ"
+            would land back up near the hero video instead of the FAQ
+            questions). Overlaying the content instead removes that race
+            entirely. */}
         <div
           className={cn(
-            "overflow-hidden border-t border-border bg-background transition-[max-height] duration-300 ease-in-out xl:hidden",
+            "absolute inset-x-0 top-full overflow-hidden border-t border-border bg-background shadow-lg transition-[max-height] duration-300 ease-in-out xl:hidden",
             open ? "max-h-[85vh] overflow-y-auto" : "max-h-0 border-t-0"
           )}
         >
@@ -153,7 +205,12 @@ export function Header({ contact }: { contact: ContactInfo }) {
             {NAV_LINKS.map((link) =>
               link.label === "Services" ? (
                 <div key={link.href}>
-                  <p className="px-2 py-2.5 text-sm font-semibold uppercase tracking-wide text-foreground/80">
+                  <p
+                    className={cn(
+                      "px-2 py-2.5 text-sm font-semibold uppercase tracking-wide text-foreground/80",
+                      isNavLinkActive(link.href, pathname, hash) && "text-primary"
+                    )}
+                  >
                     Services
                   </p>
                   <div className="flex flex-col gap-0.5 pb-1 pl-4">
@@ -162,7 +219,12 @@ export function Header({ contact }: { contact: ContactInfo }) {
                         key={category.slug}
                         href={`/#services-${category.slug}`}
                         onClick={() => setOpen(false)}
-                        className="rounded-md px-2 py-2 text-sm text-foreground/70 hover:bg-muted hover:text-primary"
+                        className={cn(
+                          "rounded-md px-2 py-2 text-sm text-foreground/70 hover:bg-muted hover:text-primary",
+                          hash === `#services-${category.slug}` &&
+                            pathname === "/" &&
+                            "bg-muted text-primary"
+                        )}
                       >
                         {category.label}
                       </Link>
@@ -177,7 +239,11 @@ export function Header({ contact }: { contact: ContactInfo }) {
                     handleNavClick(link.href, event);
                     setOpen(false);
                   }}
-                  className="rounded-md px-2 py-2.5 text-sm font-semibold uppercase tracking-wide text-foreground/80 hover:bg-muted hover:text-primary"
+                  className={cn(
+                    "rounded-md px-2 py-2.5 text-sm font-semibold uppercase tracking-wide text-foreground/80 hover:bg-muted hover:text-primary",
+                    isNavLinkActive(link.href, pathname, hash) &&
+                      "bg-muted text-primary"
+                  )}
                 >
                   {link.label}
                 </Link>

@@ -20,7 +20,7 @@ export async function ProjectsPreview() {
   const availableImageIds = new Set(images.map((image) => image.id));
 
   return (
-    <section id="projects" className="scroll-mt-30 bg-white py-20 sm:py-28">
+    <section id="projects" className="scroll-mt-30 bg-white pt-20 pb-10 sm:pt-28 sm:pb-14">
       <div className="mx-auto w-full max-w-7xl px-10 lg:px-16">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>

@@ -39,6 +39,9 @@ export function Contact({ contact }: { contact: ContactInfo }) {
             <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
               Follow Us
             </p>
+            <p className="mt-1 text-right text-lg font-bold text-foreground">
+              Connect to us
+            </p>
             <div className="mt-3 flex gap-3">
               {SOCIALS.map(({ icon: Icon, label, href }) => (
                 <a

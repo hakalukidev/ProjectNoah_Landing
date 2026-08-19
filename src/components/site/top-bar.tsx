@@ -17,7 +17,7 @@ export function TopBar({ contact }: { contact: ContactInfo }) {
 
         <p className="hidden truncate text-center uppercase tracking-wide md:block">
           Trusted Singapore Contractor Since 2008 &middot;{" "}
-          <Link href="/#contact" className="underline underline-offset-2 hover:opacity-80">
+          <Link href="/contact#contact-form" className="underline underline-offset-2 hover:opacity-80">
             Get a Free Quote
           </Link>
         </p>

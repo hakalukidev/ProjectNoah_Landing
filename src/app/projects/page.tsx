@@ -129,7 +129,7 @@ export default async function ProjectsPage() {
               steps within one business day.
             </p>
             <Button
-              render={<Link href="/#contact" />}
+              render={<Link href="/contact#contact-form" />}
               nativeButton={false}
               size="lg"
               className="h-13 rounded-none bg-primary px-8 text-base text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
