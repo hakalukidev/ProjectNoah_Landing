@@ -1,11 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Building2, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
+import { ProjectsPreviewGrid } from "@/components/sections/projects-preview-grid";
 import { PROJECTS } from "@/lib/site-config";
 import { getCategories } from "@/lib/server/categories";
 import { getImages } from "@/lib/server/gallery";
@@ -47,64 +46,10 @@ export async function ProjectsPreview() {
           </Button>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((project) => {
-            const hasPhoto = availableImageIds.has(project.imageId);
-            return (
-              <Card
-                key={project.slug}
-                className="group/project rounded-none border border-border bg-card p-0 ring-0 transition-shadow hover:shadow-lg"
-              >
-                <div className="flex items-center justify-between px-4 pt-4 pb-3">
-                  <span className="rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
-                    {project.category}
-                  </span>
-                  <span className="rounded-none border border-border px-2 py-1 text-xs font-bold text-muted-foreground">
-                    {project.year}
-                  </span>
-                </div>
-                <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-foreground to-foreground/80">
-                  {hasPhoto ? (
-                    <Image
-                      src={`/api/images/${project.imageId}`}
-                      alt={project.title}
-                      fill
-                      unoptimized
-                      className="object-cover transition-transform duration-300 group-hover/project:scale-105"
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    />
-                  ) : (
-                    <>
-                      <div
-                        className="absolute inset-0 opacity-[0.07]"
-                        style={{
-                          backgroundImage:
-                            "repeating-linear-gradient(135deg, var(--background) 0px, var(--background) 2px, transparent 2px, transparent 14px)",
-                        }}
-                      />
-                      <Building2
-                        className="size-16 text-background/15 transition-colors group-hover/project:text-primary/40"
-                        strokeWidth={1.25}
-                      />
-                    </>
-                  )}
-                </div>
-                <CardContent className="flex flex-col gap-2 px-6 pt-5 pb-6">
-                  <h3 className="text-lg font-bold text-foreground">
-                    {project.title}
-                  </h3>
-                  <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    <MapPin className="size-3.5" />
-                    {project.location}
-                  </span>
-                  <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <ProjectsPreviewGrid
+          projects={featured}
+          availableImageIds={availableImageIds}
+        />
 
         {images.length > 0 && (
           <div className="mt-16 border-t border-border pt-14">

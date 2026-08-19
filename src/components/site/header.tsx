@@ -121,7 +121,7 @@ export function Header({ contact }: { contact: ContactInfo }) {
           <div className="col-start-3 flex items-center justify-self-end gap-3 xl:gap-4">
             <div className="hidden items-center gap-6 xl:flex 2xl:gap-8">
               <Button
-                render={<Link href="/#contact" />}
+                render={<Link href="/contact#contact-form" />}
                 nativeButton={false}
                 className="rounded-none bg-[#e01f22] px-4 text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c] 2xl:px-6"
               >
@@ -184,7 +184,9 @@ export function Header({ contact }: { contact: ContactInfo }) {
               )
             )}
             <Button
-              render={<Link href="/#contact" onClick={() => setOpen(false)} />}
+              render={
+                <Link href="/contact#contact-form" onClick={() => setOpen(false)} />
+              }
               nativeButton={false}
               className="mt-2 w-full rounded-none bg-[#e01f22] text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
             >

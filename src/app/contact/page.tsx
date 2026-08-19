@@ -12,7 +12,7 @@ import {
   YoutubeIcon,
 } from "@/components/site/social-icons";
 import { Badge } from "@/components/ui/badge";
-import { company, PROJECTS } from "@/lib/site-config";
+import { company } from "@/lib/site-config";
 import { getContactInfo } from "@/lib/server/contact";
 import {
   contactAddressFull,
@@ -26,19 +26,6 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const contact = await getContactInfo();
-
-  const availableImageIds = new Set(
-    PROJECTS.map((project) => project.imageId)
-  );
-  // A frameless glass roof shot hasn't been used as a cover yet (About uses
-  // the landed-home facade, Projects uses the commercial walkway canopy) -
-  // prefer it, falling back to the first project photo.
-  const coverProject =
-    PROJECTS.find(
-      (project) =>
-        project.slug === "frameless-glass-roof" &&
-        availableImageIds.has(project.imageId)
-    ) ?? PROJECTS.find((project) => availableImageIds.has(project.imageId));
 
   const CONTACT_DETAILS = [
     {
@@ -114,29 +101,18 @@ export default async function ContactPage() {
             covers, so all three page banners hold the same height
             regardless of how much copy each carries. */}
         <section className="relative flex min-h-[420px] items-center overflow-hidden bg-neutral-950 py-10 text-white sm:min-h-[480px] sm:py-14 lg:min-h-[520px]">
-          {coverProject && (
-            <>
-              {/* object-top keeps the crop away from the watermark burned
-                  into the vertical middle of every gallery photo. */}
-              <Image
-                src={`/api/images/${coverProject.imageId}`}
-                alt=""
-                fill
-                unoptimized
-                priority
-                sizes="100vw"
-                className="object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
-            </>
-          )}
+          <Image
+            src="/contact-hero.jpg"
+            alt="Interior view of a glass-and-steel roof canopy"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
 
           <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Contact Us
-            </span>
-
-            <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
               Let&apos;s Talk About Your Next Build
             </h1>
 
@@ -157,9 +133,9 @@ export default async function ContactPage() {
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
-                className="group flex items-center gap-4 border border-border bg-card p-6 transition-colors hover:border-primary"
+                className="group flex items-center gap-4 border border-border bg-card p-6 shadow-sm transition-colors duration-200 hover:border-primary hover:shadow-md"
               >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-none border border-border text-primary transition-colors group-hover:border-primary group-hover:bg-primary/5">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-none border border-border text-primary transition-colors duration-200 group-hover:border-primary group-hover:bg-primary/5">
                   <Icon className="size-5" />
                 </span>
                 <div className="min-w-0">
@@ -178,7 +154,7 @@ export default async function ContactPage() {
         {/* Contact info, address, map + message form */}
         <section
           id="contact-form"
-          className="scroll-mt-30 bg-white py-20 sm:py-28"
+          className="border-t border-border bg-neutral-50 py-20 scroll-mt-30 sm:py-28"
         >
           <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
             <div className="flex flex-col gap-10">
@@ -198,40 +174,54 @@ export default async function ContactPage() {
                 </p>
               </div>
 
-              <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {CONTACT_DETAILS.map(({ icon: Icon, label, value, href }) => (
-                  <div key={label} className="flex items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-none border border-border text-primary">
-                      <Icon className="size-4.5" />
-                    </span>
-                    <div>
-                      <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                        {label}
-                      </dt>
-                      <dd className="mt-0.5 text-sm font-medium text-foreground">
-                        {href ? (
-                          <a
-                            href={href}
-                            target={
-                              href.startsWith("http") ? "_blank" : undefined
-                            }
-                            rel={
-                              href.startsWith("http")
-                                ? "noreferrer noopener"
-                                : undefined
-                            }
-                            className="transition-colors hover:text-primary"
-                          >
-                            {value}
-                          </a>
-                        ) : (
-                          value
-                        )}
-                      </dd>
+              {/* Contact details - same document-panel system as the About
+                  page (dark header bar + hairline-divided cells via the
+                  gap-px/bg-border trick) for a consistent look site-wide. */}
+              <div className="overflow-hidden border border-border bg-white shadow-sm">
+                <div className="border-b border-border bg-neutral-950 px-6 py-4">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
+                    Contact Details
+                  </span>
+                </div>
+
+                <dl className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2">
+                  {CONTACT_DETAILS.map(({ icon: Icon, label, value, href }) => (
+                    <div
+                      key={label}
+                      className="group flex items-start gap-3 bg-white p-5 transition-colors hover:bg-neutral-50"
+                    >
+                      <span className="flex size-10 shrink-0 items-center justify-center border border-primary/20 bg-primary/5 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Icon className="size-4.5" />
+                      </span>
+                      <div className="min-w-0">
+                        <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                          {label}
+                        </dt>
+                        <dd className="mt-0.5 text-sm font-medium text-foreground">
+                          {href ? (
+                            <a
+                              href={href}
+                              target={
+                                href.startsWith("http") ? "_blank" : undefined
+                              }
+                              rel={
+                                href.startsWith("http")
+                                  ? "noreferrer noopener"
+                                  : undefined
+                              }
+                              className="transition-colors hover:text-primary"
+                            >
+                              {value}
+                            </a>
+                          ) : (
+                            value
+                          )}
+                        </dd>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </dl>
+                  ))}
+                </dl>
+              </div>
 
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
@@ -245,7 +235,7 @@ export default async function ContactPage() {
                       target="_blank"
                       rel="noreferrer noopener"
                       aria-label={label}
-                      className="flex size-11 items-center justify-center rounded-none border border-border text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+                      className="flex size-11 items-center justify-center rounded-none border border-border bg-white text-foreground/80 shadow-sm transition-colors duration-200 hover:border-primary hover:text-primary"
                     >
                       <Icon className="size-5.5" />
                     </a>
@@ -254,9 +244,7 @@ export default async function ContactPage() {
               </div>
             </div>
 
-            <div>
-              <ContactForm recipientEmail={contact.email} />
-            </div>
+            <ContactForm recipientEmail={contact.email} />
           </div>
         </section>
 
@@ -276,16 +264,18 @@ export default async function ContactPage() {
               {contactAddressFull(contact.address)}
             </p>
 
-            <div className="mt-10 overflow-hidden border border-border">
-              <iframe
-                title="Registered office location"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  contactAddressFull(contact.address)
-                )}&output=embed`}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="h-[420px] w-full sm:h-[480px]"
-              />
+            <div className="mt-10">
+              <div className="overflow-hidden border border-border shadow-sm">
+                <iframe
+                  title="Registered office location"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(
+                    contactAddressFull(contact.address)
+                  )}&output=embed`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-[420px] w-full sm:h-[480px]"
+                />
+              </div>
             </div>
           </div>
         </section>

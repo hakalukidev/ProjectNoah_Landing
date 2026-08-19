@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { Building2, MapPin } from "lucide-react";
+import { Building2, Maximize2, MapPin, X } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/tabs";
 import { PROJECT_CATEGORIES, PROJECTS } from "@/lib/site-config";
 
+type Project = (typeof PROJECTS)[number];
+
 export function ProjectsGrid({
   availableImageIds,
 }: {
@@ -19,6 +21,21 @@ export function ProjectsGrid({
   availableImageIds: Set<string>;
 }) {
   const [category, setCategory] = useState<string>("All");
+  const [lightboxProject, setLightboxProject] = useState<Project | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  // <dialog>.showModal() renders in the browser's top-layer, so it always
+  // paints above the sticky/backdrop-blurred header regardless of z-index -
+  // it also blocks background scroll and handles Escape-to-close natively.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (lightboxProject && !dialog.open) {
+      dialog.showModal();
+    } else if (!lightboxProject && dialog.open) {
+      dialog.close();
+    }
+  }, [lightboxProject]);
 
   const filtered = useMemo(
     () =>
@@ -65,14 +82,24 @@ export function ProjectsGrid({
               </div>
               <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-foreground to-foreground/80">
                 {hasPhoto ? (
-                  <Image
-                    src={`/api/images/${project.imageId}`}
-                    alt={project.title}
-                    fill
-                    unoptimized
-                    className="object-cover transition-transform duration-300 group-hover/project:scale-105"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setLightboxProject(project)}
+                    aria-label={`View larger photo of ${project.title}`}
+                    className="absolute inset-0 cursor-zoom-in"
+                  >
+                    <Image
+                      src={`/api/images/${project.imageId}`}
+                      alt={project.title}
+                      fill
+                      unoptimized
+                      className="object-cover transition-transform duration-300 group-hover/project:scale-105"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-200 group-hover/project:bg-black/30">
+                      <Maximize2 className="size-6 text-white opacity-0 transition-opacity duration-200 group-hover/project:opacity-100" />
+                    </div>
+                  </button>
                 ) : (
                   <>
                     <div
@@ -111,6 +138,40 @@ export function ProjectsGrid({
           No projects in this category yet.
         </p>
       )}
+
+      <dialog
+        ref={dialogRef}
+        onClose={() => setLightboxProject(null)}
+        onClick={(event) => {
+          if (event.target === dialogRef.current) setLightboxProject(null);
+        }}
+        className="m-auto max-h-none max-w-none border-0 bg-transparent p-4 backdrop:bg-black/90 open:flex open:items-center open:justify-center sm:p-10"
+      >
+        {lightboxProject && (
+          <div className="flex max-h-[90vh] max-w-full flex-col items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setLightboxProject(null)}
+              aria-label="Close"
+              className="fixed top-4 right-4 flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            >
+              <X className="size-5" />
+            </button>
+            <Image
+              key={lightboxProject.slug}
+              src={`/api/images/${lightboxProject.imageId}`}
+              alt={lightboxProject.title}
+              width={1600}
+              height={1200}
+              unoptimized
+              className="max-h-[80vh] w-auto max-w-full object-contain"
+            />
+            <p className="text-center text-sm text-white/80">
+              {lightboxProject.title} &middot; {lightboxProject.location}
+            </p>
+          </div>
+        )}
+      </dialog>
     </div>
   );
 }

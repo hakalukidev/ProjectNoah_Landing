@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
+import { NumberTicker } from "@/components/ui/number-ticker";
 import { ProjectsGrid } from "@/components/sections/projects-grid";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
 import { company, PROJECTS, PROJECT_CATEGORIES } from "@/lib/site-config";
@@ -25,50 +26,30 @@ export default async function ProjectsPage() {
     getImages(),
   ]);
   const availableImageIds = new Set(images.map((image) => image.id));
-  // Wide skyline shot reads best as a short banner - prefer it, falling
-  // back to the first project with a live photo if it's ever removed.
-  const coverProject =
-    PROJECTS.find(
-      (project) =>
-        project.slug === "commercial-walkway-canopy" &&
-        availableImageIds.has(project.imageId)
-    ) ?? PROJECTS.find((project) => availableImageIds.has(project.imageId));
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white">
       <Header contact={contact} />
 
       <main className="flex flex-1 flex-col">
-        {/* Fixed min-height (matched with the About page cover) rather than
+        {/* Cover - AI-rendered roof tile image. Fixed min-height (matched
+            with the About and Contact page covers) rather than
             content-driven padding, since this page's cover carries an extra
-            stats row that About's doesn't - min-height + flex centering
-            keeps both banners the same height regardless of copy amount. */}
+            stats row that the others don't - min-height + flex centering
+            keeps every banner the same height regardless of copy amount. */}
         <section className="relative flex min-h-[420px] items-center overflow-hidden bg-neutral-950 py-10 text-white sm:min-h-[480px] sm:py-14 lg:min-h-[520px]">
-          {coverProject && (
-            <>
-              {/* object-top (not center) keeps the crop away from the
-                  watermark the upload pipeline burns into the vertical
-                  middle of every gallery photo (see watermark.ts) - this
-                  short banner only ever shows the top slice of the image. */}
-              <Image
-                src={`/api/images/${coverProject.imageId}`}
-                alt=""
-                fill
-                unoptimized
-                priority
-                sizes="100vw"
-                className="object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
-            </>
-          )}
+          <Image
+            src="/projects-hero.jpg"
+            alt="Close-up of green roof tiles with skylights under a clear blue sky"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
 
           <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Our Portfolio
-            </span>
-
-            <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
               Projects Built Across Singapore
             </h1>
 
@@ -91,7 +72,11 @@ export default async function ProjectsPage() {
               ].map((stat) => (
                 <div key={stat.label} className="flex flex-col">
                   <div className="flex items-baseline text-3xl font-extrabold text-primary sm:text-4xl">
-                    <span>{stat.value}</span>
+                    <NumberTicker
+                      value={stat.value}
+                      startValue={Math.max(0, stat.value - Math.ceil(stat.value * 0.6))}
+                      className="text-primary tabular-nums"
+                    />
                     <span>{stat.suffix}</span>
                   </div>
                   <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-white/70">
