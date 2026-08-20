@@ -33,12 +33,13 @@ export function Hero({ email }: { email: string }) {
 
           The heading, CTAs and legal line sit in an absolutely-positioned
           overlay directly on top of the video (rather than above it). There
-          is no dark/blurred panel behind them - only the text itself carries
-          a drop-shadow for contrast - so the video stays fully crystal
-          clear everywhere except the glyphs of the text. The outline button
-          keeps its own small translucent backing (it's a button, not a
-          decorative panel) since plain white-on-video text there would be
-          unreadable over a light frame. */}
+          is no hard dark panel behind them - only a soft radial scrim
+          (see the gradient div just below the iframe) plus a drop-shadow on
+          the text itself - so the video stays clear at the edges while the
+          text zone gets enough contrast to stay legible over bright/foggy
+          footage. The outline button keeps its own small translucent
+          backing (it's a button, not a decorative panel) since plain
+          white-on-video text there would be unreadable over a light frame. */}
       <div className="relative h-[46vh] w-full min-h-[320px] overflow-hidden sm:h-[54vh] lg:h-[64vh]">
         <iframe
           src="/video-embed.html"
@@ -47,6 +48,11 @@ export function Hero({ email }: { email: string }) {
           allow="autoplay"
           loading="eager"
         />
+
+        {/* Soft radial scrim centered on the text, fading out toward the
+            edges, so light/foggy video frames don't wash out the white
+            text - without dropping a hard panel over the whole video. */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_55%_at_center,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0)_72%)]" />
 
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
           <div className="pointer-events-auto flex max-w-3xl flex-col items-center gap-8 text-center">

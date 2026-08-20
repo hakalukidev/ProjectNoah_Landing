@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { company } from "@/lib/site-config";
 
 export function Logo({
   className,
@@ -37,6 +38,14 @@ export function Logo({
           <span className="h-px w-3 bg-primary" />
           <span className={textColor}>  PTE LTD</span>
           <span className="h-px w-3 bg-primary" />
+        </span>
+        <span
+          className={cn(
+            "mt-0.5 text-[9px] font-medium tracking-wide whitespace-nowrap",
+            variant === "dark" ? "text-white/70" : "text-muted-foreground"
+          )}
+        >
+          UEN {company.uen}
         </span>
       </span>
     </Link>
