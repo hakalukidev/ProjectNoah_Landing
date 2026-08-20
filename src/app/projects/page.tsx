@@ -10,7 +10,7 @@ import { NumberTicker } from "@/components/ui/number-ticker";
 import { ProjectsGrid } from "@/components/sections/projects-grid";
 import { ProjectVideoGallery } from "@/components/sections/project-video-gallery";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
-import { company, PROJECTS, PROJECT_CATEGORIES } from "@/lib/site-config";
+import { company, PROJECTS, PROJECT_CATEGORIES, SITE_PHOTOS } from "@/lib/site-config";
 import { getContactInfo } from "@/lib/server/contact";
 import { getCategories } from "@/lib/server/categories";
 import { getImages } from "@/lib/server/gallery";
@@ -26,7 +26,17 @@ export default async function ProjectsPage() {
     getCategories(),
     getImages(),
   ]);
-  const availableImageIds = new Set(images.map((image) => image.id));
+  // Static site photos plus anything uploaded via the admin gallery.
+  const galleryPhotos = [
+    ...SITE_PHOTOS,
+    ...images.map((image) => ({
+      id: image.id,
+      categoryId: image.categoryId,
+      caption: image.caption,
+      width: image.width,
+      height: image.height,
+    })),
+  ];
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-white">
@@ -112,11 +122,11 @@ export default async function ProjectsPage() {
 
         <section className="bg-white pt-12 pb-24">
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <ProjectsGrid availableImageIds={availableImageIds} />
+            <ProjectsGrid />
           </div>
         </section>
 
-        {images.length > 0 && (
+        {galleryPhotos.length > 0 && (
           <section className="border-t border-border bg-white py-20">
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
@@ -126,16 +136,7 @@ export default async function ProjectsPage() {
                 Photos From Our Sites
               </h2>
               <div className="mt-12">
-                <PhotoGallery
-                  categories={categories}
-                  photos={images.map((image) => ({
-                    id: image.id,
-                    categoryId: image.categoryId,
-                    caption: image.caption,
-                    width: image.width,
-                    height: image.height,
-                  }))}
-                />
+                <PhotoGallery categories={categories} photos={galleryPhotos} />
               </div>
             </div>
           </section>

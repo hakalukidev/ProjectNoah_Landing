@@ -221,8 +221,8 @@ export const PROJECTS = [
     category: "Roofing",
     location: "Pioneer Sector, Singapore",
     year: "2024",
-    /** Matches an id in data/images.json; cards fall back to a placeholder if it's ever removed via the admin gallery. */
-    imageId: "X1v6oZNGDvQq",
+    /** Static file under public/projects - not the admin-managed gallery. */
+    image: "/projects/glass1.jpeg",
     description:
       "Design and installation of a frameless faceted glass roof for a private residence, engineered for clean sightlines and full weather sealing.",
   },
@@ -232,7 +232,7 @@ export const PROJECTS = [
     category: "Steel",
     location: "Tanjong Pagar, Singapore",
     year: "2023",
-    imageId: "mrS5oKPQj1LO",
+    image: "/projects/steel3.jpeg",
     description:
       "Fabrication and installation of a large steel-and-glass walkway canopy connecting blocks at commercial scale.",
   },
@@ -242,7 +242,7 @@ export const PROJECTS = [
     category: "Glass",
     location: "Woodlands, Singapore",
     year: "2023",
-    imageId: "VRW1vXpAaQlM",
+    image: "/projects/glass2.jpeg",
     description:
       "Pergola and rooftop glass canopy integrated into a landed home's facade as part of a full renovation.",
   },
@@ -252,7 +252,7 @@ export const PROJECTS = [
     category: "Roofing",
     location: "Jurong, Singapore",
     year: "2022",
-    imageId: "TQZZvBaXeXmk",
+    image: "/projects/roof1.jpeg",
     description:
       "Louvred pergola roof and deck built over an outdoor terrace, giving year-round shelter for outdoor entertaining.",
   },
@@ -262,7 +262,7 @@ export const PROJECTS = [
     category: "Steel",
     location: "Pioneer, Singapore",
     year: "2022",
-    imageId: "USkaBQdmldNH",
+    image: "/projects/steel2.jpeg",
     description:
       "Steel-framed glass canopy walkway fabricated and installed between blocks, weatherproofing the connecting path.",
   },
@@ -272,9 +272,89 @@ export const PROJECTS = [
     category: "Glass",
     location: "Punggol, Singapore",
     year: "2021",
-    imageId: "z92ZdKGLndtw",
+    image: "/projects/glass3.jpeg",
     description:
       "Balcony enclosure works for a high-rise residential unit, adding usable space with a clear skyline view.",
+  },
+];
+
+/**
+ * Extra site photos not tied to a specific project card - shown in the
+ * "Photos From Our Sites" gallery. Static files under public/projects
+ * (not the admin-managed gallery in data/images.json).
+ */
+export const SITE_PHOTOS = [
+  {
+    id: "roof1",
+    categoryId: "roofing-shelter",
+    src: "/projects/roof1.jpeg",
+    caption: "Louvred pergola roof over an outdoor BBQ terrace",
+    width: 1024,
+    height: 768,
+  },
+  {
+    id: "roof2",
+    categoryId: "roofing-shelter",
+    src: "/projects/roof2.jpeg",
+    caption: "Backyard pergola with retractable sunshade and timber deck",
+    width: 720,
+    height: 960,
+  },
+  {
+    id: "roof3",
+    categoryId: "roofing-shelter",
+    src: "/projects/roof3.jpeg",
+    caption: "Rooftop membrane roofing installation in progress",
+    width: 1600,
+    height: 1200,
+  },
+  {
+    id: "steel1",
+    categoryId: "steel-fabrication",
+    src: "/projects/steel1.jpeg",
+    caption: "Steel-and-glass framed facade structure, close-up view",
+    width: 600,
+    height: 800,
+  },
+  {
+    id: "steel2",
+    categoryId: "steel-fabrication",
+    src: "/projects/steel2.jpeg",
+    caption: "Steel-framed glass canopy walkway against a louvred facade",
+    width: 1600,
+    height: 720,
+  },
+  {
+    id: "steel3",
+    categoryId: "steel-fabrication",
+    src: "/projects/steel3.jpeg",
+    caption: "Large steel canopy structure under construction, commercial site",
+    width: 1600,
+    height: 1196,
+  },
+  {
+    id: "glass1",
+    categoryId: "facade-renovation",
+    src: "/projects/glass1.jpeg",
+    caption: "Frameless faceted glass roof, viewed from below",
+    width: 1200,
+    height: 1600,
+  },
+  {
+    id: "glass2",
+    categoryId: "facade-renovation",
+    src: "/projects/glass2.jpeg",
+    caption: "Frameless glass canopy over a landed home's terrace",
+    width: 720,
+    height: 540,
+  },
+  {
+    id: "glass3",
+    categoryId: "facade-renovation",
+    src: "/projects/glass3.jpeg",
+    caption: "Glass roof canopy against a clear blue sky",
+    width: 720,
+    height: 1600,
   },
 ];
 

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
 import { ProjectsPreviewGrid } from "@/components/sections/projects-preview-grid";
-import { PROJECTS } from "@/lib/site-config";
+import { PROJECTS, SITE_PHOTOS } from "@/lib/site-config";
 import { getCategories } from "@/lib/server/categories";
 import { getImages } from "@/lib/server/gallery";
 
@@ -15,9 +15,17 @@ export async function ProjectsPreview() {
     getCategories(),
     getImages(),
   ]);
-  // Cards reference a real gallery photo by id; if it's ever removed via the
-  // admin gallery, fall back to the placeholder graphic instead of a 404.
-  const availableImageIds = new Set(images.map((image) => image.id));
+  // Static site photos plus anything uploaded via the admin gallery.
+  const galleryPhotos = [
+    ...SITE_PHOTOS,
+    ...images.map((image) => ({
+      id: image.id,
+      categoryId: image.categoryId,
+      caption: image.caption,
+      width: image.width,
+      height: image.height,
+    })),
+  ];
 
   return (
     <section id="projects" className="scroll-mt-30 bg-white pt-20 pb-10 sm:pt-28 sm:pb-14">
@@ -46,27 +54,15 @@ export async function ProjectsPreview() {
           </Button>
         </div>
 
-        <ProjectsPreviewGrid
-          projects={featured}
-          availableImageIds={availableImageIds}
-        />
+        <ProjectsPreviewGrid projects={featured} />
 
-        {images.length > 0 && (
+        {galleryPhotos.length > 0 && (
           <div className="mt-16 border-t border-border pt-14">
             <h3 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
               Photos From Our Sites
             </h3>
             <div className="mt-10">
-              <PhotoGallery
-                categories={categories}
-                photos={images.map((image) => ({
-                  id: image.id,
-                  categoryId: image.categoryId,
-                  caption: image.caption,
-                  width: image.width,
-                  height: image.height,
-                }))}
-              />
+              <PhotoGallery categories={categories} photos={galleryPhotos} />
             </div>
           </div>
         )}

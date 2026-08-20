@@ -5,8 +5,10 @@ import { Resvg } from "@resvg/resvg-js";
 
 import { company } from "@/lib/site-config";
 
-const LOGO_PATH = path.join(process.cwd(), "public", "logo-icon.png");
-const LOGO_OPACITY = 0.55; // keep the watermark visible but let the photo show through
+// Same circular badge used for the site's nav logo - a plain JPEG, so it
+// carries no transparency of its own; we mask it to a circle below.
+const LOGO_PATH = path.join(process.cwd(), "public", "nav-logo.jpeg");
+const LOGO_OPACITY = 0.6; // deeper/more visible mark
 
 function escapeXml(value: string): string {
   return value
@@ -33,7 +35,22 @@ export async function watermarkImage(
   const fontSize = Math.max(18, Math.round(markWidth * 0.1));
   const gap = Math.round(fontSize * 0.6);
 
-  const logoRaw = await sharp(await fs.readFile(LOGO_PATH))
+  // nav-logo.jpeg is a square JPEG with the round badge on a plain
+  // background - clip it to a circle (dest-in) before resizing so only the
+  // badge itself, not its square corners, gets composited onto the photo.
+  const logoFile = await fs.readFile(LOGO_PATH);
+  const logoMeta = await sharp(logoFile).metadata();
+  const logoW = logoMeta.width ?? 640;
+  const logoH = logoMeta.height ?? 640;
+  const circleMaskSvg = `<svg width="${logoW}" height="${logoH}" xmlns="http://www.w3.org/2000/svg"><circle cx="${logoW / 2}" cy="${logoH / 2}" r="${Math.min(logoW, logoH) / 2}" fill="#fff"/></svg>`;
+
+  const maskedLogo = await sharp(logoFile)
+    .ensureAlpha()
+    .composite([{ input: Buffer.from(circleMaskSvg), blend: "dest-in" }])
+    .png()
+    .toBuffer();
+
+  const logoRaw = await sharp(maskedLogo)
     .resize(logoSize, logoSize, { fit: "inside" })
     .ensureAlpha()
     .raw()
@@ -64,8 +81,8 @@ export async function watermarkImage(
         font-family="Arial, Helvetica, sans-serif"
         font-weight="700"
         font-size="${fontSize}"
-        fill="rgba(255,255,255,0.92)"
-        stroke="rgba(0,0,0,0.6)"
+        fill="rgba(255,255,255,0.85)"
+        stroke="rgba(0,0,0,0.55)"
         stroke-width="${Math.max(2, Math.round(fontSize * 0.09))}"
         paint-order="stroke"
       >${phone}</text>

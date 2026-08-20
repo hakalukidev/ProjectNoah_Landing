@@ -11,11 +11,8 @@ type Project = (typeof PROJECTS)[number];
 
 export function ProjectsPreviewGrid({
   projects,
-  availableImageIds,
 }: {
   projects: Project[];
-  /** ids of gallery photos that currently exist, so cards can fall back to the placeholder if an admin removes one. */
-  availableImageIds: Set<string>;
 }) {
   const [lightboxProject, setLightboxProject] = useState<Project | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -37,7 +34,7 @@ export function ProjectsPreviewGrid({
     <>
       <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => {
-          const hasPhoto = availableImageIds.has(project.imageId);
+          const hasPhoto = Boolean(project.image);
           return (
             <Card
               key={project.slug}
@@ -56,15 +53,16 @@ export function ProjectsPreviewGrid({
                   <button
                     type="button"
                     onClick={() => setLightboxProject(project)}
+                    onContextMenu={(event) => event.preventDefault()}
                     aria-label={`View larger photo of ${project.title}`}
-                    className="absolute inset-0 cursor-zoom-in"
+                    className="absolute inset-0 cursor-zoom-in select-none"
                   >
                     <Image
-                      src={`/api/images/${project.imageId}`}
+                      src={project.image}
                       alt={project.title}
                       fill
-                      unoptimized
-                      className="object-cover transition-transform duration-300 group-hover/project:scale-105"
+                      draggable={false}
+                      className="object-cover pointer-events-none transition-transform duration-300 group-hover/project:scale-105"
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-200 group-hover/project:bg-black/30">
@@ -110,6 +108,7 @@ export function ProjectsPreviewGrid({
         onClick={(event) => {
           if (event.target === dialogRef.current) setLightboxProject(null);
         }}
+        onContextMenu={(event) => event.preventDefault()}
         className="m-auto max-h-none max-w-none border-0 bg-transparent p-4 backdrop:bg-black/90 open:flex open:items-center open:justify-center sm:p-10"
       >
         {lightboxProject && (
@@ -124,12 +123,12 @@ export function ProjectsPreviewGrid({
             </button>
             <Image
               key={lightboxProject.slug}
-              src={`/api/images/${lightboxProject.imageId}`}
+              src={lightboxProject.image}
               alt={lightboxProject.title}
               width={1600}
               height={1200}
-              unoptimized
-              className="max-h-[80vh] w-auto max-w-full object-contain"
+              draggable={false}
+              className="max-h-[80vh] w-auto max-w-full touch-none object-contain select-none"
             />
             <p className="text-center text-sm text-white/80">
               {lightboxProject.title} &middot; {lightboxProject.location}

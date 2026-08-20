@@ -9,7 +9,7 @@ import { Process } from "@/components/sections/process";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
-import { BENEFITS, company } from "@/lib/site-config";
+import { BENEFITS, company, SITE_PHOTOS } from "@/lib/site-config";
 import { getContactInfo } from "@/lib/server/contact";
 import { getCategories } from "@/lib/server/categories";
 import { getImages } from "@/lib/server/gallery";
@@ -32,6 +32,17 @@ export default async function AboutPage() {
     getCategories(),
     getImages(),
   ]);
+  // Static site photos plus anything uploaded via the admin gallery.
+  const galleryPhotos = [
+    ...SITE_PHOTOS,
+    ...images.map((image) => ({
+      id: image.id,
+      categoryId: image.categoryId,
+      caption: image.caption,
+      width: image.width,
+      height: image.height,
+    })),
+  ];
 
   // Registry facts sourced from ACRA / Singapore's public business registry
   // (sgpbusiness.com company profile for PROJECT NOAH PTE. LTD.), mirrored
@@ -280,7 +291,7 @@ export default async function AboutPage() {
 
         {/* Real project photos - kept last so the page closes on the work
             itself, after the story and facts have made the case. */}
-        {images.length > 0 && (
+        {galleryPhotos.length > 0 && (
           <section className="border-t border-border bg-white py-20 sm:py-28">
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
@@ -296,16 +307,7 @@ export default async function AboutPage() {
                 </p>
               </div>
               <div className="mt-12">
-                <PhotoGallery
-                  categories={categories}
-                  photos={images.map((image) => ({
-                    id: image.id,
-                    categoryId: image.categoryId,
-                    caption: image.caption,
-                    width: image.width,
-                    height: image.height,
-                  }))}
-                />
+                <PhotoGallery categories={categories} photos={galleryPhotos} />
               </div>
             </div>
           </section>

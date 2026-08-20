@@ -14,6 +14,8 @@ export type GalleryPhoto = {
   caption: string;
   width: number;
   height: number;
+  /** Static public/ file to use instead of the watermarked /api/images/[id] route. */
+  src?: string;
 };
 
 export function PhotoGallery({
@@ -106,7 +108,7 @@ export function PhotoGallery({
             )}
           >
             <Image
-              src={`/api/images/${photo.id}`}
+              src={photo.src ?? `/api/images/${photo.id}`}
               alt={photo.caption || "Project site photo"}
               fill
               unoptimized
@@ -170,7 +172,7 @@ export function PhotoGallery({
             </button>
             <Image
               key={lightboxPhoto.id}
-              src={`/api/images/${lightboxPhoto.id}`}
+              src={lightboxPhoto.src ?? `/api/images/${lightboxPhoto.id}`}
               alt={lightboxPhoto.caption || "Project site photo"}
               width={lightboxPhoto.width}
               height={lightboxPhoto.height}
