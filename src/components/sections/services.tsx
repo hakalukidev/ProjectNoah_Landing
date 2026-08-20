@@ -1,5 +1,6 @@
 import { AnimatedList } from "@/components/ui/animated-list";
 import { Badge } from "@/components/ui/badge";
+import { BlurFade } from "@/components/ui/blur-fade";
 import { SERVICE_CATEGORIES, SERVICES } from "@/lib/site-config";
 
 export function Services() {
@@ -22,8 +23,8 @@ export function Services() {
           </p>
         </div>
 
-        <div className="mt-14 flex flex-col gap-16">
-          {SERVICE_CATEGORIES.map((category) => {
+        <div className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8">
+          {SERVICE_CATEGORIES.map((category, index) => {
             const services = SERVICES.filter(
               (service) => service.category === category.slug
             );
@@ -34,30 +35,27 @@ export function Services() {
                 id={`services-${category.slug}`}
                 className="scroll-mt-30 target:-mx-4 target:rounded-lg target:px-4 target:ring-2 target:ring-primary"
               >
-                <h3 className="inline-block rounded-none bg-primary px-4 py-1.5 text-xl font-bold tracking-tight text-primary-foreground">
-                  {category.label}
-                </h3>
+                <BlurFade inView direction="up" delay={index * 0.15}>
+                  <h3 className="inline-block rounded-none bg-primary px-4 py-1.5 text-xl font-bold tracking-tight text-primary-foreground">
+                    {category.label}
+                  </h3>
 
-                <AnimatedList className="mt-6 items-stretch gap-5" delay={250}>
-                  {services.map((service) => (
-                    <div
-                      key={service.slug}
-                      className="group/service flex flex-col gap-1.5"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="shrink-0 font-heading text-3xl font-extrabold text-primary/30">
+                  <AnimatedList className="mt-6 items-stretch gap-4" delay={250}>
+                    {services.map((service) => (
+                      <div
+                        key={service.slug}
+                        className="group/service flex items-center gap-3"
+                      >
+                        <span className="shrink-0 font-heading text-2xl font-extrabold text-primary/30">
                           {String(services.indexOf(service) + 1).padStart(2, "0")}
                         </span>
-                        <h4 className="text-lg font-bold text-foreground">
+                        <h4 className="text-base font-bold text-foreground">
                           {service.title}
                         </h4>
                       </div>
-                      <p className="text-justify text-sm leading-relaxed text-muted-foreground">
-                        {service.description}
-                      </p>
-                    </div>
-                  ))}
-                </AnimatedList>
+                    ))}
+                  </AnimatedList>
+                </BlurFade>
               </div>
             );
           })}
