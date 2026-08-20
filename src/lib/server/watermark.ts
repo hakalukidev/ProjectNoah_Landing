@@ -6,6 +6,7 @@ import { Resvg } from "@resvg/resvg-js";
 import { company } from "@/lib/site-config";
 
 const LOGO_PATH = path.join(process.cwd(), "public", "logo-icon.png");
+const LOGO_OPACITY = 0.55; // keep the watermark visible but let the photo show through
 
 function escapeXml(value: string): string {
   return value
@@ -32,9 +33,26 @@ export async function watermarkImage(
   const fontSize = Math.max(18, Math.round(markWidth * 0.1));
   const gap = Math.round(fontSize * 0.6);
 
-  const logoBuffer = await sharp(await fs.readFile(LOGO_PATH))
+  const logoRaw = await sharp(await fs.readFile(LOGO_PATH))
     .resize(logoSize, logoSize, { fit: "inside" })
     .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  // Scale down the alpha channel so the logo blends into the photo instead
+  // of sitting on top of it at full strength.
+  for (let i = 3; i < logoRaw.data.length; i += 4) {
+    logoRaw.data[i] = Math.round(logoRaw.data[i] * LOGO_OPACITY);
+  }
+
+  const logoBuffer = await sharp(logoRaw.data, {
+    raw: {
+      width: logoRaw.info.width,
+      height: logoRaw.info.height,
+      channels: 4,
+    },
+  })
+    .png()
     .toBuffer();
 
   const phone = escapeXml(company.phone);

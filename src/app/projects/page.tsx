@@ -8,6 +8,7 @@ import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { ProjectsGrid } from "@/components/sections/projects-grid";
+import { ProjectVideoGallery } from "@/components/sections/project-video-gallery";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
 import { company, PROJECTS, PROJECT_CATEGORIES } from "@/lib/site-config";
 import { getContactInfo } from "@/lib/server/contact";
@@ -84,6 +85,27 @@ export default async function ProjectsPage() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Video showcase - white section directly beneath the dark cover. */}
+        <section className="border-t border-border bg-white py-20">
+          <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Project Films
+            </span>
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <h2 className="max-w-xl text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                See Our Work in Motion
+              </h2>
+              <p className="max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Short walkthroughs from active sites, filmed as the work
+                happens across roofing, steel, and facade installs.
+              </p>
+            </div>
+            <div className="mt-12">
+              <ProjectVideoGallery />
             </div>
           </div>
         </section>

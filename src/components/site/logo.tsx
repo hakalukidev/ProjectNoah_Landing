@@ -22,7 +22,7 @@ export function Logo({
       )}
     >
       <Image
-        src="/logo-icon.png"
+        src="/nav-logo.jpeg"
         alt="Project Noah Pte Ltd"
         width={520}
         height={520}

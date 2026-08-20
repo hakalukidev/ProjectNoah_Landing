@@ -25,9 +25,18 @@ export function ImageGrid({
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this photo? This cannot be undone.")) return;
     setDeletingId(id);
-    await fetch(`/api/admin/images/${id}`, { method: "DELETE" });
-    setDeletingId(null);
-    startTransition(() => router.refresh());
+    try {
+      const res = await fetch(`/api/admin/images/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        alert("Couldn't delete this photo. Please try again.");
+        return;
+      }
+      startTransition(() => router.refresh());
+    } catch {
+      alert("Couldn't delete this photo. Check your connection and try again.");
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   if (images.length === 0) {
@@ -58,7 +67,7 @@ export function ImageGrid({
             onClick={() => handleDelete(image.id)}
             disabled={(deletingId === image.id) || isPending}
             aria-label="Delete photo"
-            className="absolute top-2 right-2 flex size-8 items-center justify-center bg-black/60 text-white opacity-0 transition-opacity hover:bg-[#e01f22] group-hover:opacity-100 disabled:opacity-60"
+            className="absolute top-2 right-2 flex size-8 items-center justify-center bg-black/60 text-white opacity-80 transition-opacity hover:bg-[#e01f22] hover:opacity-100 group-hover:opacity-100 disabled:opacity-60"
           >
             <Trash2 className="size-4" />
           </button>
