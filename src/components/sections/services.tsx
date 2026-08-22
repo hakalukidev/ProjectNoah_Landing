@@ -10,7 +10,7 @@ export function Services() {
         <div className="mx-auto max-w-2xl text-center">
           <Badge
             variant="outline"
-            className="rounded-none border-red-600/30 px-3 py-1 text-sm font-extrabold uppercase tracking-[0.2em] text-red-600"
+            className="rounded-none border-primary/30 px-3 py-1 text-sm font-extrabold uppercase tracking-[0.2em] text-primary"
           >
             Our Services
           </Badge>

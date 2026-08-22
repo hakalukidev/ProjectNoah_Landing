@@ -64,35 +64,21 @@ export default async function AboutPage() {
       <Header contact={contact} />
 
       <main className="flex flex-1 flex-col">
-        {/* Cover - Singapore CBD skyline. Fixed min-height (matched
-            with the Projects and Contact page covers) rather than
-            content-driven padding, since this page's cover has one fewer
-            content row than Projects' - min-height + flex centering keeps
-            every banner the same height regardless of how much copy each
-            one carries. */}
-        <section className="relative flex min-h-[420px] items-center overflow-hidden bg-neutral-950 py-10 text-white sm:min-h-[480px] sm:py-14 lg:min-h-[520px]">
+        {/* Cover - single composed banner graphic (logo, headline, service
+            icons all baked into the image itself), so it's rendered plain
+            at its native aspect ratio rather than the fill+gradient+h1
+            treatment used elsewhere - overlaying our own heading on top
+            would just duplicate what's already in the artwork. */}
+        <section className="relative w-full overflow-hidden bg-neutral-950">
           <Image
-            src="/about-hero.jpg"
-            alt="Singapore's downtown skyline of glass and steel skyscrapers rising above a traditional temple roof"
-            fill
+            src="/about-hero-banner.png"
+            alt="Project Noah Pte Ltd - Engineered to Last, Built for Tomorrow. Quality workmanship, reliable solutions, lasting results: roofing systems, canopy & shelter installation, awning solutions, steel & metal fabrication, structural steel works, glass & aluminium works, ACP cladding, waterproofing & roof repairs, gutter & drainage systems, custom fabrication & installation, renovation & maintenance services"
+            width={1983}
+            height={793}
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="h-auto w-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/25" />
-
-          <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-5xl lg:text-6xl">
-              Building Singapore, One Project at a Time
-            </h1>
-
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-              {company.legalName} (UEN {company.uen}) has delivered building
-              construction, design &amp; build and addition &amp; alteration
-              works for {company.yearsInOperation}+ years, from our office in
-              Pioneer.
-            </p>
-          </div>
         </section>
 
         {/* Company Profile (left) + sketch with the Our Story narrative

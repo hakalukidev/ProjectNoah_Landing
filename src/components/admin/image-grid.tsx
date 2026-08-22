@@ -67,7 +67,7 @@ export function ImageGrid({
             onClick={() => handleDelete(image.id)}
             disabled={(deletingId === image.id) || isPending}
             aria-label="Delete photo"
-            className="absolute top-2 right-2 flex size-8 items-center justify-center bg-black/60 text-white opacity-80 transition-opacity hover:bg-[#e01f22] hover:opacity-100 group-hover:opacity-100 disabled:opacity-60"
+            className="absolute top-2 right-2 flex size-8 items-center justify-center bg-black/60 text-white opacity-80 transition-opacity hover:bg-[#ad1111] hover:opacity-100 group-hover:opacity-100 disabled:opacity-60"
           >
             <Trash2 className="size-4" />
           </button>

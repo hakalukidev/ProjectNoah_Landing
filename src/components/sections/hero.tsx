@@ -58,11 +58,11 @@ export function Hero({ email }: { email: string }) {
           <div className="pointer-events-auto flex max-w-3xl flex-col items-center gap-8 text-center">
             <h1 className="max-w-3xl text-3xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-4xl lg:text-5xl">
               Built to{" "}
-              <Highlighter action="highlight" color="#e01f22" padding={4}>
+              <Highlighter action="highlight" color="#ad1111" padding={4}>
                 <span className="text-white mix-blend-normal">Protect</span>
               </Highlighter>
               , Built to{" "}
-              <Highlighter action="underline" color="#e01f22" strokeWidth={3}>
+              <Highlighter action="underline" color="#ad1111" strokeWidth={3}>
                 Last
               </Highlighter>
             </h1>
@@ -72,7 +72,7 @@ export function Hero({ email }: { email: string }) {
                 <QuoteDialog
                   email={email}
                   render={
-                    <Button className="h-11 rounded-none bg-[#e01f22] px-6 text-sm text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]" />
+                    <Button className="h-11 rounded-none bg-[#ad1111] px-6 text-sm text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]" />
                   }
                 >
                   Get a Free Quote

@@ -281,82 +281,19 @@ export const PROJECTS = [
 /**
  * Extra site photos not tied to a specific project card - shown in the
  * "Photos From Our Sites" gallery. Static files under public/projects
- * (not the admin-managed gallery in data/images.json).
+ * (not the admin-managed gallery in data/images.json). Empty for now -
+ * the placeholder AI-generated set was removed; real site photos go
+ * through the admin gallery upload instead (which auto-watermarks them),
+ * or can be re-added here once real files land in public/projects.
  */
-export const SITE_PHOTOS = [
-  {
-    id: "roof1",
-    categoryId: "roofing-shelter",
-    src: "/projects/roof1.jpeg",
-    caption: "Louvred pergola roof over an outdoor BBQ terrace",
-    width: 1024,
-    height: 768,
-  },
-  {
-    id: "roof2",
-    categoryId: "roofing-shelter",
-    src: "/projects/roof2.jpeg",
-    caption: "Backyard pergola with retractable sunshade and timber deck",
-    width: 720,
-    height: 960,
-  },
-  {
-    id: "roof3",
-    categoryId: "roofing-shelter",
-    src: "/projects/roof3.jpeg",
-    caption: "Rooftop membrane roofing installation in progress",
-    width: 1600,
-    height: 1200,
-  },
-  {
-    id: "steel1",
-    categoryId: "steel-fabrication",
-    src: "/projects/steel1.jpeg",
-    caption: "Steel-and-glass framed facade structure, close-up view",
-    width: 600,
-    height: 800,
-  },
-  {
-    id: "steel2",
-    categoryId: "steel-fabrication",
-    src: "/projects/steel2.jpeg",
-    caption: "Steel-framed glass canopy walkway against a louvred facade",
-    width: 1600,
-    height: 720,
-  },
-  {
-    id: "steel3",
-    categoryId: "steel-fabrication",
-    src: "/projects/steel3.jpeg",
-    caption: "Large steel canopy structure under construction, commercial site",
-    width: 1600,
-    height: 1196,
-  },
-  {
-    id: "glass1",
-    categoryId: "facade-renovation",
-    src: "/projects/glass1.jpeg",
-    caption: "Frameless faceted glass roof, viewed from below",
-    width: 1200,
-    height: 1600,
-  },
-  {
-    id: "glass2",
-    categoryId: "facade-renovation",
-    src: "/projects/glass2.jpeg",
-    caption: "Frameless glass canopy over a landed home's terrace",
-    width: 720,
-    height: 540,
-  },
-  {
-    id: "glass3",
-    categoryId: "facade-renovation",
-    src: "/projects/glass3.jpeg",
-    caption: "Glass roof canopy against a clear blue sky",
-    width: 720,
-    height: 1600,
-  },
-];
+export const SITE_PHOTOS: {
+  id: string;
+  categoryId: string;
+  src: string;
+  caption: string;
+  width: number;
+  height: number;
+}[] = [];
 
 export const FAQS = [
   {

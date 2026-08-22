@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
               required
               autoFocus
               autoComplete="username"
-              className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#e01f22]"
+              className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#ad1111]"
             />
           </div>
 
@@ -46,18 +46,18 @@ export default function AdminLoginPage() {
               type="password"
               required
               autoComplete="current-password"
-              className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#e01f22]"
+              className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#ad1111]"
             />
           </div>
 
           {state?.error && (
-            <p className="text-sm font-medium text-[#e01f22]">{state.error}</p>
+            <p className="text-sm font-medium text-[#ad1111]">{state.error}</p>
           )}
 
           <button
             type="submit"
             disabled={pending}
-            className="mt-2 h-11 rounded-none bg-[#e01f22] text-sm font-bold text-white transition-colors hover:bg-[#b81a1c] disabled:opacity-60"
+            className="mt-2 h-11 rounded-none bg-[#ad1111] text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
           >
             {pending ? "Signing in..." : "Sign In"}
           </button>

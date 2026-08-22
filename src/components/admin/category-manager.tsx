@@ -22,18 +22,18 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
             type="text"
             required
             placeholder="e.g. Roofing & Shelter"
-            className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#e01f22]"
+            className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#ad1111]"
           />
         </div>
         <button
           type="submit"
           disabled={pending}
-          className="h-11 shrink-0 rounded-none bg-[#e01f22] px-6 text-sm font-bold text-white transition-colors hover:bg-[#b81a1c] disabled:opacity-60"
+          className="h-11 shrink-0 rounded-none bg-[#ad1111] px-6 text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
         >
           {pending ? "Adding..." : "Add Category"}
         </button>
       </form>
-      {state?.error && <p className="text-sm font-medium text-[#e01f22]">{state.error}</p>}
+      {state?.error && <p className="text-sm font-medium text-[#ad1111]">{state.error}</p>}
 
       <ul className="flex flex-col divide-y divide-neutral-200 border border-neutral-200">
         {categories.length === 0 && (
@@ -52,7 +52,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
               <button
                 type="submit"
                 aria-label={`Delete ${category.name}`}
-                className="flex size-9 items-center justify-center border border-neutral-200 text-neutral-500 transition-colors hover:border-[#e01f22] hover:text-[#e01f22]"
+                className="flex size-9 items-center justify-center border border-neutral-200 text-neutral-500 transition-colors hover:border-[#ad1111] hover:text-[#ad1111]"
               >
                 <Trash2 className="size-4" />
               </button>

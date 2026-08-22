@@ -6,7 +6,7 @@ import { updateContactAction } from "@/lib/server/actions";
 import type { ContactInfo } from "@/lib/server/contact";
 
 const FIELD_CLASS =
-  "h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#e01f22]";
+  "h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#ad1111]";
 const LABEL_CLASS = "text-xs font-bold uppercase tracking-wide text-neutral-500";
 
 export function ContactEditor({ contact }: { contact: ContactInfo }) {
@@ -61,12 +61,12 @@ export function ContactEditor({ contact }: { contact: ContactInfo }) {
         </div>
       </div>
 
-      {state?.error && <p className="text-sm font-medium text-[#e01f22]">{state.error}</p>}
+      {state?.error && <p className="text-sm font-medium text-[#ad1111]">{state.error}</p>}
 
       <button
         type="submit"
         disabled={pending}
-        className="h-11 w-fit rounded-none bg-[#e01f22] px-8 text-sm font-bold text-white transition-colors hover:bg-[#b81a1c] disabled:opacity-60"
+        className="h-11 w-fit rounded-none bg-[#ad1111] px-8 text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
       >
         {pending ? "Saving..." : "Save Changes"}
       </button>

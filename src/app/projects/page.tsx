@@ -7,7 +7,6 @@ import { QuoteDialog } from "@/components/site/quote-dialog";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { ProjectsGrid } from "@/components/sections/projects-grid";
 import { ProjectVideoGallery } from "@/components/sections/project-video-gallery";
 import { PhotoGallery } from "@/components/sections/photo-gallery";
 import { company, PROJECTS, PROJECT_CATEGORIES, SITE_PHOTOS } from "@/lib/site-config";
@@ -117,12 +116,6 @@ export default async function ProjectsPage() {
             <div className="mt-12">
               <ProjectVideoGallery />
             </div>
-          </div>
-        </section>
-
-        <section className="bg-white pt-12 pb-24">
-          <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <ProjectsGrid />
           </div>
         </section>
 

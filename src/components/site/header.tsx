@@ -166,7 +166,7 @@ export function Header({ contact }: { contact: ContactInfo }) {
               <QuoteDialog
                 email={contact.email}
                 render={
-                  <Button className="rounded-none bg-[#e01f22] px-4 text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c] 2xl:px-6" />
+                  <Button className="rounded-none bg-[#ad1111] px-4 text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e] 2xl:px-6" />
                 }
               >
                 Get a Free Quote
@@ -256,7 +256,7 @@ export function Header({ contact }: { contact: ContactInfo }) {
               render={
                 <Button
                   onClick={() => setOpen(false)}
-                  className="mt-2 w-full rounded-none bg-[#e01f22] text-white shadow-lg shadow-[#e01f22]/25 hover:bg-[#b81a1c]"
+                  className="mt-2 w-full rounded-none bg-[#ad1111] text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]"
                 />
               }
             >

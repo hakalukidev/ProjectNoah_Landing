@@ -33,7 +33,7 @@ export function AdminNav() {
                   className={cn(
                     "flex items-center gap-2 px-3 py-2 text-sm font-semibold transition-colors",
                     active
-                      ? "bg-[#e01f22] text-white"
+                      ? "bg-[#ad1111] text-white"
                       : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
                   )}
                 >
@@ -48,7 +48,7 @@ export function AdminNav() {
         <form action={logoutAction}>
           <button
             type="submit"
-            className="flex items-center gap-2 border border-neutral-200 px-3 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:border-[#e01f22] hover:text-[#e01f22]"
+            className="flex items-center gap-2 border border-neutral-200 px-3 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:border-[#ad1111] hover:text-[#ad1111]"
           >
             <LogOut className="size-4" />
             Log Out

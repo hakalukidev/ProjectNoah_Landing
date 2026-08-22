@@ -29,11 +29,11 @@ export function Stats() {
             delay={index * 0.1}
             className="flex flex-col items-center text-center"
           >
-            <div className="flex items-baseline text-4xl font-extrabold text-[#e01f22] sm:text-5xl">
+            <div className="flex items-baseline text-4xl font-extrabold text-[#ad1111] sm:text-5xl">
               <NumberTicker
                 value={stat.value}
                 startValue={Math.max(0, stat.value - Math.ceil(stat.value * 0.6))}
-                className="text-[#e01f22] tabular-nums dark:text-[#e01f22]"
+                className="text-[#ad1111] tabular-nums dark:text-[#ad1111]"
               />
               <span>{stat.suffix}</span>
             </div>

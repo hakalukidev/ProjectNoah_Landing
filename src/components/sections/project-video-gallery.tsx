@@ -1,37 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { Play, ShieldCheck, X } from "lucide-react";
 
 type ProjectVideo = { id: string; src: string; caption: string };
-
-// Same nav-logo badge + phone number used to watermark site photos
-// (src/lib/server/watermark.ts) - here it's a CSS overlay rather than a
-// pixel burn-in, since these are video files, not JPEGs. Two variants:
-// a small corner badge for the grid preview (center is already the play
-// button) and the full centred mark for the actual lightbox playback,
-// which is what anyone actually recording/screenshotting would capture.
-function VideoWatermarkCorner() {
-  return (
-    <div className="pointer-events-none absolute top-3 right-3 size-9 overflow-hidden rounded-full opacity-80 shadow-md">
-      <Image src="/nav-logo.jpeg" alt="" fill className="object-cover" />
-    </div>
-  );
-}
-
-function VideoWatermarkCenter() {
-  return (
-    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-80">
-      <div className="relative size-20 overflow-hidden rounded-full sm:size-28">
-        <Image src="/nav-logo.jpeg" alt="" fill className="object-cover" />
-      </div>
-      <span className="text-base font-bold text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
-        +65 9645 8471
-      </span>
-    </div>
-  );
-}
 
 const VIDEOS: ProjectVideo[] = [
   { id: "video1", src: "/video1.mp4", caption: "Roofing & Shelter" },
@@ -106,7 +78,6 @@ export function ProjectVideoGallery() {
                 contrast, deepening on hover - no white-disc/red-triangle
                 "YouTube button" here, just a clean frosted-glass ring. */}
             <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover/video:bg-black/30" />
-            <VideoWatermarkCorner />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex size-14 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm transition-all duration-200 group-hover/video:scale-110 group-hover/video:bg-primary group-hover/video:border-primary">
                 <Play className="ml-0.5 size-5 fill-white text-white" />
@@ -153,7 +124,6 @@ export function ProjectVideoGallery() {
                 controlsList="nodownload noremoteplayback"
                 className="max-h-[80vh] w-full max-w-full touch-none object-contain"
               />
-              <VideoWatermarkCenter />
             </div>
             <p className="text-center text-sm text-white/80">
               {activeVideo.caption}

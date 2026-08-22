@@ -17,7 +17,7 @@ export default async function AdminImagesPage() {
       </div>
 
       {categories.length === 0 ? (
-        <p className="border border-[#e01f22]/30 bg-[#e01f22]/5 px-4 py-3 text-sm text-neutral-900">
+        <p className="border border-[#ad1111]/30 bg-[#ad1111]/5 px-4 py-3 text-sm text-neutral-900">
           Add a category first on the{" "}
           <a href="/admin/categories" className="underline">
             Categories

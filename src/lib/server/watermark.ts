@@ -18,9 +18,9 @@ function escapeXml(value: string): string {
 }
 
 /**
- * Burns the company logo + phone number into the centre of an uploaded
- * photo, so any copy that leaves the site (screenshot, save-as, etc.)
- * still carries the watermark. Output is always a JPEG.
+ * Burns the company logo + phone number into the bottom-right corner of an
+ * uploaded photo, so any copy that leaves the site (screenshot, save-as,
+ * etc.) still carries the watermark. Output is always a JPEG.
  */
 export async function watermarkImage(
   input: Buffer
@@ -97,18 +97,28 @@ export async function watermarkImage(
 
   const markHeight = logoSize + gap + textHeight;
 
+  // Anchor the whole mark (logo + text, stacked) to the bottom-right corner
+  // instead of the photo's centre, with a margin that scales with the photo
+  // so it reads the same on a phone-sized upload and a full-res one. The
+  // logo and text stay centred relative to each other within that block,
+  // exactly as before - only the block's position on the photo changes.
+  const margin = Math.round(Math.min(width, height) * 0.01);
+  const blockWidth = Math.max(logoSize, textWidth);
+  const blockLeft = Math.max(0, width - margin - blockWidth);
+  const blockTop = Math.max(0, height - margin - markHeight);
+
   const finalBuffer = await source
     .composite([
       {
         input: logoBuffer,
-        left: Math.round((width - logoSize) / 2),
-        top: Math.round((height - markHeight) / 2),
+        left: blockLeft + Math.round((blockWidth - logoSize) / 2),
+        top: blockTop,
         blend: "over",
       },
       {
         input: textPng,
-        left: Math.round((width - textWidth) / 2),
-        top: Math.round((height - markHeight) / 2 + logoSize + gap),
+        left: blockLeft + Math.round((blockWidth - textWidth) / 2),
+        top: blockTop + logoSize + gap,
         blend: "over",
       },
     ])
