@@ -42,3 +42,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pristine originals stashed by scripts/watermark-static.mjs before it burns
+# the watermark into public/works and public/site-photos in place
+/.watermark-originals/
+
+# raw unedited clips dropped in for reference; the site serves /video1..5.mp4
+# from the public root instead, so these never need to ship
+/public/project_images/*.mp4

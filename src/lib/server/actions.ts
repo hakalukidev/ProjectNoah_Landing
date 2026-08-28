@@ -48,7 +48,7 @@ export async function addCategoryAction(
   revalidatePath("/admin/categories");
   revalidatePath("/admin/images");
   revalidatePath("/");
-  revalidatePath("/projects");
+  revalidatePath("/works");
   return undefined;
 }
 
@@ -61,7 +61,7 @@ export async function deleteCategoryAction(formData: FormData): Promise<void> {
   revalidatePath("/admin/categories");
   revalidatePath("/admin/images");
   revalidatePath("/");
-  revalidatePath("/projects");
+  revalidatePath("/works");
 }
 
 export async function updateContactAction(
@@ -91,7 +91,7 @@ export async function updateContactAction(
   await updateContactInfo(data);
 
   revalidatePath("/");
-  revalidatePath("/projects");
+  revalidatePath("/works");
   revalidatePath("/admin/contact");
   return undefined;
 }

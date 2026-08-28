@@ -1,129 +1,25 @@
-import fs from "node:fs/promises";
 import path from "node:path";
-import sharp from "sharp";
-import { Resvg } from "@resvg/resvg-js";
 
 import { company } from "@/lib/site-config";
+import { watermarkBuffer } from "@/lib/server/watermark-core.mjs";
 
-// Same circular badge used for the site's nav logo - a plain JPEG, so it
-// carries no transparency of its own; we mask it to a circle below.
-const LOGO_PATH = path.join(process.cwd(), "public", "nav-logo.jpeg");
-const LOGO_OPACITY = 0.6; // deeper/more visible mark
-
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+// The transparent mark-only icon, not public/logo.png - that one is a full
+// lockup baked onto an opaque white background, which would composite as a
+// white box over the photo.
+const LOGO_PATH = path.join(process.cwd(), "public", "logo-icon.png");
 
 /**
- * Burns the company logo + phone number into the bottom-right corner of an
- * uploaded photo, so any copy that leaves the site (screenshot, save-as,
- * etc.) still carries the watermark. Output is always a JPEG.
+ * Burns the Project Noah logo, name and phone number into the bottom-right
+ * corner of an uploaded photo. Called on upload (lib/server/gallery.ts), so
+ * only the watermarked file is ever written to disk - the original is never
+ * persisted and cannot be served by mistake.
  */
 export async function watermarkImage(
   input: Buffer
 ): Promise<{ buffer: Buffer; width: number; height: number }> {
-  const source = sharp(input).rotate(); // normalise EXIF orientation first
-  const metadata = await source.metadata();
-  const width = metadata.width ?? 1600;
-  const height = metadata.height ?? 1200;
-
-  const markWidth = Math.round(Math.min(width, height) * 0.42);
-  const logoSize = Math.round(markWidth * 0.34);
-  const fontSize = Math.max(18, Math.round(markWidth * 0.1));
-  const gap = Math.round(fontSize * 0.6);
-
-  // nav-logo.jpeg is a square JPEG with the round badge on a plain
-  // background - clip it to a circle (dest-in) before resizing so only the
-  // badge itself, not its square corners, gets composited onto the photo.
-  const logoFile = await fs.readFile(LOGO_PATH);
-  const logoMeta = await sharp(logoFile).metadata();
-  const logoW = logoMeta.width ?? 640;
-  const logoH = logoMeta.height ?? 640;
-  const circleMaskSvg = `<svg width="${logoW}" height="${logoH}" xmlns="http://www.w3.org/2000/svg"><circle cx="${logoW / 2}" cy="${logoH / 2}" r="${Math.min(logoW, logoH) / 2}" fill="#fff"/></svg>`;
-
-  const maskedLogo = await sharp(logoFile)
-    .ensureAlpha()
-    .composite([{ input: Buffer.from(circleMaskSvg), blend: "dest-in" }])
-    .png()
-    .toBuffer();
-
-  const logoRaw = await sharp(maskedLogo)
-    .resize(logoSize, logoSize, { fit: "inside" })
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-
-  // Scale down the alpha channel so the logo blends into the photo instead
-  // of sitting on top of it at full strength.
-  for (let i = 3; i < logoRaw.data.length; i += 4) {
-    logoRaw.data[i] = Math.round(logoRaw.data[i] * LOGO_OPACITY);
-  }
-
-  const logoBuffer = await sharp(logoRaw.data, {
-    raw: {
-      width: logoRaw.info.width,
-      height: logoRaw.info.height,
-      channels: 4,
-    },
-  })
-    .png()
-    .toBuffer();
-
-  const phone = escapeXml(company.phone);
-  const textSvg = `
-    <svg width="${markWidth}" height="${Math.round(fontSize * 1.5)}" xmlns="http://www.w3.org/2000/svg">
-      <text
-        x="50%" y="70%"
-        text-anchor="middle"
-        font-family="Arial, Helvetica, sans-serif"
-        font-weight="700"
-        font-size="${fontSize}"
-        fill="rgba(255,255,255,0.85)"
-        stroke="rgba(0,0,0,0.55)"
-        stroke-width="${Math.max(2, Math.round(fontSize * 0.09))}"
-        paint-order="stroke"
-      >${phone}</text>
-    </svg>`;
-
-  const textPng = new Resvg(textSvg, { fitTo: { mode: "original" } })
-    .render()
-    .asPng();
-  const textMeta = await sharp(textPng).metadata();
-  const textWidth = textMeta.width ?? markWidth;
-  const textHeight = textMeta.height ?? Math.round(fontSize * 1.5);
-
-  const markHeight = logoSize + gap + textHeight;
-
-  // Anchor the whole mark (logo + text, stacked) to the bottom-right corner
-  // instead of the photo's centre, with a margin that scales with the photo
-  // so it reads the same on a phone-sized upload and a full-res one. The
-  // logo and text stay centred relative to each other within that block,
-  // exactly as before - only the block's position on the photo changes.
-  const margin = Math.round(Math.min(width, height) * 0.01);
-  const blockWidth = Math.max(logoSize, textWidth);
-  const blockLeft = Math.max(0, width - margin - blockWidth);
-  const blockTop = Math.max(0, height - margin - markHeight);
-
-  const finalBuffer = await source
-    .composite([
-      {
-        input: logoBuffer,
-        left: blockLeft + Math.round((blockWidth - logoSize) / 2),
-        top: blockTop,
-        blend: "over",
-      },
-      {
-        input: textPng,
-        left: blockLeft + Math.round((blockWidth - textWidth) / 2),
-        top: blockTop + logoSize + gap,
-        blend: "over",
-      },
-    ])
-    .jpeg({ quality: 88 })
-    .toBuffer();
-
-  return { buffer: finalBuffer, width, height };
+  return watermarkBuffer(input, {
+    logoPath: LOGO_PATH,
+    brandName: company.brandName,
+    phone: company.phone,
+  });
 }

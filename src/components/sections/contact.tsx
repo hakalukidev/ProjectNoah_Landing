@@ -18,7 +18,7 @@ export function Contact({ contact }: { contact: ContactInfo }) {
   ];
 
   return (
-    <section id="contact" className="scroll-mt-30 bg-white py-20 sm:py-28">
+    <section id="contact" className="scroll-mt-30 bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-10 lg:grid-cols-2 lg:gap-16 lg:px-16">
         <div>
           <Badge
@@ -59,7 +59,7 @@ export function Contact({ contact }: { contact: ContactInfo }) {
           </div>
         </div>
 
-        <ContactForm recipientEmail={contact.email} />
+        <ContactForm recipientEmail={contact.email} whatsapp={contact.whatsapp} />
       </div>
     </section>
   );

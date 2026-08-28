@@ -9,7 +9,7 @@ import { FAQS } from "@/lib/site-config";
 
 export function Faq() {
   return (
-    <section id="faq" className="scroll-mt-30 bg-white pt-10 pb-20 sm:pt-14 sm:pb-28">
+    <section id="faq" className="scroll-mt-30 bg-background pt-10 pb-20 sm:pt-14 sm:pb-28">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-10 lg:grid-cols-3 lg:gap-16 lg:px-16">
         <div>
           <Badge

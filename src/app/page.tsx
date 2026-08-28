@@ -3,7 +3,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
 import { Stats } from "@/components/sections/stats";
-import { ProjectsPreview } from "@/components/sections/projects";
+import { WorksPreview } from "@/components/sections/works";
 import { Faq } from "@/components/sections/faq";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
@@ -16,12 +16,12 @@ export default async function Home() {
     <div className="flex min-h-full flex-1 flex-col bg-background">
       <Header contact={contact} />
       <main className="flex flex-1 flex-col">
-        <Hero email={contact.email} />
+        <Hero />
         <Stats />
-        <About />
         <Services />
-        <ProjectsPreview />
+        <WorksPreview />
         <Faq />
+        <About />
         <Contact contact={contact} />
       </main>
       <Footer contact={contact} />

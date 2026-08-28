@@ -16,7 +16,7 @@ export async function DELETE(
   await deleteImage(id);
 
   revalidatePath("/");
-  revalidatePath("/projects");
+  revalidatePath("/works");
   revalidatePath("/admin/images");
 
   return NextResponse.json({ ok: true });

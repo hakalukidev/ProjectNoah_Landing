@@ -5,10 +5,10 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
-import { QuoteDialog } from "@/components/site/quote-dialog";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 import { company } from "@/lib/site-config";
 
-export function Hero({ email }: { email: string }) {
+export function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
       {/* Autoplaying video, embedded via <iframe src="/video-embed.html">
@@ -49,42 +49,80 @@ export function Hero({ email }: { email: string }) {
           loading="eager"
         />
 
-        {/* Soft radial scrim centered on the text, fading out toward the
-            edges, so light/foggy video frames don't wash out the white
-            text - without dropping a hard panel over the whole video. */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_55%_at_center,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0)_72%)]" />
+        {/* Soft radial scrim, fading out toward the edges, so light/foggy
+            video frames don't wash out the white text - without dropping a
+            hard panel over the whole video. Its centre sits at 30% across
+            to track the left-aligned text block rather than the middle of
+            the frame. Kept deliberately light (0.26 at its darkest) so the
+            footage stays legible; the heading's drop-shadow does most of
+            the contrast work. */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_30%_center,rgba(0,0,0,0.26)_0%,rgba(0,0,0,0)_72%)]" />
 
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
-          <div className="pointer-events-auto flex max-w-3xl flex-col items-center gap-8 text-center">
-            <h1 className="max-w-3xl text-3xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-4xl lg:text-5xl">
-              Built to{" "}
-              <Highlighter action="highlight" color="#ad1111" padding={4}>
-                <span className="text-white mix-blend-normal">Protect</span>
-              </Highlighter>
-              , Built to{" "}
-              <Highlighter action="underline" color="#ad1111" strokeWidth={3}>
-                Last
-              </Highlighter>
+        {/* Same mx-auto/max-w-7xl/px-10 container the rest of the page uses,
+            so the hero copy starts on the same left gutter as every section
+            below it. inset-0 plus a max-width still centres the box via the
+            auto margins, and items-start pins the text to its left edge. */}
+        <div className="pointer-events-none absolute inset-0 mx-auto flex w-full max-w-7xl items-center px-10 lg:px-16">
+          <div className="pointer-events-auto flex max-w-3xl flex-col items-start gap-8 text-left">
+            {/* Three stacked lines rather than one wrapping block, separated
+                by an em-based gap so the spacing tracks the h1 font-size at
+                every breakpoint instead of drifting. The script accent
+                ("To Last", Dancing Script via font-script) sits on its own
+                line with tight leading - its ascenders/descenders would
+                otherwise push the gap open further than the two printed
+                lines. */}
+            <h1 className="flex max-w-3xl flex-col gap-[0.12em] text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-4xl lg:text-5xl">
+              <span>Engineered</span>
+              <span className="font-script text-[1.35em] font-bold normal-case leading-[0.95] tracking-normal text-[#e02424] drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)]">
+                To Last
+              </span>
+              <span>
+                Built for{" "}
+                {/* "Tomorrow" types itself in on load. The transparent copy
+                    underneath reserves the final width so the line doesn't
+                    reflow letter by letter while it types.
+                    It's opacity-0 rather than hidden/invisible on purpose:
+                    the word stays in the accessibility tree and in the
+                    server-rendered HTML, which is all a screen reader or a
+                    crawler gets - the animated span starts out empty. The
+                    delay lets the rest of the heading land first. The
+                    sketched underline is drawn around that same reserved
+                    width, so it lands at full length instead of growing
+                    with the letters. */}
+                <Highlighter action="underline" color="#e02424" strokeWidth={3}>
+                  <span className="relative inline-block text-[#e02424]">
+                    <span className="opacity-0">Tomorrow</span>
+                    <TypingAnimation
+                      as="span"
+                      aria-hidden="true"
+                      className="absolute inset-0 text-left tracking-tight"
+                      duration={90}
+                      delay={500}
+                    >
+                      Tomorrow
+                    </TypingAnimation>
+                  </span>
+                </Highlighter>
+              </span>
             </h1>
 
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-start gap-3">
               <div className="flex flex-col gap-3 sm:flex-row">
-                <QuoteDialog
-                  email={email}
-                  render={
-                    <Button className="h-11 rounded-none bg-[#ad1111] px-6 text-sm text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]" />
-                  }
+                <Button
+                  render={<Link href="/contact#contact-form" />}
+                  nativeButton={false}
+                  className="h-11 rounded-none bg-[#ad1111] px-6 text-sm text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]"
                 >
                   Get a Free Quote
                   <ArrowRight className="ml-1 size-4" />
-                </QuoteDialog>
+                </Button>
                 <Button
-                  render={<Link href="/projects" />}
+                  render={<Link href="/#services" />}
                   nativeButton={false}
                   variant="outline"
-                  className="h-11 rounded-none border-white/50 bg-black/30 px-6 text-sm text-white backdrop-blur-sm hover:bg-black/45 hover:text-white"
+                  className="h-11 rounded-none border-white/50 bg-black/25 px-6 text-sm text-white hover:bg-black/40 hover:text-white"
                 >
-                  View Our Projects
+                  View Our Services
                 </Button>
               </div>
 

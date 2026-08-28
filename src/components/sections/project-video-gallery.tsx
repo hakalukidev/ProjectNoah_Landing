@@ -14,7 +14,7 @@ const VIDEOS: ProjectVideo[] = [
 ];
 
 // Designed to sit on the white "Project Films" section in
-// src/app/projects/page.tsx that renders this - card chrome (border, scrim,
+// src/app/works/page.tsx that renders this - card chrome (border, scrim,
 // footer text) is tuned for a light background rather than taking a
 // light/dark tone prop, since this grid is only ever embedded there.
 export function ProjectVideoGallery() {

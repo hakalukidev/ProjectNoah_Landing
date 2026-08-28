@@ -27,6 +27,11 @@ export async function GET(
       // watermark burned into the pixels is the actual protection.
       "Content-Disposition": "inline",
       "Cache-Control": "private, max-age=3600",
+      // Blocks other origins from embedding or fetching the file at all, so
+      // the photos cannot be hotlinked into a competitor's site.
+      "Cross-Origin-Resource-Policy": "same-origin",
+      // Keeps the image URL out of the Referer header on outbound clicks.
+      "Referrer-Policy": "same-origin",
       "X-Content-Type-Options": "nosniff",
     },
   });

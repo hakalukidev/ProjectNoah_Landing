@@ -44,7 +44,7 @@ export function Statement() {
   ];
 
   return (
-    <section className="bg-white">
+    <section className="bg-background">
       <TextReveal>{words}</TextReveal>
     </section>
   );

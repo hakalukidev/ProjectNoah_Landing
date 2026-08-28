@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
-import { QuoteDialog } from "@/components/site/quote-dialog";
 import type { ContactInfo } from "@/lib/server/contact";
 
 export function TopBar({ contact }: { contact: ContactInfo }) {
@@ -18,14 +17,12 @@ export function TopBar({ contact }: { contact: ContactInfo }) {
 
         <p className="hidden truncate text-center uppercase tracking-wide md:block">
           Trusted Singapore Contractor Since 2008 &middot;{" "}
-          <QuoteDialog
-            email={contact.email}
-            render={
-              <button type="button" className="underline underline-offset-2 hover:opacity-80" />
-            }
+          <Link
+            href="/contact#contact-form"
+            className="underline underline-offset-2 hover:opacity-80"
           >
             Get a Free Quote
-          </QuoteDialog>
+          </Link>
         </p>
 
         <div className="hidden items-center gap-4 whitespace-nowrap sm:flex">
