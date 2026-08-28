@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Images, LogOut, Phone, Tags } from "lucide-react";
+import { Images, LogOut, Phone, Tags, Video } from "lucide-react";
 
 import { logoutAction } from "@/lib/server/actions";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
   { href: "/admin/images", label: "Photos", icon: Images },
+  { href: "/admin/videos", label: "Videos", icon: Video },
   { href: "/admin/categories", label: "Categories", icon: Tags },
   { href: "/admin/contact", label: "Contact Info", icon: Phone },
 ];

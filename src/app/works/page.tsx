@@ -14,6 +14,7 @@ import { company, SITE_PHOTOS, WORK_CATEGORIES, WORKS } from "@/lib/site-config"
 import { getContactInfo } from "@/lib/server/contact";
 import { getCategories } from "@/lib/server/categories";
 import { getImages } from "@/lib/server/gallery";
+import { getVideos } from "@/lib/server/videos";
 
 export const metadata: Metadata = {
   title: "Our Works",
@@ -21,10 +22,11 @@ export const metadata: Metadata = {
 };
 
 export default async function WorksPage() {
-  const [contact, categories, images] = await Promise.all([
+  const [contact, categories, images, videos] = await Promise.all([
     getContactInfo(),
     getCategories(),
     getImages(),
+    getVideos(),
   ]);
   // Static site photos plus anything uploaded via the admin gallery.
   const galleryPhotos = [
@@ -37,6 +39,12 @@ export default async function WorksPage() {
       height: image.height,
     })),
   ];
+  // Uploaded videos, appended after the static showcase clips.
+  const uploadedVideos = videos.map((video) => ({
+    id: video.id,
+    src: `/api/videos/${video.id}`,
+    caption: video.caption || "Project video",
+  }));
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-background">
@@ -136,7 +144,7 @@ export default async function WorksPage() {
               </p>
             </div>
             <div className="mt-12">
-              <ProjectVideoGallery />
+              <ProjectVideoGallery videos={uploadedVideos} />
             </div>
           </div>
         </section>

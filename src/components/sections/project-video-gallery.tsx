@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, ShieldCheck, X } from "lucide-react";
 
-type ProjectVideo = { id: string; src: string; caption: string };
+export type ProjectVideo = { id: string; src: string; caption: string };
 
-const VIDEOS: ProjectVideo[] = [
+const STATIC_VIDEOS: ProjectVideo[] = [
   { id: "video1", src: "/video1.mp4", caption: "Roofing & Shelter" },
   { id: "video2", src: "/video2.mp4", caption: "Steel Fabrication" },
   { id: "video3", src: "/video3.mp4", caption: "Facade & Renovation" },
@@ -17,7 +17,9 @@ const VIDEOS: ProjectVideo[] = [
 // src/app/works/page.tsx that renders this - card chrome (border, scrim,
 // footer text) is tuned for a light background rather than taking a
 // light/dark tone prop, since this grid is only ever embedded there.
-export function ProjectVideoGallery() {
+export function ProjectVideoGallery({ videos = [] }: { videos?: ProjectVideo[] }) {
+  // Static showcase clips first, then anything uploaded via the admin panel.
+  const allVideos = [...STATIC_VIDEOS, ...videos];
   const [activeVideo, setActiveVideo] = useState<ProjectVideo | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previewRefs = useRef<Record<string, HTMLVideoElement | null>>({});
@@ -49,7 +51,7 @@ export function ProjectVideoGallery() {
   return (
     <div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {VIDEOS.map((video) => (
+        {allVideos.map((video) => (
           <button
             key={video.id}
             type="button"
