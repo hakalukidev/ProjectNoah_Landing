@@ -6,6 +6,7 @@ import {
   useState,
   type ComponentPropsWithoutRef,
   type ElementType,
+  type Ref,
 } from "react"
 
 import { cn } from "@/lib/utils"
@@ -85,9 +86,21 @@ export function TypingAnimation({
     return () => clearInterval(typingEffect)
   }, [children, duration, started])
 
+  // Pin the tag's props to what this component actually renders - an HTML
+  // element taking a class, a ref and a text child - rather than leaving
+  // them to be inferred from an open `ElementType`. TypeScript resolves such
+  // a tag by intersecting the props of every element it could be, so any
+  // library that augments JSX.IntrinsicElements with non-DOM elements
+  // collapses these props to `never`. (@react-three/fiber, since removed,
+  // did exactly that with ~120 three.js elements.) `as` is still typed as
+  // ElementType for callers; this only affects how the tag is checked here.
+  const Tag = Component as ElementType<
+    ComponentPropsWithoutRef<"div"> & { ref?: Ref<HTMLElement> }
+  >
+
   return (
-    <Component ref={elementRef} className={cn(className)} {...props}>
+    <Tag ref={elementRef} className={cn(className)} {...props}>
       {displayedText}
-    </Component>
+    </Tag>
   )
 }

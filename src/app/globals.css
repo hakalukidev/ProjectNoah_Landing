@@ -162,3 +162,41 @@
     user-select: none;
   }
 }
+
+@layer base {
+  :root {
+    /*
+     * Height of the site chrome: the 40px contact bar plus the 80px nav row
+     * plus its 1px bottom border (see src/components/site/header.tsx).
+     * On the home page the header is in `overlay` mode - fixed, floating
+     * transparently over the hero rather than sitting above it in flow - so
+     * the hero is a full screen tall and pads its *content* down by this
+     * much instead of subtracting it from its own height, which keeps the
+     * headline clear of the bar without pushing the scroll cue off the fold.
+     *
+     * The scroll-padding-top above is the same measurement rounded to
+     * 7.5rem; if the header's height changes, both move together.
+     */
+    --site-header-h: 121px;
+  }
+}
+
+@layer components {
+  /*
+   * The home page hero's box. Written here rather than as an arbitrary
+   * Tailwind value so the vh line can sit under the svh line as a fallback -
+   * two declarations of the same property, which class syntax cannot express.
+   * svh is what makes this correct on mobile: 100vh on iOS Safari means the
+   * viewport with the browser UI *retracted*, so a vh-only hero is taller
+   * than the screen on first paint and its call-to-action starts off-screen.
+   *
+   * The 34rem floor is for short landscape viewports (a phone turned
+   * sideways, a very short desktop window), where the remaining space would
+   * otherwise be too shallow to hold the heading and the buttons.
+   */
+  .hero-viewport {
+    min-height: max(34rem, 100vh);
+    min-height: max(34rem, 100svh);
+    padding-top: var(--site-header-h);
+  }
+}

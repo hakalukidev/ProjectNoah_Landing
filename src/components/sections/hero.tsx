@@ -1,137 +1,81 @@
-"use client";
+import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { HeroContent } from "@/components/hero/hero-content";
 
-import { Button } from "@/components/ui/button";
-import { Highlighter } from "@/components/ui/highlighter";
-import { TypingAnimation } from "@/components/ui/typing-animation";
-import { company } from "@/lib/site-config";
-
+/**
+ * The home page hero: a single still behind the headline.
+ *
+ * The two rules that matter if you touch this:
+ *
+ *   1. This section is a Server Component and the copy inside it is real
+ *      DOM. The heading, the buttons and the UEN line are server-rendered
+ *      and present in the HTML regardless of whether the backdrop has
+ *      loaded. The image is decoration; it is never load-bearing for the
+ *      message.
+ *
+ *   2. Nothing behind the copy intercepts input. The image and both scrims
+ *      carry pointer-events: none, so every click lands on the buttons
+ *      underneath.
+ *
+ * This hero has had two previous incarnations: a looping video
+ * (public/hero-video.mp4, wrapped in public/video-embed.html) and a
+ * real-time WebGL skyline (src/components/hero/, three.js + r3f). Both are
+ * gone from the page; the video pair is still in the repo and still
+ * cache-headered in next.config.ts. The 3D scene is in this file's history
+ * if it is ever wanted back.
+ */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-background">
-      {/* Autoplaying video, embedded via <iframe src="/video-embed.html">
-          (see public/video-embed.html) rather than a direct <video> tag - the
-          actual <video>/<source> tags live in that same-origin document, which
-          is a deterrent against casual "save video as" downloading (not real
-          protection, since the file is still fetchable via dev tools). Swap
-          the file at public/hero-video.mp4 to replace the video itself
-          (currently 3840x2160, 16:9). video-embed.html sets autoplay + loop +
-          muted on the <video> itself, so playback restarts on its own and
-          never has to be re-triggered from here.
-          Full-bleed: no max-width/padding wrapper and no border, so the video
-          runs edge to edge at the full viewport width on every screen size.
-          The box height is set with viewport-height units (h-[46vh] growing
-          to h-[64vh] on larger screens) rather than a fixed aspect ratio, so
-          it stays a sensible height whether the viewport is a narrow phone
-          or an ultrawide monitor. video-embed.html pairs this with
-          object-fit: cover (fills the box completely, cropping whatever
-          doesn't fit) rather than contain, since a full-bleed box ruled out
-          keeping pillarbox bars. No on-video controls - it's muted, looping
-          decoration with no audio to toggle.
+    <section className="hero-viewport relative flex w-full items-center overflow-hidden bg-[#050912]">
+      {/* Full-bleed backdrop. `fill` + object-cover rather than an intrinsic
+          layout because the section is sized by the viewport, not by the
+          image; `priority` because this is the LCP element on the home page
+          and it should not wait behind lazy-loading. The source is a large
+          PNG - next/image re-encodes and resizes it per request, so what
+          ships is a fraction of what is in public/. */}
+      <Image
+        src="/hero_img.png"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none object-cover object-center"
+      />
 
-          The heading, CTAs and legal line sit in an absolutely-positioned
-          overlay directly on top of the video (rather than above it). There
-          is no hard dark panel behind them - only a soft radial scrim
-          (see the gradient div just below the iframe) plus a drop-shadow on
-          the text itself - so the video stays clear at the edges while the
-          text zone gets enough contrast to stay legible over bright/foggy
-          footage. The outline button keeps its own small translucent
-          backing (it's a button, not a decorative panel) since plain
-          white-on-video text there would be unreadable over a light frame. */}
-      <div className="relative h-[46vh] w-full min-h-[320px] overflow-hidden sm:h-[54vh] lg:h-[64vh]">
-        <iframe
-          src="/video-embed.html"
-          title="Hero background video"
-          className="size-full border-0"
-          allow="autoplay"
-          loading="eager"
-        />
+      {/* Readability scrim. The gradient is horizontal and stops well short
+          of the right edge, so it darkens the column the copy sits in
+          without flattening the part of the image worth looking at. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(3,7,14,0.85)_0%,rgba(3,7,14,0.55)_34%,rgba(3,7,14,0.12)_62%,rgba(3,7,14,0)_85%)]"
+      />
+      {/* A little weight at the very top and bottom edges: the top is what
+          the transparent header floats on - the nav's white text is read
+          against this band rather than against whatever happens to be behind
+          it - and the bottom settles the image down into the section
+          boundary. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,14,0.45)_0%,rgba(3,7,14,0)_22%,rgba(3,7,14,0)_72%,rgba(3,7,14,0.5)_100%)]"
+      />
 
-        {/* Soft radial scrim, fading out toward the edges, so light/foggy
-            video frames don't wash out the white text - without dropping a
-            hard panel over the whole video. Its centre sits at 30% across
-            to track the left-aligned text block rather than the middle of
-            the frame. Kept deliberately light (0.26 at its darkest) so the
-            footage stays legible; the heading's drop-shadow does most of
-            the contrast work. */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_30%_center,rgba(0,0,0,0.26)_0%,rgba(0,0,0,0)_72%)]" />
+      {/* Above both scrims and the image. This is the only layer in the
+          section that accepts pointer events. */}
+      <div className="relative z-10 w-full">
+        <HeroContent />
+      </div>
 
-        {/* Same mx-auto/max-w-7xl/px-10 container the rest of the page uses,
-            so the hero copy starts on the same left gutter as every section
-            below it. inset-0 plus a max-width still centres the box via the
-            auto margins, and items-start pins the text to its left edge. */}
-        <div className="pointer-events-none absolute inset-0 mx-auto flex w-full max-w-7xl items-center px-10 lg:px-16">
-          <div className="pointer-events-auto flex max-w-3xl flex-col items-start gap-8 text-left">
-            {/* Three stacked lines rather than one wrapping block, separated
-                by an em-based gap so the spacing tracks the h1 font-size at
-                every breakpoint instead of drifting. The script accent
-                ("To Last", Dancing Script via font-script) sits on its own
-                line with tight leading - its ascenders/descenders would
-                otherwise push the gap open further than the two printed
-                lines. */}
-            <h1 className="flex max-w-3xl flex-col gap-[0.12em] text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] sm:text-4xl lg:text-5xl">
-              <span>Engineered</span>
-              <span className="font-script text-[1.35em] font-bold normal-case leading-[0.95] tracking-normal text-[#e02424] drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)]">
-                To Last
-              </span>
-              <span>
-                Built for{" "}
-                {/* "Tomorrow" types itself in on load. The transparent copy
-                    underneath reserves the final width so the line doesn't
-                    reflow letter by letter while it types.
-                    It's opacity-0 rather than hidden/invisible on purpose:
-                    the word stays in the accessibility tree and in the
-                    server-rendered HTML, which is all a screen reader or a
-                    crawler gets - the animated span starts out empty. The
-                    delay lets the rest of the heading land first. The
-                    sketched underline is drawn around that same reserved
-                    width, so it lands at full length instead of growing
-                    with the letters. */}
-                <Highlighter action="underline" color="#e02424" strokeWidth={3}>
-                  <span className="relative inline-block text-[#e02424]">
-                    <span className="opacity-0">Tomorrow</span>
-                    <TypingAnimation
-                      as="span"
-                      aria-hidden="true"
-                      className="absolute inset-0 text-left tracking-tight"
-                      duration={90}
-                      delay={500}
-                    >
-                      Tomorrow
-                    </TypingAnimation>
-                  </span>
-                </Highlighter>
-              </span>
-            </h1>
-
-            <div className="flex flex-col items-start gap-3">
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  render={<Link href="/contact#contact-form" />}
-                  nativeButton={false}
-                  className="h-11 rounded-none bg-[#ad1111] px-6 text-sm text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]"
-                >
-                  Get a Free Quote
-                  <ArrowRight className="ml-1 size-4" />
-                </Button>
-                <Button
-                  render={<Link href="/#services" />}
-                  nativeButton={false}
-                  variant="outline"
-                  className="h-11 rounded-none border-white/50 bg-black/25 px-6 text-sm text-white hover:bg-black/40 hover:text-white"
-                >
-                  View Our Services
-                </Button>
-              </div>
-
-              <p className="text-xs font-semibold uppercase tracking-wide text-white/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
-                {company.legalName} &middot; UEN {company.uen}
-              </p>
-            </div>
-          </div>
-        </div>
+      {/* Scroll cue. Decorative and inert - the page below is reached by
+          scrolling like any other, there is no scroll-jacking here and the
+          hero hands off to the next section on its own. motion-safe keeps it
+          still for anyone who has asked for reduced motion. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center"
+      >
+        <ChevronDown className="size-6 text-white/45 motion-safe:animate-bounce" />
       </div>
     </section>
   );

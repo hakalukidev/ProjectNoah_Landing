@@ -1,11 +1,30 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import type { ContactInfo } from "@/lib/server/contact";
 
-export function TopBar({ contact }: { contact: ContactInfo }) {
+export function TopBar({
+  contact,
+  /**
+   * Set while the header floats over the home page hero: the strip drops its
+   * own dark fill and lets the hero show through, keeping the same white
+   * text. See the `overlay` prop on Header.
+   */
+  transparent = false,
+}: {
+  contact: ContactInfo;
+  transparent?: boolean;
+}) {
   return (
-    <div className="w-full bg-brand-dark text-brand-dark-foreground">
+    <div
+      className={cn(
+        "w-full transition-colors duration-300",
+        transparent
+          ? "bg-transparent text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]"
+          : "bg-brand-dark text-brand-dark-foreground"
+      )}
+    >
       <div className="mx-auto flex h-10 w-full max-w-[1920px] items-center justify-between gap-4 px-6 text-xs font-semibold lg:px-12">
         <Link
           href={`tel:${contact.phone.replace(/\s+/g, "")}`}

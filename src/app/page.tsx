@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-background">
-      <Header contact={contact} />
+      <Header contact={contact} overlay />
       <main className="flex flex-1 flex-col">
         <Hero />
         <Stats />

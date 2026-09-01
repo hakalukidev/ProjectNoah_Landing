@@ -63,9 +63,9 @@ export const SOCIAL_LINKS = {
 
 export const NAV_LINKS = [
   { label: "About Us", href: "/about" },
+  { label: "Our Works", href: "/works" },
   { label: "Services", href: "/#services" },
   { label: "Quality & Safety", href: "/quality-safety" },
-  { label: "Our Works", href: "/works" },
   { label: "FAQ", href: "/#faq" },
   { label: "Contact", href: "/contact" },
 ];

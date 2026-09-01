@@ -30,11 +30,27 @@ function isNavLinkActive(href: string, pathname: string, hash: string) {
   return anchor ? hash === `#${anchor}` : hash === "";
 }
 
+// The two colour schemes the nav row can be in. `transparent` is the state
+// the bar sits in while it floats over the home page hero; every other case
+// - any inner page, or the home page once it has been scrolled - uses the
+// solid white chrome.
+function navLinkClasses(transparent: boolean, active: boolean) {
+  return cn(
+    "whitespace-nowrap border-b-2 border-transparent text-sm font-semibold uppercase tracking-wide transition-colors",
+    transparent
+      ? "text-white/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] hover:text-white"
+      : "text-foreground/80 hover:text-primary",
+    active && (transparent ? "border-white text-white" : "border-primary text-primary")
+  );
+}
+
 function ServicesDropdown({
   active,
+  transparent,
   onNavigate,
 }: {
   active?: boolean;
+  transparent: boolean;
   onNavigate?: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -66,10 +82,7 @@ function ServicesDropdown({
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className={cn(
-          "flex items-center gap-1 whitespace-nowrap border-b-2 border-transparent text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary",
-          active && "border-primary text-primary"
-        )}
+        className={cn("flex items-center gap-1", navLinkClasses(transparent, Boolean(active)))}
       >
         Services
         <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
@@ -96,7 +109,21 @@ function ServicesDropdown({
   );
 }
 
-export function Header({ contact }: { contact: ContactInfo }) {
+export function Header({
+  contact,
+  /**
+   * Float the chrome over the page instead of sitting above it in flow.
+   * Passed by the home page, whose hero is a full-height dark scene the
+   * transparent bar reads against; the bar fades back to its solid white
+   * self as soon as the page is scrolled. Inner pages leave this off - they
+   * open on light content, where white-on-white would be invisible - and
+   * keep the sticky, in-flow header.
+   */
+  overlay = false,
+}: {
+  contact: ContactInfo;
+  overlay?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() ?? "/";
 
@@ -111,13 +138,41 @@ export function Header({ contact }: { contact: ContactInfo }) {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, [pathname]);
 
+  // Only meaningful in overlay mode. Read once on mount as well as on every
+  // scroll: a reload part-way down the page, or a back-navigation that
+  // restores the scroll position, both arrive already scrolled and have to
+  // paint the solid bar rather than white text over white content.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    if (!overlay) return;
+    const handleScroll = () => setScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [overlay]);
+
+  // The open mobile drawer is a white panel hanging off the bottom edge of
+  // the bar, so the bar goes solid with it rather than leaving that panel
+  // attached to nothing.
+  const transparent = overlay && !scrolled && !open;
+
   return (
-    <div className="sticky top-0 z-50 w-full">
-      <TopBar contact={contact} />
-      <header className="relative w-full border-b border-border bg-white">
+    <div className={cn("top-0 z-50 w-full", overlay ? "fixed inset-x-0" : "sticky")}>
+      <TopBar contact={contact} transparent={transparent} />
+      <header
+        className={cn(
+          "relative w-full border-b transition-colors duration-300",
+          transparent ? "border-white/15 bg-transparent" : "border-border bg-white"
+        )}
+      >
         <div className="mx-auto grid h-20 w-full max-w-[1920px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6 xl:gap-6 xl:px-10">
-          <div className="col-start-1 -ml-4 flex h-20 items-center justify-self-start bg-gradient-to-r from-neutral-300 via-neutral-100 to-white pr-6 pl-4 sm:-ml-6 sm:pl-6 xl:-ml-10 xl:pr-8 xl:pl-10">
-            <Logo variant="light" />
+          <div
+            className={cn(
+              "col-start-1 -ml-4 flex h-20 items-center justify-self-start pr-6 pl-4 transition-colors duration-300 sm:-ml-6 sm:pl-6 xl:-ml-10 xl:pr-8 xl:pl-10",
+              !transparent && "bg-gradient-to-r from-neutral-300 via-neutral-100 to-white"
+            )}
+          >
+            <Logo variant={transparent ? "dark" : "light"} />
           </div>
 
           {/* col-start-2 pinned explicitly: a `hidden` (display:none) grid
@@ -133,15 +188,15 @@ export function Header({ contact }: { contact: ContactInfo }) {
                   <ServicesDropdown
                     key="services"
                     active={isNavLinkActive(link.href, pathname, hash)}
+                    transparent={transparent}
                   />
                 ) : (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={cn(
-                      "whitespace-nowrap border-b-2 border-transparent text-sm font-semibold uppercase tracking-wide text-foreground/80 transition-colors hover:text-primary",
-                      isNavLinkActive(link.href, pathname, hash) &&
-                        "border-primary text-primary"
+                    className={navLinkClasses(
+                      transparent,
+                      isNavLinkActive(link.href, pathname, hash)
                     )}
                   >
                     {link.label}
@@ -157,22 +212,35 @@ export function Header({ contact }: { contact: ContactInfo }) {
             <Button
               render={<Link href="/contact#contact-form" />}
               nativeButton={false}
-              className="rounded-none bg-[#ad1111] px-4 text-white shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e] 2xl:px-6"
+              className={cn(
+                "rounded-none px-4 text-white transition-colors 2xl:px-6",
+                transparent
+                  ? "border border-white/60 bg-white/10 backdrop-blur-sm hover:bg-white/20"
+                  : "bg-[#ad1111] shadow-lg shadow-[#ad1111]/25 hover:bg-[#8e0e0e]"
+              )}
             >
               Get a Free Quote
             </Button>
           </div>
 
           <div className="col-start-3 flex items-center justify-self-end gap-3 xl:gap-4">
-            <div className="-mr-4 hidden h-20 items-center bg-gradient-to-l from-neutral-300 via-neutral-100 to-white pr-4 pl-6 sm:-mr-6 sm:pr-6 xl:-mr-10 xl:flex xl:pr-10 xl:pl-8">
-              <Logo variant="light" />
+            <div
+              className={cn(
+                "-mr-4 hidden h-20 items-center pr-4 pl-6 transition-colors duration-300 sm:-mr-6 sm:pr-6 xl:-mr-10 xl:flex xl:pr-10 xl:pl-8",
+                !transparent && "bg-gradient-to-l from-neutral-300 via-neutral-100 to-white"
+              )}
+            >
+              <Logo variant={transparent ? "dark" : "light"} />
             </div>
 
             <button
               type="button"
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex items-center justify-center rounded-none p-2 text-foreground xl:hidden"
+              className={cn(
+                "inline-flex items-center justify-center rounded-none p-2 transition-colors xl:hidden",
+                transparent ? "text-white" : "text-foreground"
+              )}
             >
               {open ? <X className="size-6" /> : <Menu className="size-6" />}
             </button>
