@@ -6,7 +6,8 @@ import { Header } from "@/components/site/header";
 import { Footer } from "@/components/sections/footer";
 import { Button } from "@/components/ui/button";
 import { ProjectsGrid } from "@/components/sections/projects-grid";
-import { company, PROJECTS, PROJECT_CATEGORIES } from "@/lib/site-config";
+import { company, PROJECT_CATEGORIES } from "@/lib/site-config";
+import { getProjects } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
+  const projects = getProjects();
+
   return (
     <div className="flex min-h-full flex-1 flex-col bg-foreground">
       <Header />
@@ -37,7 +40,7 @@ export default function ProjectsPage() {
 
             <div className="mt-12 grid grid-cols-2 gap-8 border-t border-background/10 pt-8 sm:grid-cols-4">
               {[
-                { value: PROJECTS.length, suffix: "+", label: "Projects Shown" },
+                { value: projects.length, suffix: "+", label: "Projects Shown" },
                 {
                   value: PROJECT_CATEGORIES.length - 1,
                   suffix: "",
@@ -62,7 +65,7 @@ export default function ProjectsPage() {
 
         <section className="bg-foreground pb-24">
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-            <ProjectsGrid />
+            <ProjectsGrid projects={projects} />
           </div>
         </section>
 
