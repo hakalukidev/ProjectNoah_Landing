@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { FolderKanban } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -16,13 +19,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PROJECTS } from "@/lib/site-config";
+import { getProjects } from "@/lib/db";
+import { DeleteProjectButton } from "./delete-project-button";
+import { ProjectFormSheet } from "./project-form-sheet";
 
 export const metadata: Metadata = {
   title: "Projects",
 };
 
 export default function AdminProjectsPage() {
+  const projects = getProjects();
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div>
@@ -35,7 +42,10 @@ export default function AdminProjectsPage() {
       <Card className="border-none shadow-sm ring-1 ring-foreground/5">
         <CardHeader>
           <CardTitle>All Projects</CardTitle>
-          <CardDescription>{PROJECTS.length} total entries.</CardDescription>
+          <CardDescription>{projects.length} total entries.</CardDescription>
+          <CardAction>
+            <ProjectFormSheet />
+          </CardAction>
         </CardHeader>
         <CardContent className="px-0">
           <Table>
@@ -45,13 +55,28 @@ export default function AdminProjectsPage() {
                 <TableHead>Category</TableHead>
                 <TableHead>Location</TableHead>
                 <TableHead>Year</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {PROJECTS.map((project) => (
-                <TableRow key={project.slug}>
+              {projects.map((project) => (
+                <TableRow key={project.id}>
                   <TableCell className="font-medium">
-                    {project.title}
+                    <div className="flex items-center gap-3">
+                      <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-muted-foreground">
+                        {project.image ? (
+                          <Image
+                            src={project.image}
+                            alt=""
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <FolderKanban className="size-4" />
+                        )}
+                      </div>
+                      {project.title}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary">{project.category}</Badge>
@@ -62,10 +87,24 @@ export default function AdminProjectsPage() {
                   <TableCell className="text-muted-foreground">
                     {project.year}
                   </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-end gap-1">
+                      <ProjectFormSheet project={project} />
+                      <DeleteProjectButton
+                        id={project.id}
+                        title={project.title}
+                      />
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+          {projects.length === 0 && (
+            <p className="px-6 py-10 text-center text-sm text-muted-foreground">
+              No projects yet. Add your first one above.
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>

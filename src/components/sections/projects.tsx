@@ -1,13 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { PROJECTS } from "@/lib/site-config";
+import { getProjects } from "@/lib/db";
 
 export function ProjectsPreview() {
-  const featured = PROJECTS.slice(0, 3);
+  const featured = getProjects().slice(0, 3);
 
   return (
     <section id="projects" className="scroll-mt-30 bg-muted/40 py-20 sm:py-28">
@@ -43,12 +44,22 @@ export function ProjectsPreview() {
               className="group/project rounded-none border border-border bg-card p-0 ring-0 transition-shadow hover:shadow-lg"
             >
               <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-foreground">
+                {project.image && (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                  />
+                )}
                 <span className="absolute top-4 left-4 rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
                   {project.category}
                 </span>
-                <span className="px-8 text-center text-2xl font-extrabold tracking-tight text-background/10 transition-colors group-hover/project:text-background/20">
-                  {project.year}
-                </span>
+                {!project.image && (
+                  <span className="px-8 text-center text-2xl font-extrabold tracking-tight text-background/10 transition-colors group-hover/project:text-background/20">
+                    {project.year}
+                  </span>
+                )}
               </div>
               <CardContent className="flex flex-col gap-2 px-6 pt-5 pb-6">
                 <h3 className="text-lg font-bold text-foreground">

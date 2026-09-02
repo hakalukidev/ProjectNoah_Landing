@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { MapPin } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,17 +10,18 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { PROJECT_CATEGORIES, PROJECTS } from "@/lib/site-config";
+import { PROJECT_CATEGORIES } from "@/lib/site-config";
+import type { Project } from "@/lib/db";
 
-export function ProjectsGrid() {
+export function ProjectsGrid({ projects }: { projects: Project[] }) {
   const [category, setCategory] = useState<string>("All");
 
   const filtered = useMemo(
     () =>
       category === "All"
-        ? PROJECTS
-        : PROJECTS.filter((project) => project.category === category),
-    [category]
+        ? projects
+        : projects.filter((project) => project.category === category),
+    [projects, category]
   );
 
   return (
@@ -48,15 +50,25 @@ export function ProjectsGrid() {
             className="group/project rounded-none border border-background/10 bg-background/[0.03] p-0 ring-0 transition-colors hover:border-primary/40"
           >
             <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-background/10 bg-background/[0.02]">
+              {project.image && (
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                />
+              )}
               <span className="absolute top-4 left-4 rounded-none bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
                 {project.category}
               </span>
               <span className="absolute top-4 right-4 text-xs font-bold uppercase tracking-wide text-background/40">
                 {project.year}
               </span>
-              <span className="px-8 text-center text-5xl font-extrabold tracking-tight text-background/10 transition-colors group-hover/project:text-primary/20">
-                {project.year}
-              </span>
+              {!project.image && (
+                <span className="px-8 text-center text-5xl font-extrabold tracking-tight text-background/10 transition-colors group-hover/project:text-primary/20">
+                  {project.year}
+                </span>
+              )}
             </div>
             <CardContent className="flex flex-col gap-2 px-6 pt-5 pb-6">
               <h3 className="text-lg font-bold text-background">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   FolderKanban,
   Wrench,
@@ -17,34 +18,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { company, PROJECTS, SERVICES } from "@/lib/site-config";
-
-const STATS = [
-  {
-    label: "Total Projects",
-    value: PROJECTS.length,
-    icon: FolderKanban,
-    href: "/admin/projects",
-  },
-  {
-    label: "Services Offered",
-    value: SERVICES.length,
-    icon: Wrench,
-    href: "/admin/services",
-  },
-  {
-    label: "New Messages",
-    value: 0,
-    icon: Inbox,
-    href: "/admin/messages",
-  },
-  {
-    label: "Years in Operation",
-    value: company.yearsInOperation,
-    icon: Timer,
-    href: "/admin/settings",
-  },
-];
+import { getProjects } from "@/lib/db";
+import { company, SERVICES } from "@/lib/site-config";
 
 const QUICK_LINKS = [
   {
@@ -68,6 +43,31 @@ const QUICK_LINKS = [
 ];
 
 export default function AdminDashboardPage() {
+  const projects = getProjects();
+
+  const stats = [
+    {
+      label: "Total Projects",
+      value: projects.length,
+      icon: FolderKanban,
+    },
+    {
+      label: "Services Offered",
+      value: SERVICES.length,
+      icon: Wrench,
+    },
+    {
+      label: "New Messages",
+      value: 0,
+      icon: Inbox,
+    },
+    {
+      label: "Years in Operation",
+      value: company.yearsInOperation,
+      icon: Timer,
+    },
+  ];
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div>
@@ -78,7 +78,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {STATS.map((stat) => (
+        {stats.map((stat) => (
           <Card
             key={stat.label}
             className="border-none shadow-sm ring-1 ring-foreground/5"
@@ -120,15 +120,24 @@ export default function AdminDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-1">
-            {PROJECTS.slice(0, 5).map((project) => (
+            {projects.slice(0, 5).map((project) => (
               <Link
-                key={project.slug}
+                key={project.id}
                 href="/admin/projects"
                 className="flex items-center justify-between gap-4 rounded-lg px-2 py-2.5 -mx-2 transition-colors hover:bg-muted/60"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                    <FolderKanban className="size-4" />
+                  <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-muted-foreground">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt=""
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <FolderKanban className="size-4" />
+                    )}
                   </div>
                   <div>
                     <p className="text-sm font-medium">{project.title}</p>
@@ -140,6 +149,11 @@ export default function AdminDashboardPage() {
                 <Badge variant="secondary">{project.category}</Badge>
               </Link>
             ))}
+            {projects.length === 0 && (
+              <p className="px-2 py-6 text-center text-sm text-muted-foreground">
+                No projects yet.
+              </p>
+            )}
           </CardContent>
         </Card>
 
