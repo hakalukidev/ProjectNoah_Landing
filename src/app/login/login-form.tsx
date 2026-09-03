@@ -27,6 +27,7 @@ export function LoginForm({ next }: { next: string }) {
           type="email"
           autoComplete="username"
           required
+          className="rounded-md"
         />
       </div>
 
@@ -40,7 +41,7 @@ export function LoginForm({ next }: { next: string }) {
             autoComplete="current-password"
             placeholder="••••••••"
             required
-            className="pr-9"
+            className="rounded-md pr-9"
           />
           <button
             type="button"

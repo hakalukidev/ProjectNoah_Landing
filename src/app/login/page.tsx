@@ -46,7 +46,7 @@ export default async function LoginPage({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
       </div>
 
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full max-w-lg">
         <div className="mb-8 flex flex-col items-center text-center">
           <Image
             src="/logo.png"
@@ -63,7 +63,7 @@ export default async function LoginPage({
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl backdrop-blur-sm sm:p-8">
+        <div className="rounded-2xl border border-border bg-card p-8 shadow-2xl backdrop-blur-sm sm:p-10">
           <LoginForm next={nextPath} />
         </div>
 
