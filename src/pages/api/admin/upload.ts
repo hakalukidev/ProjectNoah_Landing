@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import multer from "multer";
 
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/server/session-token";
+import { COOKIE_NAME, decrypt } from "@/lib/session";
 import { getCategories } from "@/lib/server/categories";
 import { addImage, type GalleryImage } from "@/lib/server/gallery";
 
@@ -43,7 +43,7 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  if (!verifySessionToken(req.cookies[SESSION_COOKIE])) {
+  if (!(await decrypt(req.cookies[COOKIE_NAME]))) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 

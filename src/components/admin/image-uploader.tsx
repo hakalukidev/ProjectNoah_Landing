@@ -87,18 +87,18 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 border border-neutral-200 bg-neutral-50 p-6"
+      className="flex flex-col gap-4 border border-border bg-muted p-6"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label htmlFor="categoryId" className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+          <label htmlFor="categoryId" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Category
           </label>
           <select
             id="categoryId"
             value={categoryId}
             onChange={(event) => setCategoryId(event.target.value)}
-            className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none focus:border-[#ad1111]"
+            className="h-11 rounded-none border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary"
           >
             {categories.length === 0 && <option value="">No categories yet</option>}
             {categories.map((category) => (
@@ -110,7 +110,7 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="caption" className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+          <label htmlFor="caption" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Caption (optional, applied to this batch)
           </label>
           <input
@@ -119,13 +119,13 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
             value={caption}
             onChange={(event) => setCaption(event.target.value)}
             placeholder="e.g. Pioneer Sector roof install"
-            className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none focus:border-[#ad1111]"
+            className="h-11 rounded-none border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary"
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="file" className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+        <label htmlFor="file" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
           Photos (any image type, including iPhone HEIC)
         </label>
         <input
@@ -134,12 +134,12 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
           type="file"
           accept="image/*,.heic,.heif"
           multiple
-          className="text-sm text-neutral-600 file:mr-4 file:border-0 file:bg-[#ad1111] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
+          className="text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-[#ad1111] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
         />
       </div>
 
       {error && <p className="text-sm font-medium text-[#ad1111]">{error}</p>}
-      {status && !error && <p className="text-sm text-neutral-500">{status}</p>}
+      {status && !error && <p className="text-sm text-muted-foreground">{status}</p>}
 
       <button
         type="submit"

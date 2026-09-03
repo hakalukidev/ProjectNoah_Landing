@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import path from "node:path";
 import multer from "multer";
 
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/server/session-token";
+import { COOKIE_NAME, decrypt } from "@/lib/session";
 import { addVideo, type ProjectVideo } from "@/lib/server/videos";
 
 // multer needs the raw Node request stream, so this route has to live under
@@ -50,7 +50,7 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  if (!verifySessionToken(req.cookies[SESSION_COOKIE])) {
+  if (!(await decrypt(req.cookies[COOKIE_NAME]))) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 

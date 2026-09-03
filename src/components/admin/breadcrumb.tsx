@@ -10,6 +10,10 @@ const LABELS: Record<string, string> = {
   services: "Services",
   messages: "Messages",
   settings: "Settings",
+  images: "Photos",
+  videos: "Videos",
+  categories: "Categories",
+  contact: "Contact Info",
 };
 
 export function Breadcrumb() {

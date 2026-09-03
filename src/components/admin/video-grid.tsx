@@ -30,7 +30,7 @@ export function VideoGrid({ videos }: { videos: ProjectVideo[] }) {
 
   if (videos.length === 0) {
     return (
-      <p className="border border-neutral-200 bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-500">
+      <p className="border border-border bg-muted px-4 py-8 text-center text-sm text-muted-foreground">
         No videos uploaded yet.
       </p>
     );
@@ -41,7 +41,7 @@ export function VideoGrid({ videos }: { videos: ProjectVideo[] }) {
       {videos.map((video) => (
         <div
           key={video.id}
-          className="group relative aspect-video overflow-hidden border border-neutral-200 bg-black"
+          className="group relative aspect-video overflow-hidden border border-border bg-black"
         >
           <video
             src={`/api/videos/${video.id}`}

@@ -41,7 +41,7 @@ export function ImageGrid({
 
   if (images.length === 0) {
     return (
-      <p className="border border-neutral-200 bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-500">
+      <p className="border border-border bg-muted px-4 py-8 text-center text-sm text-muted-foreground">
         No photos uploaded yet.
       </p>
     );
@@ -50,7 +50,7 @@ export function ImageGrid({
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {images.map((image) => (
-        <div key={image.id} className="group relative aspect-square overflow-hidden border border-neutral-200">
+        <div key={image.id} className="group relative aspect-square overflow-hidden border border-border">
           <Image
             src={`/api/images/${image.id}`}
             alt={image.caption || "Uploaded photo"}

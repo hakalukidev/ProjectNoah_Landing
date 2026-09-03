@@ -9,6 +9,10 @@ import {
   Wrench,
   Inbox,
   Settings,
+  Images,
+  Video,
+  Tags,
+  Phone,
 } from "lucide-react";
 
 import {
@@ -37,11 +41,17 @@ const NAV_GROUPS = [
     items: [
       { title: "Projects", href: "/admin/projects", icon: FolderKanban },
       { title: "Services", href: "/admin/services", icon: Wrench },
+      { title: "Photos", href: "/admin/images", icon: Images },
+      { title: "Videos", href: "/admin/videos", icon: Video },
+      { title: "Categories", href: "/admin/categories", icon: Tags },
     ],
   },
   {
     label: "Communication",
-    items: [{ title: "Messages", href: "/admin/messages", icon: Inbox }],
+    items: [
+      { title: "Messages", href: "/admin/messages", icon: Inbox },
+      { title: "Contact Info", href: "/admin/contact", icon: Phone },
+    ],
   },
   {
     label: "General",

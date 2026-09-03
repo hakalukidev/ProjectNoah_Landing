@@ -6,8 +6,8 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">Categories</h1>
-      <p className="mb-6 text-sm text-neutral-500">
+      <h1 className="text-2xl font-extrabold tracking-tight text-foreground">Categories</h1>
+      <p className="mb-6 text-sm text-muted-foreground">
         Photos are organised by category on the public site&apos;s gallery filters.
       </p>
       <CategoryManager categories={categories} />

@@ -1,14 +1,14 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
-import { isAuthenticated } from "@/lib/server/auth";
+import { getSession } from "@/lib/session";
 import { deleteImage } from "@/lib/server/gallery";
 
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!(await isAuthenticated())) {
+  if (!(await getSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

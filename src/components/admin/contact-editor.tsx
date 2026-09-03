@@ -6,8 +6,8 @@ import { updateContactAction } from "@/lib/server/actions";
 import type { ContactInfo } from "@/lib/server/contact";
 
 const FIELD_CLASS =
-  "h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none transition-colors focus:border-[#ad1111]";
-const LABEL_CLASS = "text-xs font-bold uppercase tracking-wide text-neutral-500";
+  "h-11 rounded-none border border-border bg-card px-3 text-sm text-foreground outline-none transition-colors focus:border-primary";
+const LABEL_CLASS = "text-xs font-bold uppercase tracking-wide text-muted-foreground";
 
 export function ContactEditor({ contact }: { contact: ContactInfo }) {
   const [state, formAction, pending] = useActionState(updateContactAction, undefined);

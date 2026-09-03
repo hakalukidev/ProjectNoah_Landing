@@ -63,10 +63,10 @@ export function VideoUploader() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 border border-neutral-200 bg-neutral-50 p-6"
+      className="flex flex-col gap-4 border border-border bg-muted p-6"
     >
       <div className="flex flex-col gap-2">
-        <label htmlFor="video-caption" className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+        <label htmlFor="video-caption" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
           Caption (optional, applied to this batch)
         </label>
         <input
@@ -75,12 +75,12 @@ export function VideoUploader() {
           value={caption}
           onChange={(event) => setCaption(event.target.value)}
           placeholder="e.g. Pioneer Sector roof install"
-          className="h-11 rounded-none border border-neutral-300 bg-white px-3 text-sm text-neutral-900 outline-none focus:border-[#ad1111]"
+          className="h-11 rounded-none border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="video-file" className="text-xs font-bold uppercase tracking-wide text-neutral-500">
+        <label htmlFor="video-file" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
           Videos (MP4, WebM, MOV)
         </label>
         <input
@@ -89,13 +89,13 @@ export function VideoUploader() {
           type="file"
           accept="video/*"
           multiple
-          className="text-sm text-neutral-600 file:mr-4 file:border-0 file:bg-[#ad1111] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
+          className="text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-[#ad1111] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
         />
-        <p className="text-xs text-neutral-400">Max 200MB per video.</p>
+        <p className="text-xs text-muted-foreground/60">Max 200MB per video.</p>
       </div>
 
       {error && <p className="text-sm font-medium text-[#ad1111]">{error}</p>}
-      {status && !error && <p className="text-sm text-neutral-500">{status}</p>}
+      {status && !error && <p className="text-sm text-muted-foreground">{status}</p>}
 
       <button
         type="submit"
