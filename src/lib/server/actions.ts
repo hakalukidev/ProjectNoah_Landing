@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { addCategory, deleteCategory } from "@/lib/server/categories";
+import { addCategory, deleteCategory, updateCategory } from "@/lib/server/categories";
 import { updateContactInfo, type ContactInfo } from "@/lib/server/contact";
 
 export type ActionState = { error?: string } | undefined;
@@ -17,6 +17,26 @@ export async function addCategoryAction(
     await addCategory(name);
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Could not add category." };
+  }
+
+  revalidatePath("/admin/categories");
+  revalidatePath("/admin/images");
+  revalidatePath("/");
+  revalidatePath("/works");
+  return undefined;
+}
+
+export async function updateCategoryAction(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const id = String(formData.get("id") ?? "");
+  const name = String(formData.get("name") ?? "");
+
+  try {
+    await updateCategory(id, name);
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Could not update category." };
   }
 
   revalidatePath("/admin/categories");

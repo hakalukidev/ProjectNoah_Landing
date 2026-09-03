@@ -63,3 +63,22 @@ export async function deleteCategory(id: string): Promise<void> {
   const categories = await readAll();
   await writeAll(categories.filter((category) => category.id !== id));
 }
+
+export async function updateCategory(id: string, name: string): Promise<Category> {
+  const trimmed = name.trim();
+  if (!trimmed) {
+    throw new Error("Category name is required.");
+  }
+
+  const categories = await readAll();
+  const existing = categories.find((category) => category.id === id);
+  if (!existing) {
+    throw new Error("Category not found.");
+  }
+
+  const updated: Category = { ...existing, name: trimmed };
+  await writeAll(
+    categories.map((category) => (category.id === id ? updated : category))
+  );
+  return updated;
+}
