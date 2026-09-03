@@ -1,4 +1,11 @@
-import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
@@ -21,6 +28,19 @@ export const services = pgTable("services", {
   image: text("image"),
   position: integer("position").notNull(),
 });
+
+export const pageViews = pgTable(
+  "page_views",
+  {
+    id: serial("id").primaryKey(),
+    visitorId: text("visitor_id").notNull(),
+    date: text("date").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("page_views_visitor_date_idx").on(table.visitorId, table.date),
+  ]
+);
 
 export const footerSettings = pgTable("footer_settings", {
   id: integer("id").primaryKey().default(1),

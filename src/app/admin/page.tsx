@@ -5,6 +5,7 @@ import {
   Wrench,
   Inbox,
   Timer,
+  Users,
   ArrowRight,
   ArrowUpRight,
 } from "lucide-react";
@@ -18,8 +19,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { VisitorsChart } from "@/components/admin/visitors-chart";
 import { getProjects } from "@/lib/db";
 import { getServices } from "@/lib/services";
+import { getTotalVisitors, getVisitorsByDay } from "@/lib/analytics";
 import { company } from "@/lib/site-config";
 
 const QUICK_LINKS = [
@@ -44,9 +47,19 @@ const QUICK_LINKS = [
 ];
 
 export default async function AdminDashboardPage() {
-  const [projects, services] = await Promise.all([getProjects(), getServices()]);
+  const [projects, services, totalVisitors, visitorsByDay] = await Promise.all([
+    getProjects(),
+    getServices(),
+    getTotalVisitors(),
+    getVisitorsByDay(30),
+  ]);
 
   const stats = [
+    {
+      label: "Total Visitors",
+      value: totalVisitors,
+      icon: Users,
+    },
     {
       label: "Total Projects",
       value: projects.length,
@@ -78,7 +91,7 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
           <Card
             key={stat.label}
@@ -100,6 +113,18 @@ export default async function AdminDashboardPage() {
           </Card>
         ))}
       </div>
+
+      <Card className="border-none shadow-sm ring-1 ring-foreground/5">
+        <CardHeader>
+          <CardTitle>Visitors</CardTitle>
+          <CardDescription>
+            Unique visitors per day, last 30 days.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <VisitorsChart data={visitorsByDay} />
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="border-none shadow-sm ring-1 ring-foreground/5 lg:col-span-2">

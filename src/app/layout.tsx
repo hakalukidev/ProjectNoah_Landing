@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { ImageProtection } from "@/components/site/image-protection";
+import { VisitTracker } from "@/components/site/visit-tracker";
 import { WhatsappButton } from "@/components/site/whatsapp-button";
 import { company } from "@/lib/site-config";
 import { getContactInfo, contactWhatsappLink } from "@/lib/server/contact";
@@ -79,6 +80,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
         <ImageProtection />
+        <VisitTracker />
         <WhatsappButton whatsappLink={contactWhatsappLink(contact.whatsapp)} />
       </body>
     </html>
