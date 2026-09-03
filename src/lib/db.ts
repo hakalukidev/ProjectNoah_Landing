@@ -1,8 +1,9 @@
-import fs from "node:fs";
-import path from "node:path";
-import Database from "better-sqlite3";
+import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { count, eq, ne, and } from "drizzle-orm";
 
 import { PROJECTS as SEED_PROJECTS } from "@/lib/site-config";
+import { projects } from "@/lib/schema";
 
 export type Project = {
   id: number;
@@ -15,67 +16,52 @@ export type Project = {
   image: string | null;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DB_PATH = path.join(DATA_DIR, "app.db");
-
 declare global {
-  var __projectNoahDb: Database.Database | undefined;
+  var __projectNoahPool: Pool | undefined;
 }
 
-function openDb() {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-  const db = new Database(DB_PATH);
-  db.pragma("journal_mode = WAL");
+const pool =
+  globalThis.__projectNoahPool ??
+  new Pool({ connectionString: process.env.DATABASE_URL });
 
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS projects (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      slug TEXT NOT NULL UNIQUE,
-      title TEXT NOT NULL,
-      category TEXT NOT NULL,
-      location TEXT NOT NULL,
-      year TEXT NOT NULL,
-      description TEXT NOT NULL,
-      image TEXT,
-      position INTEGER NOT NULL
-    )
-  `);
-
-  const { count } = db
-    .prepare("SELECT COUNT(*) AS count FROM projects")
-    .get() as { count: number };
-
-  if (count === 0) {
-    const insert = db.prepare(
-      `INSERT INTO projects (slug, title, category, location, year, description, image, position)
-       VALUES (@slug, @title, @category, @location, @year, @description, @image, @position)`
-    );
-    const seed = db.transaction(() => {
-      SEED_PROJECTS.forEach((project, index) => {
-        insert.run({ ...project, image: null, position: index + 1 });
-      });
-    });
-    seed();
-  }
-
-  return db;
-}
-
-const db = globalThis.__projectNoahDb ?? openDb();
 if (process.env.NODE_ENV !== "production") {
-  globalThis.__projectNoahDb = db;
+  globalThis.__projectNoahPool = pool;
 }
 
-export function getProjects(): Project[] {
-  return db
-    .prepare("SELECT * FROM projects ORDER BY position ASC")
-    .all() as Project[];
+const db = drizzle(pool);
+
+let seeded = false;
+
+async function ensureSeeded() {
+  if (seeded) return;
+  seeded = true;
+
+  const [{ value }] = await db.select({ value: count() }).from(projects);
+  if (value > 0) return;
+
+  await db.insert(projects).values(
+    SEED_PROJECTS.map((project, index) => ({
+      ...project,
+      image: null,
+      position: index + 1,
+    }))
+  );
 }
 
-export function getProjectById(id: number): Project | undefined {
-  return db.prepare("SELECT * FROM projects WHERE id = ?").get(id) as
-    | Project
-    | undefined;
+export async function getProjects(): Promise<Project[]> {
+  await ensureSeeded();
+  return db.select().from(projects).orderBy(projects.position);
+}
+
+export async function getProjectById(
+  id: number
+): Promise<Project | undefined> {
+  await ensureSeeded();
+  const [project] = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.id, id));
+  return project;
 }
 
 function slugify(title: string) {
@@ -86,22 +72,24 @@ function slugify(title: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-function uniqueSlug(title: string, ignoreId?: number) {
+async function uniqueSlug(title: string, ignoreId?: number) {
   const base = slugify(title) || "project";
   let slug = base;
   let suffix = 2;
-  while (
-    db
-      .prepare(
-        ignoreId
-          ? "SELECT id FROM projects WHERE slug = ? AND id != ?"
-          : "SELECT id FROM projects WHERE slug = ?"
-      )
-      .get(...(ignoreId ? [slug, ignoreId] : [slug]))
-  ) {
+
+  while (true) {
+    const where = ignoreId
+      ? and(eq(projects.slug, slug), ne(projects.id, ignoreId))
+      : eq(projects.slug, slug);
+    const [existing] = await db
+      .select({ id: projects.id })
+      .from(projects)
+      .where(where);
+    if (!existing) break;
     slug = `${base}-${suffix}`;
     suffix += 1;
   }
+
   return slug;
 }
 
@@ -114,19 +102,19 @@ export type ProjectInput = {
   image?: string | null;
 };
 
-export function createProject(input: ProjectInput): Project {
-  const slug = uniqueSlug(input.title);
-  const { minPosition } = db
-    .prepare("SELECT MIN(position) AS minPosition FROM projects")
-    .get() as { minPosition: number | null };
-  const position = (minPosition ?? 1) - 1;
+export async function createProject(input: ProjectInput): Promise<Project> {
+  await ensureSeeded();
+  const slug = await uniqueSlug(input.title);
+  const [lowest] = await db
+    .select({ minPosition: projects.position })
+    .from(projects)
+    .orderBy(projects.position)
+    .limit(1);
+  const position = (lowest?.minPosition ?? 1) - 1;
 
-  const result = db
-    .prepare(
-      `INSERT INTO projects (slug, title, category, location, year, description, image, position)
-       VALUES (@slug, @title, @category, @location, @year, @description, @image, @position)`
-    )
-    .run({
+  const [project] = await db
+    .insert(projects)
+    .values({
       slug,
       title: input.title,
       category: input.category,
@@ -135,16 +123,17 @@ export function createProject(input: ProjectInput): Project {
       description: input.description,
       image: input.image ?? null,
       position,
-    });
+    })
+    .returning();
 
-  return getProjectById(Number(result.lastInsertRowid))!;
+  return project;
 }
 
-export function updateProject(
+export async function updateProject(
   id: number,
   input: ProjectInput & { image?: string | null }
-): Project {
-  const existing = getProjectById(id);
+): Promise<Project> {
+  const existing = await getProjectById(id);
   if (!existing) {
     throw new Error(`Project ${id} not found`);
   }
@@ -152,29 +141,31 @@ export function updateProject(
   const slug =
     input.title === existing.title
       ? existing.slug
-      : uniqueSlug(input.title, id);
+      : await uniqueSlug(input.title, id);
 
-  db.prepare(
-    `UPDATE projects
-     SET slug = @slug, title = @title, category = @category, location = @location,
-         year = @year, description = @description, image = @image
-     WHERE id = @id`
-  ).run({
-    id,
-    slug,
-    title: input.title,
-    category: input.category,
-    location: input.location,
-    year: input.year,
-    description: input.description,
-    image: input.image !== undefined ? input.image : existing.image,
-  });
+  const [project] = await db
+    .update(projects)
+    .set({
+      slug,
+      title: input.title,
+      category: input.category,
+      location: input.location,
+      year: input.year,
+      description: input.description,
+      image: input.image !== undefined ? input.image : existing.image,
+    })
+    .where(eq(projects.id, id))
+    .returning();
 
-  return getProjectById(id)!;
+  return project;
 }
 
-export function deleteProject(id: number): Project | undefined {
-  const existing = getProjectById(id);
-  db.prepare("DELETE FROM projects WHERE id = ?").run(id);
-  return existing;
+export async function deleteProject(
+  id: number
+): Promise<Project | undefined> {
+  const [deleted] = await db
+    .delete(projects)
+    .where(eq(projects.id, id))
+    .returning();
+  return deleted;
 }

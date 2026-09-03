@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   title: "Projects",
 };
 
-export default function AdminProjectsPage() {
-  const projects = getProjects();
+export default async function AdminProjectsPage() {
+  const projects = await getProjects();
 
   return (
     <div className="flex flex-1 flex-col gap-6">

@@ -42,8 +42,8 @@ const QUICK_LINKS = [
   },
 ];
 
-export default function AdminDashboardPage() {
-  const projects = getProjects();
+export default async function AdminDashboardPage() {
+  const projects = await getProjects();
 
   const stats = [
     {

@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description: `A look at the project types ${company.legalName} delivers across Singapore: industrial, commercial, institutional and A&A works.`,
 };
 
-export default function ProjectsPage() {
-  const projects = getProjects();
+export default async function ProjectsPage() {
+  const projects = await getProjects();
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-foreground">

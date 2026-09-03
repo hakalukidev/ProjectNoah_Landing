@@ -34,19 +34,19 @@ function revalidateProjectPages() {
 
 export async function createProjectAction(formData: FormData) {
   const input = readProjectInput(formData);
-  const project = createProject(input);
+  const project = await createProject(input);
 
   const imageFile = formData.get("image");
   if (imageFile instanceof File && imageFile.size > 0) {
     const imagePath = await saveProjectImage(imageFile, project.slug);
-    updateProject(project.id, { ...input, image: imagePath });
+    await updateProject(project.id, { ...input, image: imagePath });
   }
 
   revalidateProjectPages();
 }
 
 export async function updateProjectAction(id: number, formData: FormData) {
-  const existing = getProjectById(id);
+  const existing = await getProjectById(id);
   if (!existing) {
     throw new Error("Project not found");
   }
@@ -61,12 +61,12 @@ export async function updateProjectAction(id: number, formData: FormData) {
     image = newImage;
   }
 
-  updateProject(id, { ...input, image });
+  await updateProject(id, { ...input, image });
   revalidateProjectPages();
 }
 
 export async function deleteProjectAction(id: number) {
-  const deleted = deleteProject(id);
+  const deleted = await deleteProject(id);
   if (deleted) {
     await deleteProjectImage(deleted.image);
   }
