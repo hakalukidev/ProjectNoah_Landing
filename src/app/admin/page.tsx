@@ -19,7 +19,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getProjects } from "@/lib/db";
-import { company, SERVICES } from "@/lib/site-config";
+import { getServices } from "@/lib/services";
+import { company } from "@/lib/site-config";
 
 const QUICK_LINKS = [
   {
@@ -43,7 +44,7 @@ const QUICK_LINKS = [
 ];
 
 export default async function AdminDashboardPage() {
-  const projects = await getProjects();
+  const [projects, services] = await Promise.all([getProjects(), getServices()]);
 
   const stats = [
     {
@@ -53,7 +54,7 @@ export default async function AdminDashboardPage() {
     },
     {
       label: "Services Offered",
-      value: SERVICES.length,
+      value: services.length,
       icon: Wrench,
     },
     {

@@ -1,4 +1,4 @@
-import { company, WORK_CATEGORIES, SERVICES } from "@/lib/site-config";
+import { company, WORK_CATEGORIES } from "@/lib/site-config";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { BlurFade } from "@/components/ui/blur-fade";
 
@@ -16,16 +16,18 @@ const FACTS = [
   { label: "Divisions", value: "Roofing · Steel · Glass" },
 ];
 
-const STATS = [
-  { value: company.yearsInOperation, suffix: "+", label: "Years in Operation" },
-  { value: SERVICES.length, suffix: "", label: "Service Lines" },
-  {
-    value: WORK_CATEGORIES.length - 1,
-    suffix: "",
-    label: "Work Categories Delivered",
-  },
-  { value: 100, suffix: "%", label: "Singapore-Registered (ACRA)" },
-];
+function buildStats(serviceCount: number) {
+  return [
+    { value: company.yearsInOperation, suffix: "+", label: "Years in Operation" },
+    { value: serviceCount, suffix: "", label: "Service Lines" },
+    {
+      value: WORK_CATEGORIES.length - 1,
+      suffix: "",
+      label: "Work Categories Delivered",
+    },
+    { value: 100, suffix: "%", label: "Singapore-Registered (ACRA)" },
+  ];
+}
 
 /**
  * Credential rail directly under the hero video: company facts on the left,
@@ -59,7 +61,9 @@ const STATS = [
  * the negative margin on each group pulls the outer edges back onto the page
  * gutter that the hero and every section below it use.
  */
-export function Stats() {
+export function Stats({ serviceCount }: { serviceCount: number }) {
+  const STATS = buildStats(serviceCount);
+
   return (
     <section className="relative border-b border-zinc-200/90 bg-[linear-gradient(105deg,#ffffff_0%,#f8f8f9_50%,#f1f1f3_100%)]">
       {/* Brand hairline along the top edge, fading out to the right so it

@@ -12,6 +12,16 @@ export const projects = pgTable("projects", {
   position: integer("position").notNull(),
 });
 
+export const services = pgTable("services", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  category: text("category").notNull(),
+  description: text("description").notNull(),
+  image: text("image"),
+  position: integer("position").notNull(),
+});
+
 export const footerSettings = pgTable("footer_settings", {
   id: integer("id").primaryKey().default(1),
   tagline: text("tagline").notNull(),

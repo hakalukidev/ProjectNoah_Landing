@@ -3,9 +3,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { SERVICE_CATEGORIES, SERVICES } from "@/lib/site-config";
-
-type Service = (typeof SERVICES)[number];
+import { SERVICE_CATEGORIES } from "@/lib/site-config";
+import type { Service } from "@/lib/services";
 
 function ServiceRow({ service }: { service: Service }) {
   return (
@@ -29,11 +28,13 @@ type Category = (typeof SERVICE_CATEGORIES)[number];
 
 /** One titled block per practice area. The header dropdown deep-links to
     `#services-<category>`, so the id stays on the block wrapper. */
-function CategoryBlock({ category }: { category: Category }) {
-  const services = SERVICES.filter(
-    (service) => service.category === category.slug,
-  );
-
+function CategoryBlock({
+  category,
+  services,
+}: {
+  category: Category;
+  services: Service[];
+}) {
   return (
     <div id={`services-${category.slug}`} className="scroll-mt-30">
       {/* Ash ramp echoing the gradient behind the header logo, bled out past
@@ -69,7 +70,7 @@ function CategoryBlock({ category }: { category: Category }) {
   );
 }
 
-export function Services() {
+export function Services({ services: allServices }: { services: Service[] }) {
   return (
     <section id="services" className="scroll-mt-30 bg-background py-16 sm:py-20">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
@@ -89,7 +90,13 @@ export function Services() {
             list reads as one screen rather than three stacked blocks. */}
         <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
           {SERVICE_CATEGORIES.map((category) => (
-            <CategoryBlock key={category.slug} category={category} />
+            <CategoryBlock
+              key={category.slug}
+              category={category}
+              services={allServices.filter(
+                (service) => service.category === category.slug,
+              )}
+            />
           ))}
         </div>
       </div>

@@ -9,7 +9,13 @@ import { ContactForm } from "@/components/sections/contact-form";
 import type { ContactInfo } from "@/lib/server/contact";
 import { contactWhatsappLink } from "@/lib/server/contact";
 
-export function Contact({ contact }: { contact: ContactInfo }) {
+export function Contact({
+  contact,
+  serviceTitles,
+}: {
+  contact: ContactInfo;
+  serviceTitles: string[];
+}) {
   const SOCIALS = [
     { icon: WhatsappIcon, label: "WhatsApp", href: contactWhatsappLink(contact.whatsapp) },
     { icon: YoutubeIcon, label: "YouTube", href: contact.social.youtube },
@@ -59,7 +65,11 @@ export function Contact({ contact }: { contact: ContactInfo }) {
           </div>
         </div>
 
-        <ContactForm recipientEmail={contact.email} whatsapp={contact.whatsapp} />
+        <ContactForm
+          recipientEmail={contact.email}
+          whatsapp={contact.whatsapp}
+          serviceTitles={serviceTitles}
+        />
       </div>
     </section>
   );

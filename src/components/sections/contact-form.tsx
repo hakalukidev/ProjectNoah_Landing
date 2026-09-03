@@ -4,29 +4,29 @@ import { useState } from "react";
 import { ArrowRight, ChevronDown, Clock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SERVICES } from "@/lib/site-config";
 
 const fieldClass =
   "h-11 w-full rounded-none border border-border bg-white px-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/15";
 const labelClass =
   "text-xs font-bold uppercase tracking-wide text-muted-foreground";
 
-/** Enquiry categories - the service catalogue plus a catch-all, so the
-    dropdown always matches what the site actually offers. */
-const WORK_TYPES = [
-  "General building maintenance",
-  ...SERVICES.map((service) => service.title),
-  "Other / not sure yet",
-];
-
 export function ContactForm({
   recipientEmail,
   whatsapp,
+  serviceTitles,
 }: {
   recipientEmail: string;
   /** Digits-only or formatted number; a wa.me handoff is offered when given. */
   whatsapp?: string;
+  /** Enquiry categories - the live service catalogue, so the dropdown
+      always matches what the site actually offers. */
+  serviceTitles: string[];
 }) {
+  const WORK_TYPES = [
+    "General building maintenance",
+    ...serviceTitles,
+    "Other / not sure yet",
+  ];
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
