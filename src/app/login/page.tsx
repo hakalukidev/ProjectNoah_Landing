@@ -18,7 +18,7 @@ export default async function LoginPage({
 
   return (
     <div
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-12"
+      className="dark isolate relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-12 text-foreground"
       style={
         {
           "--background": "oklch(0.16 0.025 22)",
@@ -35,15 +35,15 @@ export default async function LoginPage({
       }
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(220,20,60,0.18),transparent_55%)]" />
         <Image
-          src="/about_us.png"
+          src="/login-bg.jpg"
           alt=""
           fill
           priority
-          className="object-cover object-[85%_50%] opacity-[0.08]"
+          className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/25" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
       </div>
 
       <div className="relative w-full max-w-sm">

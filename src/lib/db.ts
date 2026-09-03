@@ -1,9 +1,8 @@
-import { Pool } from "pg";
-import { drizzle } from "drizzle-orm/node-postgres";
 import { count, eq, ne, and } from "drizzle-orm";
 
 import { PROJECTS as SEED_PROJECTS } from "@/lib/site-config";
 import { projects } from "@/lib/schema";
+import { db } from "@/lib/db-client";
 
 export type Project = {
   id: number;
@@ -15,20 +14,6 @@ export type Project = {
   description: string;
   image: string | null;
 };
-
-declare global {
-  var __projectNoahPool: Pool | undefined;
-}
-
-const pool =
-  globalThis.__projectNoahPool ??
-  new Pool({ connectionString: process.env.DATABASE_URL });
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.__projectNoahPool = pool;
-}
-
-const db = drizzle(pool);
 
 let seeded = false;
 

@@ -11,3 +11,14 @@ export const projects = pgTable("projects", {
   image: text("image"),
   position: integer("position").notNull(),
 });
+
+export const footerSettings = pgTable("footer_settings", {
+  id: integer("id").primaryKey().default(1),
+  tagline: text("tagline").notNull(),
+  phone: text("phone").notNull(),
+  email: text("email").notNull(),
+  whatsappUrl: text("whatsapp_url").notNull(),
+  youtubeUrl: text("youtube_url").notNull(),
+  facebookUrl: text("facebook_url").notNull(),
+  instagramUrl: text("instagram_url").notNull(),
+});
