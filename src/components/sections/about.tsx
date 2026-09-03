@@ -13,15 +13,18 @@ const CHECKLIST = [
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-30 bg-background py-20 sm:py-28">
+    <section
+      id="about"
+      className="scroll-mt-30 border-t border-border bg-background py-12 sm:py-16"
+    >
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-10 lg:grid-cols-2 lg:gap-16 lg:px-16">
         <div className="relative mx-auto w-full max-w-md lg:order-2 lg:max-w-none">
-          <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-primary/5" />
+          <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[#ad1111]/5" />
           <Image
             src="/about_us.png"
-            alt="Line drawing of a Project Noah construction site with a tower crane"
-            width={1329}
-            height={1200}
+            alt="Line drawing of a building under construction with a tower crane and mobile crane on site"
+            width={1536}
+            height={1024}
             className="relative mx-auto w-full max-w-md"
           />
         </div>
@@ -36,18 +39,17 @@ export function About() {
 
           <h2 className="mt-5 max-w-xl text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             Built on Trust,{" "}
-            <span className="text-primary">Since 2008</span>
+            <span className="text-[#ad1111]">Since 2008</span>
           </h2>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {company.legalName} has operated as a Singapore-registered
-            construction company for {company.yearsInOperation}+ years. From
-            our office in Pioneer, we deliver building construction, design &
-            build and addition &amp; alteration works for clients across the
-            island, backed by a documented, ACRA-registered track record.
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {company.legalName} has been a Singapore-registered construction
+            company for {company.yearsInOperation}+ years. From our Pioneer
+            office we deliver building construction, design &amp; build and
+            addition &amp; alteration works island-wide.
           </p>
 
-          <ul className="mt-8 flex flex-col gap-3">
+          <ul className="mt-6 flex flex-col gap-3">
             {CHECKLIST.map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />

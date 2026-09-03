@@ -1,73 +1,81 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { company } from "@/lib/site-config";
+import { HeroContent } from "@/components/hero/hero-content";
 
+/**
+ * The home page hero: a single still behind the headline.
+ *
+ * The two rules that matter if you touch this:
+ *
+ *   1. This section is a Server Component and the copy inside it is real
+ *      DOM. The heading, the buttons and the UEN line are server-rendered
+ *      and present in the HTML regardless of whether the backdrop has
+ *      loaded. The image is decoration; it is never load-bearing for the
+ *      message.
+ *
+ *   2. Nothing behind the copy intercepts input. The image and both scrims
+ *      carry pointer-events: none, so every click lands on the buttons
+ *      underneath.
+ *
+ * This hero has had two previous incarnations: a looping video
+ * (public/hero-video.mp4, wrapped in public/video-embed.html) and a
+ * real-time WebGL skyline (src/components/hero/, three.js + r3f). Both are
+ * gone from the page; the video pair is still in the repo and still
+ * cache-headered in next.config.ts. The 3D scene is in this file's history
+ * if it is ever wanted back.
+ */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-background">
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 pb-20 pt-10 sm:pb-24 sm:pt-12 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pb-28 lg:pt-14">
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-          <span className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Since 2008
-          </span>
+    <section className="hero-viewport relative flex w-full items-center overflow-hidden bg-[#050912]">
+      {/* Full-bleed backdrop. `fill` + object-cover rather than an intrinsic
+          layout because the section is sized by the viewport, not by the
+          image; `priority` because this is the LCP element on the home page
+          and it should not wait behind lazy-loading. The source is a large
+          PNG - next/image re-encodes and resizes it per request, so what
+          ships is a fraction of what is in public/. */}
+      <Image
+        src="/hero_img.png"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none object-cover object-center"
+      />
 
-          <h1 className="mt-6 max-w-xl text-4xl font-extrabold leading-[1.2] tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem]">
-            Built to{" "}
-            <span className="rounded bg-primary px-1.5 text-primary-foreground">
-              Protect
-            </span>
-            , Built to{" "}
-            <span className="underline decoration-primary decoration-[3px] underline-offset-4">
-              Last
-            </span>
-          </h1>
+      {/* Readability scrim. The gradient is horizontal and stops well short
+          of the right edge, so it darkens the column the copy sits in
+          without flattening the part of the image worth looking at. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(3,7,14,0.85)_0%,rgba(3,7,14,0.55)_34%,rgba(3,7,14,0.12)_62%,rgba(3,7,14,0)_85%)]"
+      />
+      {/* A little weight at the very top and bottom edges: the top is what
+          the transparent header floats on - the nav's white text is read
+          against this band rather than against whatever happens to be behind
+          it - and the bottom settles the image down into the section
+          boundary. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,14,0.45)_0%,rgba(3,7,14,0)_22%,rgba(3,7,14,0)_72%,rgba(3,7,14,0.5)_100%)]"
+      />
 
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {company.legalName} delivers end-to-end construction and project
-            management solutions engineered for speed, safety, and precision,
-            from groundbreaking to handover.
-          </p>
+      {/* Above both scrims and the image. This is the only layer in the
+          section that accepts pointer events. */}
+      <div className="relative z-10 w-full">
+        <HeroContent />
+      </div>
 
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Button
-              render={<Link href="/#contact" />}
-              nativeButton={false}
-              size="lg"
-              className="h-13 rounded-none bg-primary px-8 text-base text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
-            >
-              Get a Free Quote
-              <ArrowRight className="ml-1 size-4" />
-            </Button>
-            <Button
-              render={<Link href="/projects" />}
-              nativeButton={false}
-              variant="outline"
-              size="lg"
-              className="h-13 rounded-none border-foreground/15 px-8 text-base hover:bg-muted"
-            >
-              View Our Projects
-            </Button>
-          </div>
-
-          <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            UEN {company.uen} &middot; {company.entityType}
-          </p>
-        </div>
-
-        <div className="relative mx-auto w-full max-w-xs lg:max-w-sm">
-          <div className="absolute inset-0 -z-10 translate-x-6 translate-y-10 rounded-[2rem] bg-primary/10 [clip-path:polygon(0_35%,100%_0,100%_65%,0%_100%)]" />
-          <Image
-            src="/banner.png"
-            alt="A glimpse of blue sky and a building under Project Noah's construction canopy"
-            width={1086}
-            height={1448}
-            priority
-            className="relative w-full"
-          />
-        </div>
+      {/* Scroll cue. Decorative and inert - the page below is reached by
+          scrolling like any other, there is no scroll-jacking here and the
+          hero hands off to the next section on its own. motion-safe keeps it
+          still for anyone who has asked for reduced motion. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center"
+      >
+        <ChevronDown className="size-6 text-white/45 motion-safe:animate-bounce" />
       </div>
     </section>
   );

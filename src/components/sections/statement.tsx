@@ -1,11 +1,51 @@
+import type { ReactNode } from "react";
+
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { TextReveal } from "@/components/ui/text-reveal";
 import { company } from "@/lib/site-config";
 
-export function Statement() {
+/** A number that ticks up as its own reveal "word", replaying on window focus. */
+function TickerWord({ value, suffix }: { value: number; suffix: string }) {
   return (
-    <section className="bg-background py-10 sm:py-14">
-      <p className="mx-auto max-w-4xl px-10 text-center text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-3xl lg:px-16">
-        {`Since ${company.incorporationDate.slice(0, 4)}, we plan with precision, build with accountability, and deliver on schedule. ${company.yearsInOperation}+ years, one entity, one standard.`}
-      </p>
+    <span className="inline-flex items-baseline">
+      <NumberTicker
+        value={value}
+        restartOnWindowFocus
+        className="text-inherit dark:text-inherit"
+      />
+      <span>{suffix}</span>
+    </span>
+  );
+}
+
+export function Statement() {
+  const incorporationYear = Number(company.incorporationDate.slice(0, 4));
+
+  const words: ReactNode[] = [
+    "Since",
+    `${incorporationYear},`,
+    "we",
+    "plan",
+    "with",
+    "precision,",
+    "build",
+    "with",
+    "accountability,",
+    "and",
+    "deliver",
+    "on",
+    "schedule.",
+    <TickerWord key="years" value={company.yearsInOperation} suffix="+" />,
+    "years,",
+    "one",
+    "entity,",
+    "one",
+    "standard.",
+  ];
+
+  return (
+    <section className="bg-background">
+      <TextReveal>{words}</TextReveal>
     </section>
   );
 }

@@ -10,10 +10,14 @@ const LABELS: Record<string, string> = {
   services: "Services",
   messages: "Messages",
   settings: "Settings",
+  images: "Photos",
+  videos: "Videos",
+  categories: "Categories",
+  contact: "Contact Info",
 };
 
 export function Breadcrumb() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const segments = pathname.split("/").filter(Boolean);
 
   return (

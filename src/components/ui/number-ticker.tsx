@@ -11,6 +11,12 @@ interface NumberTickerProps extends ComponentPropsWithoutRef<"span"> {
   direction?: "up" | "down"
   delay?: number
   decimalPlaces?: number
+  /**
+   * Replay the count-up animation every time the browser window/tab
+   * regains focus, in addition to the one-time reveal on scroll into
+   * view - keeps the stat feeling alive when a user tabs back in.
+   */
+  restartOnWindowFocus?: boolean
 }
 
 export function NumberTicker({
@@ -20,6 +26,7 @@ export function NumberTicker({
   delay = 0,
   className,
   decimalPlaces = 0,
+  restartOnWindowFocus = false,
   ...props
 }: NumberTickerProps) {
   const ref = useRef<HTMLSpanElement>(null)
@@ -45,6 +52,32 @@ export function NumberTicker({
       }
     }
   }, [motionValue, isInView, delay, value, direction, startValue])
+
+  useEffect(() => {
+    if (!restartOnWindowFocus) return
+
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    const handleFocus = () => {
+      const resetTo = direction === "down" ? value : startValue
+      // Snap back to the start instantly (no animation), then
+      // re-animate up to the target as if freshly scrolled into view.
+      motionValue.set(resetTo)
+      springValue.jump(resetTo)
+      timer = setTimeout(() => {
+        motionValue.set(direction === "down" ? startValue : value)
+      }, delay * 1000)
+    }
+
+    window.addEventListener("focus", handleFocus)
+
+    return () => {
+      window.removeEventListener("focus", handleFocus)
+      if (timer !== null) {
+        clearTimeout(timer)
+      }
+    }
+  }, [motionValue, springValue, restartOnWindowFocus, delay, value, direction, startValue])
 
   useEffect(
     () =>

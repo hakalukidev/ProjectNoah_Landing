@@ -1,6 +1,6 @@
 import { count, eq, ne, and } from "drizzle-orm";
 
-import { PROJECTS as SEED_PROJECTS } from "@/lib/site-config";
+import { WORKS as SEED_PROJECTS } from "@/lib/site-config";
 import { projects } from "@/lib/schema";
 import { db } from "@/lib/db-client";
 

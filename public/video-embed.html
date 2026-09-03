@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero video</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    /* Dark ground. With cover below there are no bars for it to show
+       through, so what this actually covers is the first paint of this
+       document - the colour in the frame while the video's first bytes are
+       still downloading. Dark rather than white because the hero copy now
+       sits on top of this frame in white type (see hero.tsx): a white first
+       paint would flash a pale panel behind already-painted white text,
+       which is the one combination that is unreadable. It matters more now
+       that there is no scrim over the video to darken that flash. */
+    background: #14181c;
+  }
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* cover, not contain: the box always ends up completely filled, so no
+       letterbox/pillarbox bars are ever drawn. The hero box (see hero.tsx)
+       is now full-viewport-width aspect-video - the source's own 16:9 - so
+       at the sizes that matter there is nothing to crop and cover and
+       contain paint the same thing. The only place cover does work is the
+       min-height floor hero.tsx applies below lg, where a phone-width 16:9
+       band is too short to hold the copy; there it trims the frame's left
+       and right edges instead of padding the gap. */
+    object-fit: cover;
+    /* Centred. With the box matched to the source ratio the whole frame is
+       on screen and this changes nothing; it only decides which edges the
+       small-screen min-height crop above eats, and that overflow is
+       left/right, so centring keeps the middle of the shot - where the
+       subject is - rather than favouring one side. */
+    object-position: center;
+  }
+</style>
+</head>
+<body>
+  <!-- Standalone page embedded via <iframe> in the hero section (see
+       src/components/sections/hero.tsx). Keeping the video on its own
+       same-origin document, rather than a direct <video> tag on the main
+       page, is a deterrent against casual "save video as" / view-source
+       downloading - not real protection, since the file is still fetchable
+       via dev tools or the network tab. Swap the file at
+       public/hero-video.mp4 to replace the video itself.
+
+       Because it lives in an iframe, the video's bytes are fetched by a
+       separate document and do not sit on the main page's critical path -
+       the homepage's HTML, CSS and JS parse and paint without waiting on
+       it. It does still share the connection, so the file's own size is
+       what actually governs how much it competes with the rest of the page;
+       keep public/hero-video.mp4 lean (see the note in next.config.ts about
+       the long-lived cache header that makes repeat visits free).
+
+       preload="auto" is stated explicitly rather than left to the default:
+       an autoplaying video needs its data anyway, and being explicit stops
+       a browser that defaults to "metadata" from stalling the first frame.
+
+       poster is the clip's own first frame, exported to a ~119KB WebP. It
+       lands in a single round trip, long before enough of the video has
+       buffered to show anything, so the hero paints real artwork straight
+       away instead of holding on the background colour above. That gap is
+       what actually makes the homepage feel slow - more than the total byte
+       count does - because it sits directly behind the headline.
+       The poster is drawn with the same object-fit/object-position rules as
+       the video below, so the hand-off when the first frame decodes is
+       invisible rather than a visible jump.
+       Re-export it whenever hero-video.mp4 changes, or it will flash a
+       still from the previous clip; the ffmpeg recipe for both files is in
+       the header comment of src/components/sections/hero.tsx. -->
+  <video
+    id="hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    poster="/hero-poster.webp"
+    controlslist="nodownload noremoteplayback noplaybackrate"
+    disablepictureinpicture
+    oncontextmenu="return false"
+  >
+    <source src="/hero-video.mp4" type="video/mp4" />
+  </video>
+</body>
+</html>

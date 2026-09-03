@@ -6,10 +6,13 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface-alt: var(--surface-alt);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --font-miranda: var(--font-miranda-sans);
+  --font-script: var(--font-dancing-script);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +42,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-teal-foreground: var(--brand-teal-foreground);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-dark-foreground: var(--brand-dark-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -50,12 +57,13 @@
 
 :root {
   --background: oklch(1 0 0);
+  --surface-alt: oklch(0.985 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #e01f22;
+  --primary: #ad1111;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -73,6 +81,10 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
+  --brand-teal: #3c6570;
+  --brand-teal-foreground: oklch(0.985 0 0);
+  --brand-dark: #10191c;
+  --brand-dark-foreground: oklch(0.985 0 0);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -85,12 +97,13 @@
 
 .dark {
   --background: oklch(0.145 0 0);
+  --surface-alt: oklch(0.205 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #e01f22;
+  --primary: #ad1111;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -127,5 +140,63 @@
   html {
     @apply font-sans scroll-smooth;
     scroll-padding-top: 7.5rem;
+  }
+}
+@layer base {
+  /*
+   * Image download deterrents, applied site-wide.
+   *
+   * -webkit-touch-callout kills the iOS/iPadOS long-press sheet, which is the
+   * one route to "Save Image" that draggable={false} and a contextmenu
+   * handler do not cover. -webkit-user-drag stops Safari and Chrome dragging
+   * the file straight out to the desktop.
+   *
+   * None of this is real protection - a determined visitor still has devtools
+   * and the screenshot key. The burned-in watermark
+   * (src/lib/server/watermark-core.mjs) is the actual protection; this just
+   * removes the one-click paths.
+   */
+  img {
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+@layer base {
+  :root {
+    /*
+     * Height of the site chrome: the 40px contact bar plus the 80px nav row
+     * plus its 1px bottom border (see src/components/site/header.tsx).
+     * On the home page the header is in `overlay` mode - fixed, floating
+     * transparently over the hero rather than sitting above it in flow - so
+     * the hero is a full screen tall and pads its *content* down by this
+     * much instead of subtracting it from its own height, which keeps the
+     * headline clear of the bar without pushing the scroll cue off the fold.
+     *
+     * The scroll-padding-top above is the same measurement rounded to
+     * 7.5rem; if the header's height changes, both move together.
+     */
+    --site-header-h: 121px;
+  }
+}
+
+@layer components {
+  /*
+   * The home page hero's box. Written here rather than as an arbitrary
+   * Tailwind value so the vh line can sit under the svh line as a fallback -
+   * two declarations of the same property, which class syntax cannot express.
+   * svh is what makes this correct on mobile: 100vh on iOS Safari means the
+   * viewport with the browser UI *retracted*, so a vh-only hero is taller
+   * than the screen on first paint and its call-to-action starts off-screen.
+   *
+   * The 34rem floor is for short landscape viewports (a phone turned
+   * sideways, a very short desktop window), where the remaining space would
+   * otherwise be too shallow to hold the heading and the buttons.
+   */
+  .hero-viewport {
+    min-height: max(34rem, 100vh);
+    min-height: max(34rem, 100svh);
+    padding-top: var(--site-header-h);
   }
 }

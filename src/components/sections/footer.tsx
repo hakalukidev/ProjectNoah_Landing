@@ -21,36 +21,36 @@ export async function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-white/10 bg-brand-dark">
       <div className="mx-auto w-full max-w-7xl px-10 pt-16 lg:px-16">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Logo />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <Logo variant="dark" />
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
               {settings.tagline}
             </p>
             <dl className="mt-4 flex flex-col gap-2.5 text-sm">
               <div>
-                <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <dt className="text-xs font-bold uppercase tracking-wide text-white/60">
                   Phone
                 </dt>
                 <dd className="mt-0.5">
                   <a
                     href={`tel:${settings.phone.replace(/\s+/g, "")}`}
-                    className="font-medium text-foreground transition-colors hover:text-primary"
+                    className="font-medium text-white transition-colors hover:text-primary"
                   >
                     {settings.phone}
                   </a>
                 </dd>
               </div>
               <div>
-                <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <dt className="text-xs font-bold uppercase tracking-wide text-white/60">
                   Email
                 </dt>
                 <dd className="mt-0.5">
                   <a
                     href={`mailto:${settings.email}`}
-                    className="font-medium text-foreground transition-colors hover:text-primary"
+                    className="font-medium text-white transition-colors hover:text-primary"
                   >
                     {settings.email}
                   </a>
@@ -65,16 +65,16 @@ export async function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-none border border-border text-foreground/70 transition-colors hover:border-primary hover:text-primary"
+                  className="flex size-10 items-center justify-center rounded-none border border-white/15 text-white/80 transition-colors hover:border-primary hover:text-primary"
                 >
-                  <Icon className="size-4" />
+                  <Icon className="size-5" />
                 </a>
               ))}
             </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">
               Navigate
             </h3>
             <ul className="mt-5 flex flex-col gap-3">
@@ -82,7 +82,7 @@ export async function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-white/60 transition-colors hover:text-primary"
                   >
                     {link.label}
                   </Link>
@@ -92,30 +92,30 @@ export async function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">
               Registration
             </h3>
             <dl className="mt-5 flex flex-col gap-3 text-sm">
               <div>
-                <dt className="text-muted-foreground">UEN</dt>
-                <dd className="font-medium text-foreground">{settings.uen}</dd>
+                <dt className="text-white/60">UEN</dt>
+                <dd className="font-medium text-white">{settings.uen}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Entity Type</dt>
-                <dd className="font-medium text-foreground">
+                <dt className="text-white/60">Entity Type</dt>
+                <dd className="font-medium text-white">
                   {settings.entityType}
                 </dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Registered Office</dt>
-                <dd className="font-medium text-foreground">
+                <dt className="text-white/60">Registered Office</dt>
+                <dd className="font-medium text-white">
                   {settings.registeredOffice}
                 </dd>
               </div>
             </dl>
           </div>
 
-          <div className="aspect-square w-full overflow-hidden border border-red-500">
+          <div className="aspect-square w-full overflow-hidden border border-white/10">
             <iframe
               title="Registered office location"
               src={settings.mapEmbedUrl}
@@ -127,8 +127,8 @@ export async function Footer() {
         </div>
       </div>
 
-      <div className="mt-14 border-t border-border">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-10 py-8 text-xs text-muted-foreground sm:flex-row lg:px-16">
+      <div className="mt-14 border-t border-white/10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-10 py-8 text-xs text-white/50 sm:flex-row lg:px-16">
           <p>
             &copy; {new Date().getFullYear()} {company.legalName}. All rights
             reserved.

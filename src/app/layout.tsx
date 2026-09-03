@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Dancing_Script, Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
+import { ImageProtection } from "@/components/site/image-protection";
 import { WhatsappButton } from "@/components/site/whatsapp-button";
 import { company } from "@/lib/site-config";
+import { getContactInfo, contactWhatsappLink } from "@/lib/server/contact";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +16,23 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Handwritten script used for the accent line in the hero heading
+// ("To Last"). Only the bold weight is loaded - it's a display accent, never
+// body copy.
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing-script",
+  subsets: ["latin"],
+  weight: "700",
+  display: "swap",
+});
+
+const mirandaSans = localFont({
+  src: "./fonts/miranda-sans-variable.woff2",
+  variable: "--font-miranda-sans",
+  weight: "400 700",
+  display: "swap",
 });
 
 const SITE_URL = "https://www.projectnoah.com.sg";
@@ -48,15 +68,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const contact = await getContactInfo();
+
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${mirandaSans.variable} ${dancingScript.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
-        <WhatsappButton />
+        <ImageProtection />
+        <WhatsappButton whatsappLink={contactWhatsappLink(contact.whatsapp)} />
       </body>
     </html>
   );

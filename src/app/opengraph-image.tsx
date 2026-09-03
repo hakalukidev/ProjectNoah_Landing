@@ -36,7 +36,7 @@ export default async function Image() {
             style={{
               width: 56,
               height: 56,
-              background: "#e01f22",
+              background: "#ad1111",
               display: "flex",
             }}
           />

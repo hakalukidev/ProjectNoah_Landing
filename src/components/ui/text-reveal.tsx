@@ -11,7 +11,12 @@ import {
 import { cn } from "@/lib/utils";
 
 export interface TextRevealProps {
-  children: string;
+  /**
+   * One entry per "word" to reveal. Plain strings are the common case;
+   * an entry can also be a ReactNode (e.g. a NumberTicker) so a stat
+   * inside the sentence can animate independently of the reveal itself.
+   */
+  children: string | ReactNode[];
   className?: string;
 }
 
@@ -25,12 +30,12 @@ export const TextReveal: FC<TextRevealProps> = ({ children, className }) => {
     target: targetRef,
     offset: ["start 0.9", "end 0.25"],
   });
-  const words = children.split(" ");
+  const words = typeof children === "string" ? children.split(" ") : children;
 
   return (
-    <div ref={targetRef} className={cn("relative z-0 h-[150vh]", className)}>
-      <div className="sticky top-0 mx-auto flex h-screen max-w-4xl items-center bg-transparent px-6 py-20 lg:px-8">
-        <p className="flex flex-wrap text-2xl font-bold leading-snug text-foreground/15 sm:text-3xl md:text-4xl lg:text-5xl">
+    <div ref={targetRef} className={cn("relative z-0 h-[120vh]", className)}>
+      <div className="sticky top-0 mx-auto flex h-[60vh] max-w-5xl items-center bg-transparent px-6 py-6 lg:px-8">
+        <p className="flex flex-wrap font-[family-name:var(--font-miranda)] text-3xl font-bold leading-snug text-foreground/15 sm:text-4xl md:text-5xl lg:text-6xl">
           {words.map((word, i) => {
             const start = i / words.length;
             const end = start + 1 / words.length;
