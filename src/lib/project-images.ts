@@ -1,7 +1,5 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import { del, put } from "@vercel/blob";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "projects");
 const ALLOWED_TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -20,20 +18,18 @@ export async function saveProjectImage(
     throw new Error("Image must be smaller than 5MB");
   }
 
-  await fs.mkdir(UPLOAD_DIR, { recursive: true });
-
   const ext = ALLOWED_TYPES[file.type];
-  const filename = `${slug}-${Date.now()}.${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(path.join(UPLOAD_DIR, filename), buffer);
+  const filename = `projects/${slug}-${Date.now()}.${ext}`;
 
-  return `/uploads/projects/${filename}`;
+  const blob = await put(filename, file, {
+    access: "public",
+    contentType: file.type,
+  });
+
+  return blob.url;
 }
 
 export async function deleteProjectImage(imagePath: string | null | undefined) {
-  if (!imagePath || !imagePath.startsWith("/uploads/projects/")) {
-    return;
-  }
-  const filePath = path.join(process.cwd(), "public", imagePath);
-  await fs.unlink(filePath).catch(() => {});
+  if (!imagePath) return;
+  await del(imagePath).catch(() => {});
 }
