@@ -13,7 +13,7 @@ const LABELS: Record<string, string> = {
 };
 
 export function Breadcrumb() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const segments = pathname.split("/").filter(Boolean);
 
   return (

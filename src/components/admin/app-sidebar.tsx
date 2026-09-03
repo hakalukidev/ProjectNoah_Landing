@@ -50,7 +50,7 @@ const NAV_GROUPS = [
 ];
 
 export function AppSidebar() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
 
   return (
     <Sidebar collapsible="icon">
