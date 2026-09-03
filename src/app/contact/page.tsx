@@ -228,7 +228,7 @@ export default async function ContactPage() {
         </section>
       </main>
 
-      <Footer contact={contact} />
+      <Footer />
     </div>
   );
 }

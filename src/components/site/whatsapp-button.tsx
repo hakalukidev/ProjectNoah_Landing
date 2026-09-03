@@ -1,6 +1,16 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import { WhatsappIcon } from "@/components/site/social-icons";
 
 export function WhatsappButton({ whatsappLink }: { whatsappLink: string }) {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <a
       href={whatsappLink}

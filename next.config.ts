@@ -35,6 +35,14 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "20mb",
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+    ],
+  },
   async headers() {
     return [
       // Files under public/ are otherwise served with a cache that

@@ -187,7 +187,7 @@ export default async function WorksPage() {
         </section>
       </main>
 
-      <Footer contact={contact} />
+      <Footer />
     </div>
   );
 }

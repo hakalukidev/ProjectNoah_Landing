@@ -35,6 +35,7 @@ yarn-error.log*
 
 # admin panel data: categories/images/contact JSON + uploaded photos
 /data/
+/public/uploads
 
 # vercel
 .vercel

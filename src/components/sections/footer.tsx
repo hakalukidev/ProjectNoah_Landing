@@ -8,15 +8,16 @@ import {
   YoutubeIcon,
 } from "@/components/site/social-icons";
 import { NAV_LINKS, company } from "@/lib/site-config";
-import type { ContactInfo } from "@/lib/server/contact";
-import { contactAddressFull, contactWhatsappLink } from "@/lib/server/contact";
+import { getFooterSettings } from "@/lib/footer-settings";
 
-export function Footer({ contact }: { contact: ContactInfo }) {
+export async function Footer() {
+  const settings = await getFooterSettings();
+
   const SOCIALS = [
-    { icon: WhatsappIcon, label: "WhatsApp", href: contactWhatsappLink(contact.whatsapp) },
-    { icon: YoutubeIcon, label: "YouTube", href: contact.social.youtube },
-    { icon: FacebookIcon, label: "Facebook", href: contact.social.facebook },
-    { icon: InstagramIcon, label: "Instagram", href: contact.social.instagram },
+    { icon: WhatsappIcon, label: "WhatsApp", href: settings.whatsappUrl },
+    { icon: YoutubeIcon, label: "YouTube", href: settings.youtubeUrl },
+    { icon: FacebookIcon, label: "Facebook", href: settings.facebookUrl },
+    { icon: InstagramIcon, label: "Instagram", href: settings.instagramUrl },
   ];
 
   return (
@@ -26,8 +27,7 @@ export function Footer({ contact }: { contact: ContactInfo }) {
           <div>
             <Logo variant="dark" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
-              Singapore-registered construction and project management,
-              delivering since {company.incorporationDateLabel}.
+              {settings.tagline}
             </p>
             <dl className="mt-4 flex flex-col gap-2.5 text-sm">
               <div>
@@ -36,10 +36,10 @@ export function Footer({ contact }: { contact: ContactInfo }) {
                 </dt>
                 <dd className="mt-0.5">
                   <a
-                    href={`tel:${contact.phone.replace(/\s+/g, "")}`}
+                    href={`tel:${settings.phone.replace(/\s+/g, "")}`}
                     className="font-medium text-white transition-colors hover:text-primary"
                   >
-                    {contact.phone}
+                    {settings.phone}
                   </a>
                 </dd>
               </div>
@@ -49,10 +49,10 @@ export function Footer({ contact }: { contact: ContactInfo }) {
                 </dt>
                 <dd className="mt-0.5">
                   <a
-                    href={`mailto:${contact.email}`}
+                    href={`mailto:${settings.email}`}
                     className="font-medium text-white transition-colors hover:text-primary"
                   >
-                    {contact.email}
+                    {settings.email}
                   </a>
                 </dd>
               </div>
@@ -98,19 +98,18 @@ export function Footer({ contact }: { contact: ContactInfo }) {
             <dl className="mt-5 flex flex-col gap-3 text-sm">
               <div>
                 <dt className="text-white/60">UEN</dt>
-                <dd className="font-medium text-white">{company.uen}</dd>
+                <dd className="font-medium text-white">{settings.uen}</dd>
               </div>
               <div>
                 <dt className="text-white/60">Entity Type</dt>
                 <dd className="font-medium text-white">
-                  {company.entityType}
+                  {settings.entityType}
                 </dd>
               </div>
               <div>
                 <dt className="text-white/60">Registered Office</dt>
                 <dd className="font-medium text-white">
-                  {contact.address.line1}, {contact.address.line2},{" "}
-                  {contact.address.postalCode}
+                  {settings.registeredOffice}
                 </dd>
               </div>
             </dl>
@@ -119,9 +118,7 @@ export function Footer({ contact }: { contact: ContactInfo }) {
           <div className="aspect-square w-full overflow-hidden border border-white/10">
             <iframe
               title="Registered office location"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(
-                contactAddressFull(contact.address)
-              )}&output=embed`}
+              src={settings.mapEmbedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-full w-full grayscale-40 contrast-[1.1]"
@@ -136,7 +133,7 @@ export function Footer({ contact }: { contact: ContactInfo }) {
             &copy; {new Date().getFullYear()} {company.legalName}. All rights
             reserved.
           </p>
-          <p>Incorporated in Singapore &middot; UEN {company.uen}</p>
+          <p>Incorporated in Singapore &middot; UEN {settings.uen}</p>
         </div>
       </div>
     </footer>

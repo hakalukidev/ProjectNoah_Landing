@@ -24,7 +24,7 @@ export default async function Home() {
         <About />
         <Contact contact={contact} />
       </main>
-      <Footer contact={contact} />
+      <Footer />
     </div>
   );
 }

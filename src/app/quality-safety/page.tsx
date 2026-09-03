@@ -184,7 +184,7 @@ export default async function QualitySafetyPage() {
         </section>
       </main>
 
-      <Footer contact={contact} />
+      <Footer />
     </div>
   );
 }

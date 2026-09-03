@@ -314,7 +314,7 @@ export default async function AboutPage() {
         )}
       </main>
 
-      <Footer contact={contact} />
+      <Footer />
     </div>
   );
 }
