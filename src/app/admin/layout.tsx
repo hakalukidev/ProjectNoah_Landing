@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LogoutButton } from "./logout-button";
 
 export const metadata: Metadata = {
   title: {
@@ -61,15 +62,18 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
               <Separator orientation="vertical" className="mr-1 h-4" />
               <Breadcrumb />
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              render={<Link href="/" target="_blank" rel="noopener" />}
-              nativeButton={false}
-            >
-              View site
-              <ExternalLink data-icon="inline-end" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                render={<Link href="/" target="_blank" rel="noopener" />}
+                nativeButton={false}
+              >
+                View site
+                <ExternalLink data-icon="inline-end" />
+              </Button>
+              <LogoutButton />
+            </div>
           </header>
           <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
             {children}

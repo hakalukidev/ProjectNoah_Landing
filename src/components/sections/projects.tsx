@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProjects } from "@/lib/db";
 
-export function ProjectsPreview() {
-  const featured = getProjects().slice(0, 3);
+export async function ProjectsPreview() {
+  const featured = (await getProjects()).slice(0, 3);
 
   return (
     <section id="projects" className="scroll-mt-30 bg-muted/40 py-20 sm:py-28">

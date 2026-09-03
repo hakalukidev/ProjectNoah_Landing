@@ -7,16 +7,19 @@ import {
   WhatsappIcon,
   YoutubeIcon,
 } from "@/components/site/social-icons";
-import { NAV_LINKS, SOCIAL_LINKS, company } from "@/lib/site-config";
+import { NAV_LINKS, company } from "@/lib/site-config";
+import { getFooterSettings } from "@/lib/footer-settings";
 
-const SOCIALS = [
-  { icon: WhatsappIcon, label: "WhatsApp", href: SOCIAL_LINKS.whatsapp },
-  { icon: YoutubeIcon, label: "YouTube", href: SOCIAL_LINKS.youtube },
-  { icon: FacebookIcon, label: "Facebook", href: SOCIAL_LINKS.facebook },
-  { icon: InstagramIcon, label: "Instagram", href: SOCIAL_LINKS.instagram },
-];
+export async function Footer() {
+  const settings = await getFooterSettings();
 
-export function Footer() {
+  const SOCIALS = [
+    { icon: WhatsappIcon, label: "WhatsApp", href: settings.whatsappUrl },
+    { icon: YoutubeIcon, label: "YouTube", href: settings.youtubeUrl },
+    { icon: FacebookIcon, label: "Facebook", href: settings.facebookUrl },
+    { icon: InstagramIcon, label: "Instagram", href: settings.instagramUrl },
+  ];
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto w-full max-w-7xl px-10 pt-16 lg:px-16">
@@ -24,8 +27,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Singapore-registered construction and project management,
-              delivering since {company.incorporationDateLabel}.
+              {settings.tagline}
             </p>
             <dl className="mt-4 flex flex-col gap-2.5 text-sm">
               <div>
@@ -34,10 +36,10 @@ export function Footer() {
                 </dt>
                 <dd className="mt-0.5">
                   <a
-                    href={`tel:${company.phone.replace(/\s+/g, "")}`}
+                    href={`tel:${settings.phone.replace(/\s+/g, "")}`}
                     className="font-medium text-foreground transition-colors hover:text-primary"
                   >
-                    {company.phone}
+                    {settings.phone}
                   </a>
                 </dd>
               </div>
@@ -47,10 +49,10 @@ export function Footer() {
                 </dt>
                 <dd className="mt-0.5">
                   <a
-                    href={`mailto:${company.email}`}
+                    href={`mailto:${settings.email}`}
                     className="font-medium text-foreground transition-colors hover:text-primary"
                   >
-                    {company.email}
+                    {settings.email}
                   </a>
                 </dd>
               </div>
@@ -96,19 +98,18 @@ export function Footer() {
             <dl className="mt-5 flex flex-col gap-3 text-sm">
               <div>
                 <dt className="text-muted-foreground">UEN</dt>
-                <dd className="font-medium text-foreground">{company.uen}</dd>
+                <dd className="font-medium text-foreground">{settings.uen}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Entity Type</dt>
                 <dd className="font-medium text-foreground">
-                  {company.entityType}
+                  {settings.entityType}
                 </dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Registered Office</dt>
                 <dd className="font-medium text-foreground">
-                  {company.address.line1}, {company.address.line2},{" "}
-                  {company.address.postalCode}
+                  {settings.registeredOffice}
                 </dd>
               </div>
             </dl>
@@ -117,9 +118,7 @@ export function Footer() {
           <div className="aspect-square w-full overflow-hidden border border-red-500">
             <iframe
               title="Registered office location"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(
-                company.address.full
-              )}&output=embed`}
+              src={settings.mapEmbedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-full w-full grayscale-40 contrast-[1.1]"
@@ -134,7 +133,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} {company.legalName}. All rights
             reserved.
           </p>
-          <p>Incorporated in Singapore &middot; UEN {company.uen}</p>
+          <p>Incorporated in Singapore &middot; UEN {settings.uen}</p>
         </div>
       </div>
     </footer>

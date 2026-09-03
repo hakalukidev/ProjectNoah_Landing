@@ -10,6 +10,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { company } from "@/lib/site-config";
+import { getFooterSettings } from "@/lib/footer-settings";
+import { FooterSettingsForm } from "./footer-settings-form";
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -27,7 +29,9 @@ const FIELDS: { label: string; value: string }[] = [
   { label: "Email", value: company.email },
 ];
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
+  const footerSettings = await getFooterSettings();
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div>
@@ -54,6 +58,19 @@ export default function AdminSettingsPage() {
               <Input value={field.value} readOnly disabled />
             </div>
           ))}
+        </CardContent>
+      </Card>
+
+      <Card className="max-w-2xl border-none shadow-sm ring-1 ring-foreground/5">
+        <CardHeader>
+          <CardTitle>Footer Content</CardTitle>
+          <CardDescription>
+            Tagline, contact details and social links shown in the site
+            footer.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FooterSettingsForm settings={footerSettings} />
         </CardContent>
       </Card>
     </div>
