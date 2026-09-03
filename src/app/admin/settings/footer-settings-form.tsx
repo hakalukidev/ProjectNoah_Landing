@@ -96,6 +96,53 @@ export function FooterSettingsForm({
         </div>
       </div>
 
+      <div className="mt-2 border-t border-border pt-4">
+        <p className="text-sm font-medium text-foreground">Registration</p>
+        <p className="text-xs text-muted-foreground">
+          Shown in the footer&apos;s Registration column and copyright line.
+        </p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="uen">UEN</Label>
+          <Input id="uen" name="uen" required defaultValue={settings.uen} />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="entityType">Entity Type</Label>
+          <Input
+            id="entityType"
+            name="entityType"
+            required
+            defaultValue={settings.entityType}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="registeredOffice">Registered Office</Label>
+        <Input
+          id="registeredOffice"
+          name="registeredOffice"
+          required
+          defaultValue={settings.registeredOffice}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="mapEmbedUrl">Map Embed URL</Label>
+        <Input
+          id="mapEmbedUrl"
+          name="mapEmbedUrl"
+          required
+          defaultValue={settings.mapEmbedUrl}
+        />
+        <p className="text-xs text-muted-foreground">
+          Google Maps: Share &rarr; Embed a map &rarr; copy the{" "}
+          <code>src</code> URL from the iframe code.
+        </p>
+      </div>
+
       {error && <p className="text-sm text-destructive">{error}</p>}
       {saved && !error && (
         <p className="text-sm text-emerald-600">Footer settings saved.</p>

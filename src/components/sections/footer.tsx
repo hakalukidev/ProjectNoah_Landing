@@ -98,19 +98,18 @@ export async function Footer() {
             <dl className="mt-5 flex flex-col gap-3 text-sm">
               <div>
                 <dt className="text-muted-foreground">UEN</dt>
-                <dd className="font-medium text-foreground">{company.uen}</dd>
+                <dd className="font-medium text-foreground">{settings.uen}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Entity Type</dt>
                 <dd className="font-medium text-foreground">
-                  {company.entityType}
+                  {settings.entityType}
                 </dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Registered Office</dt>
                 <dd className="font-medium text-foreground">
-                  {company.address.line1}, {company.address.line2},{" "}
-                  {company.address.postalCode}
+                  {settings.registeredOffice}
                 </dd>
               </div>
             </dl>
@@ -119,9 +118,7 @@ export async function Footer() {
           <div className="aspect-square w-full overflow-hidden border border-red-500">
             <iframe
               title="Registered office location"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(
-                company.address.full
-              )}&output=embed`}
+              src={settings.mapEmbedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-full w-full grayscale-40 contrast-[1.1]"
@@ -136,7 +133,7 @@ export async function Footer() {
             &copy; {new Date().getFullYear()} {company.legalName}. All rights
             reserved.
           </p>
-          <p>Incorporated in Singapore &middot; UEN {company.uen}</p>
+          <p>Incorporated in Singapore &middot; UEN {settings.uen}</p>
         </div>
       </div>
     </footer>

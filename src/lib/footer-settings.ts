@@ -14,6 +14,10 @@ export type FooterSettings = {
   youtubeUrl: string;
   facebookUrl: string;
   instagramUrl: string;
+  uen: string;
+  entityType: string;
+  registeredOffice: string;
+  mapEmbedUrl: string;
 };
 
 const DEFAULTS: FooterSettings = {
@@ -24,6 +28,12 @@ const DEFAULTS: FooterSettings = {
   youtubeUrl: SOCIAL_LINKS.youtube,
   facebookUrl: SOCIAL_LINKS.facebook,
   instagramUrl: SOCIAL_LINKS.instagram,
+  uen: company.uen,
+  entityType: company.entityType,
+  registeredOffice: `${company.address.line1}, ${company.address.line2}, ${company.address.postalCode}`,
+  mapEmbedUrl: `https://www.google.com/maps?q=${encodeURIComponent(
+    company.address.full
+  )}&output=embed`,
 };
 
 function withoutId(row: FooterSettings & { id: number }): FooterSettings {
@@ -35,6 +45,10 @@ function withoutId(row: FooterSettings & { id: number }): FooterSettings {
     youtubeUrl: row.youtubeUrl,
     facebookUrl: row.facebookUrl,
     instagramUrl: row.instagramUrl,
+    uen: row.uen,
+    entityType: row.entityType,
+    registeredOffice: row.registeredOffice,
+    mapEmbedUrl: row.mapEmbedUrl,
   };
 }
 

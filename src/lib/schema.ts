@@ -21,4 +21,8 @@ export const footerSettings = pgTable("footer_settings", {
   youtubeUrl: text("youtube_url").notNull(),
   facebookUrl: text("facebook_url").notNull(),
   instagramUrl: text("instagram_url").notNull(),
+  uen: text("uen").notNull(),
+  entityType: text("entity_type").notNull(),
+  registeredOffice: text("registered_office").notNull(),
+  mapEmbedUrl: text("map_embed_url").notNull(),
 });
