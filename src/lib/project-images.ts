@@ -1,4 +1,5 @@
-import { del, put } from "@vercel/blob";
+import { mkdir, unlink, writeFile } from "fs/promises";
+import path from "path";
 
 const ALLOWED_TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -6,6 +7,8 @@ const ALLOWED_TYPES: Record<string, string> = {
   "image/webp": "webp",
 };
 const MAX_BYTES = 5 * 1024 * 1024;
+
+const UPLOAD_ROOT = path.join(process.cwd(), "public", "uploads");
 
 export async function saveProjectImage(
   file: File,
@@ -19,17 +22,22 @@ export async function saveProjectImage(
   }
 
   const ext = ALLOWED_TYPES[file.type];
-  const filename = `projects/${slug}-${Date.now()}.${ext}`;
+  const filename = `${slug}-${Date.now()}.${ext}`;
+  const dir = path.join(UPLOAD_ROOT, "projects");
 
-  const blob = await put(filename, file, {
-    access: "public",
-    contentType: file.type,
-  });
+  await mkdir(dir, { recursive: true });
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await writeFile(path.join(dir, filename), buffer);
 
-  return blob.url;
+  return `/uploads/projects/${filename}`;
 }
 
 export async function deleteProjectImage(imagePath: string | null | undefined) {
-  if (!imagePath) return;
-  await del(imagePath).catch(() => {});
+  if (!imagePath || !imagePath.startsWith("/uploads/projects/")) return;
+
+  const filename = path.basename(imagePath);
+  const filePath = path.join(UPLOAD_ROOT, "projects", filename);
+  if (path.dirname(filePath) !== path.join(UPLOAD_ROOT, "projects")) return;
+
+  await unlink(filePath).catch(() => {});
 }
