@@ -66,7 +66,7 @@ export function ContactEditor({ contact }: { contact: ContactInfo }) {
       <button
         type="submit"
         disabled={pending}
-        className="h-11 w-fit rounded-none bg-[#ad1111] px-8 text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
+        className="h-11 w-fit rounded-none bg-[#4b5563] px-8 text-sm font-bold text-white transition-colors hover:bg-[#374151] disabled:opacity-60"
       >
         {pending ? "Saving..." : "Save Changes"}
       </button>

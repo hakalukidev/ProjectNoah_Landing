@@ -134,7 +134,7 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
           type="file"
           accept="image/*,.heic,.heif"
           multiple
-          className="text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-[#ad1111] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
+          className="text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-[#4b5563] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white"
         />
       </div>
 
@@ -144,7 +144,7 @@ export function ImageUploader({ categories }: { categories: Category[] }) {
       <button
         type="submit"
         disabled={busy || categories.length === 0}
-        className="flex h-11 items-center justify-center gap-2 rounded-none bg-[#ad1111] text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
+        className="flex h-11 items-center justify-center gap-2 rounded-none bg-[#4b5563] text-sm font-bold text-white transition-colors hover:bg-[#374151] disabled:opacity-60"
       >
         <UploadCloud className="size-4" />
         {busy ? "Uploading..." : "Upload & Watermark"}

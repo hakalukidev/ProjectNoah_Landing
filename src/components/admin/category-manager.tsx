@@ -36,7 +36,7 @@ function CategoryRow({ category }: { category: Category }) {
           <button
             type="submit"
             disabled={pending}
-            className="h-9 shrink-0 rounded-none bg-[#ad1111] px-4 text-xs font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
+            className="h-9 shrink-0 rounded-none bg-[#4b5563] px-4 text-xs font-bold text-white transition-colors hover:bg-[#374151] disabled:opacity-60"
           >
             {pending ? "Saving..." : "Save"}
           </button>
@@ -106,7 +106,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
         <button
           type="submit"
           disabled={pending}
-          className="h-11 shrink-0 rounded-none bg-[#ad1111] px-6 text-sm font-bold text-white transition-colors hover:bg-[#8e0e0e] disabled:opacity-60"
+          className="h-11 shrink-0 rounded-none bg-[#4b5563] px-6 text-sm font-bold text-white transition-colors hover:bg-[#374151] disabled:opacity-60"
         >
           {pending ? "Adding..." : "Add Category"}
         </button>
