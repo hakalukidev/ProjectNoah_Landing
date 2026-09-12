@@ -19,7 +19,7 @@ export function LoginForm({ next }: { next: string }) {
     <form action={action} className="flex flex-col gap-5">
       <input type="hidden" name="next" value={next} />
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
@@ -27,11 +27,11 @@ export function LoginForm({ next }: { next: string }) {
           type="email"
           autoComplete="username"
           required
-          className="rounded-md"
+          className="h-11 rounded-md px-4"
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="password">Password</Label>
         <div className="relative">
           <Input
@@ -41,7 +41,7 @@ export function LoginForm({ next }: { next: string }) {
             autoComplete="current-password"
             placeholder="••••••••"
             required
-            className="rounded-md pr-9"
+            className="h-11 rounded-md px-4 pr-10"
           />
           <button
             type="button"

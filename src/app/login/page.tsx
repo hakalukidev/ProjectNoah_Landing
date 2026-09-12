@@ -21,9 +21,9 @@ export default async function LoginPage({
       className="dark isolate relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-12 text-foreground"
       style={
         {
-          "--background": "oklch(0.16 0.025 22)",
+          "--background": "oklch(0.11 0.02 22)",
           "--foreground": "oklch(0.96 0.012 30)",
-          "--card": "oklch(0.22 0.03 20 / 92%)",
+          "--card": "oklch(0.15 0.025 20 / 94%)",
           "--card-foreground": "oklch(0.96 0.012 30)",
           "--muted": "oklch(0.30 0.03 20)",
           "--muted-foreground": "oklch(0.72 0.02 20)",
@@ -63,7 +63,7 @@ export default async function LoginPage({
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-8 shadow-2xl backdrop-blur-sm sm:p-10">
+        <div className="rounded-md border border-border bg-card p-8 shadow-2xl backdrop-blur-sm sm:p-10">
           <LoginForm next={nextPath} />
         </div>
 
