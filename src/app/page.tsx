@@ -9,6 +9,20 @@ import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
 import { getContactInfo } from "@/lib/server/contact";
 import { getServices } from "@/lib/services";
+import { FAQS } from "@/lib/site-config";
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
 
 export default async function Home() {
   const [contact, services] = await Promise.all([
@@ -19,6 +33,10 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Header contact={contact} overlay />
       <main className="flex flex-1 flex-col">
         <Hero />

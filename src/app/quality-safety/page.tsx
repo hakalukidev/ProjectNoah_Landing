@@ -18,6 +18,12 @@ import { getContactInfo } from "@/lib/server/contact";
 export const metadata: Metadata = {
   title: "Quality & Safety",
   description: `How ${company.legalName} (UEN ${company.uen}) keeps quality signed off and sites safe - our five pillars, the site safety rules every crew works to, and the Singapore WSH and BCA regulations behind them.`,
+  alternates: { canonical: "/quality-safety" },
+  openGraph: {
+    title: `Quality & Safety | ${company.brandName} Pte Ltd`,
+    description: `How ${company.legalName} keeps quality signed off and Singapore worksites safe, against WSH and BCA regulations.`,
+    url: "/quality-safety",
+  },
 };
 
 export default async function QualitySafetyPage() {

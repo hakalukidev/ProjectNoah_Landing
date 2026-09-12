@@ -21,6 +21,12 @@ import {
 export const metadata: Metadata = {
   title: "Contact",
   description: `Send ${company.legalName} (UEN ${company.uen}) a short project brief, or call, WhatsApp or email us directly - we reply within one business day.`,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: `Contact | ${company.brandName} Pte Ltd`,
+    description: `Get in touch with ${company.legalName}, Singapore - call, WhatsApp or email, we reply within one business day.`,
+    url: "/contact",
+  },
 };
 
 /** The three things that happen after a brief lands, so a visitor knows

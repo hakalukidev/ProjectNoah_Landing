@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
 
+import { siteUrl } from "@/lib/site-config";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/admin", "/login"],
     },
-    sitemap: "https://www.projectnoah.com.sg/sitemap.xml",
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }

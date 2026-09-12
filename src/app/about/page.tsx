@@ -17,6 +17,12 @@ import { getImages } from "@/lib/server/gallery";
 export const metadata: Metadata = {
   title: "About Us",
   description: `About ${company.legalName} (UEN ${company.uen}) - a Singapore-registered construction company operating since ${company.incorporationDateLabel}. Our story, our registration facts, and our work.`,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About Us | ${company.brandName} Pte Ltd`,
+    description: `Singapore-registered construction company (UEN ${company.uen}) operating since ${company.incorporationDateLabel}.`,
+    url: "/about",
+  },
 };
 
 const CHECKLIST = [

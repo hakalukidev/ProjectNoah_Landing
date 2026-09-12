@@ -6,7 +6,7 @@ import "./globals.css";
 import { ImageProtection } from "@/components/site/image-protection";
 import { VisitTracker } from "@/components/site/visit-tracker";
 import { WhatsappButton } from "@/components/site/whatsapp-button";
-import { company } from "@/lib/site-config";
+import { company, siteUrl, SOCIAL_LINKS } from "@/lib/site-config";
 import { getContactInfo, contactWhatsappLink } from "@/lib/server/contact";
 
 const geistSans = Geist({
@@ -36,10 +36,8 @@ const mirandaSans = localFont({
   display: "swap",
 });
 
-const SITE_URL = "https://www.projectnoah.com.sg";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${company.brandName} Pte Ltd | Singapore Construction & Project Management`,
     template: `%s | ${company.brandName} Pte Ltd`,
@@ -52,12 +50,18 @@ export const metadata: Metadata = {
     "building construction Singapore",
     "design and build Singapore",
     "A&A works Singapore",
+    "roofing contractor Singapore",
+    "steel fabrication Singapore",
+    "facade renovation Singapore",
   ],
   authors: [{ name: company.legalName }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_SG",
-    url: SITE_URL,
+    url: siteUrl,
     siteName: `${company.brandName} Pte Ltd`,
     title: `${company.brandName} Pte Ltd | Singapore Construction & Project Management`,
     description: `Singapore-registered construction and project management (UEN ${company.uen}), delivering since ${company.incorporationDateLabel}.`,
@@ -69,6 +73,30 @@ export const metadata: Metadata = {
   },
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  name: `${company.brandName} Pte Ltd`,
+  legalName: company.legalName,
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  image: `${siteUrl}/logo.png`,
+  telephone: company.phone,
+  email: company.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: `${company.address.line1}, ${company.address.line2}`,
+    addressLocality: "Singapore",
+    postalCode: company.address.postalCode.replace("Singapore ", ""),
+    addressCountry: "SG",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Singapore",
+  },
+  sameAs: [SOCIAL_LINKS.facebook, SOCIAL_LINKS.instagram, SOCIAL_LINKS.youtube],
+};
+
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const contact = await getContactInfo();
 
@@ -78,6 +106,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${mirandaSans.variable} ${dancingScript.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         {children}
         <ImageProtection />
         <VisitTracker />

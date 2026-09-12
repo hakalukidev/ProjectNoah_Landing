@@ -19,6 +19,12 @@ import { getVideos } from "@/lib/server/videos";
 export const metadata: Metadata = {
   title: "Our Works",
   description: `A look at the work ${company.legalName} delivers across Singapore: roofing & shelter, steel & fabrication, and facade & renovation works.`,
+  alternates: { canonical: "/works" },
+  openGraph: {
+    title: `Our Works | ${company.brandName} Pte Ltd`,
+    description: `Completed roofing, steel and facade projects delivered by ${company.legalName} across Singapore.`,
+    url: "/works",
+  },
 };
 
 export default async function WorksPage() {
